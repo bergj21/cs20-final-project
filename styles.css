@@ -1,8 +1,8 @@
 :root {
-    --orange-color: #ff6f00;
-    --dark-orange-color: #cc5b00;
-    --beige-color: #f5f0e1;
-    --gray-color: #222222;
+    --green-color: #4CAF50;
+    --soft-orange-color: #FFA726;
+    --off-white-color: #FAFAFA;
+    --charcoal-color: #333333;
 }
 
 /* General html and body style */
@@ -18,7 +18,7 @@ body {
     display: flex;
     flex-direction: column;
     font-family: 'Roboto', sans-serif;
-    background-color: var(--beige-color);
+    background-color: var(--off-white-color);
 }
 
 /* Ensures the main content expands and pushes the footer down */
@@ -31,7 +31,7 @@ footer {
     display: flex;
     text-align: center;
     justify-content: center;
-    background-color: var(--gray-color);
+    background-color: var(--green-color);
     color: white;
     width: 100%;
     padding: 10px 0;
@@ -40,7 +40,7 @@ footer {
 
 /* Header style */
 header {
-    background-color: var(--gray-color); 
+    background-color: var(--green-color); 
     width: 100%;
     height: 100px;
     display: flex; 
@@ -84,35 +84,14 @@ header {
   
 .menu a {
     text-decoration: none; 
-    color: var(--orange-color); 
+    color: var(--off-white-color); 
     font-size: 22px;
     display: block;
 }
   
 .menu a:hover {
-    background-color: var(--orange-color);
-    color: var(--gray-color); 
-}
-
-/* Style used on any donate button */
-.donate a {
-    display: inline-block;
-    background-color: var(--orange-color); /* Bright color to stand out */
-    color: var(--gray-color);
-    padding: 5px 5px;
-    border-radius: 25px; /* Makes it ovular */
-    font-weight: bold;
-    text-decoration: none;
-    transition: background-color 0.3s ease;
-}
-
-.donate a:hover {
-    background-color: var(--dark-orange-color);
-    transform: scale(1.05);
-}
-
-.donate a:active {
-    transform: scale(0.95);
+    background-color: var(--off-white-color);
+    color: var(--green-color); 
 }
 
 /* The hamburger menu style */
@@ -121,13 +100,13 @@ header {
     font-size: 30px;
     background: none;
     border: none;
-    color: var(--orange-color);
+    color: var(--off-white-color);
     cursor: pointer;
 }
 
 .menu-toggle:hover {
-    background-color: var(--orange-color);
-    color: var(--gray-color); 
+    background-color: var(--off-white-color);
+    color: var(--green-color); 
 }
 
 /* When the screen width gets too narrow, hide the standard menu and use the 
@@ -139,7 +118,7 @@ header {
         position: absolute;
         top: 80px;
         right: 0;
-        background: var(--gray-color);
+        background: var(--green-color);
         width: 20%;
         text-align: center;
         padding: 10px 0;
@@ -169,142 +148,4 @@ header {
         width: 100%;
         background: rgba(34, 34, 34, 0.9); 
     }
-}
-
-/* headings text standards */
-h1, h2, h3, h4 {
-    color: var(--orange-color);
-    text-align: center;
-    font-weight: bold;
-    font-family: 'Times New Roman', sans-serif;
-}
-
-h1 {
-    font-size: 80px;
-    margin-top: 30px;
-    background: linear-gradient(45deg, var(--orange-color), #ffcc00);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    text-shadow: 3px 3px 6px rgba(0, 0, 0, 0.3);
-    animation: pulse 2s infinite alternate ease-in-out;
-}
-h2 {
-    font-size: 40px;
-    text-shadow: 0 0 8px rgba(255, 165, 0, 0.8), 0 0 16px rgba(255, 140, 0, 0.6);
-    letter-spacing: 2px;
-}
-h3 {
-    font-size: 30px;
-}
-
-img {
-    border-radius: 10px;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
-}
-
-/* Decrease heading font sizes when the page is too small */
-@media (max-width: 575px) {
-    h1 {
-        font-size: 50px;
-    }
-    h2 {
-        font-size: 30px;
-    }
-    h3 {
-        font-size: 20px;
-    }
-}
-
-/* Form styling */
-::placeholder {
-    font-family: Arial, sans-serif; /* Make placeholder text consistent */
-}
-
-.form-content {
-    display: flex;
-    justify-content: center;
-    padding: 0 20px;
-}
-
-.form-container {
-    background-color: rgba(255, 255, 255, 0.9);
-    padding: 40px;
-    border-radius: 10px;
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
-    max-width: 600px;
-    width: 100%;
-}
-
-/* Form Inputs Styling */
-.form-container label {
-    font-size: 16px;
-    font-weight: 600;
-    color: #333;
-    margin-bottom: 8px;
-    text-align: left;
-    display: block;
-}
-
-.form-container input,
-.form-container textarea {
-    width: 100%;
-    padding: 12px;
-    margin-bottom: 20px;
-    border: 1px solid #ddd;
-    border-radius: 8px;
-    font-size: 16px;
-    color: #333;
-    background-color: #fafafa;
-}
-
-.form-container input:focus,
-.form-container textarea:focus {
-    border-color: var(--orange-color);
-    outline: none;
-}
-
-.form-container button {
-    width: 100%;
-    padding: 14px;
-    font-size: 18px;
-    background-color: var(--orange-color);
-    border: none;
-    border-radius: 8px;
-    color: white;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-}
-
-.form-container button:hover {
-    background-color: var(--dark-orange-color);
-}
-
-/* Flex container for radio buttons */
-.radio-group,
-.checkbox-group {
-    display: flex;
-    flex-wrap: wrap;
-    align-items: flex-start;
-    gap: 10px; 
-}
-
-/* Adjust spacing for mobile */
-@media (max-width: 600px) {
-    .radio-group, .checkbox-group {
-        flex-direction: column;
-        gap: 5px; 
-    }
-}
-
-.radio-group label,
-.checkbox-group label {
-    display: flex;
-    align-items: center;
-    font-weight: normal;
-    gap: 5px;
-}
-
-.radio-group input,
-.checkbox-group input {
-    margin: 0; 
 }
