@@ -109,6 +109,55 @@ header {
     color: var(--green-color); 
 }
 
+/* Drowndown Menu Styling */
+.profile-dropdown {
+    position: relative;
+    display: inline-block;
+}
+
+.profile-dropbtn {
+    background-color: var(--green-color);
+    color: var(--off-white-color);
+    border: none;
+    font-size: 22px;
+    cursor: pointer;
+    font-family: 'Rajdhani', sans-serif;
+    font-weight: bold;
+    padding: 10px 15px;
+}
+
+.profile-dropbtn:hover {
+    background-color: var(--off-white-color);
+    color: var(--green-color);
+}
+
+.profile-dropdown-content {
+    display: none;
+    position: absolute;
+    background-color: var(--green-color);
+    min-width: 200px;
+    right: 0;
+    z-index: 1;
+    flex-direction: column;
+}
+
+.profile-dropdown-content a {
+    color: var(--off-white-color);
+    padding: 12px 16px;
+    text-decoration: none;
+    display: block;
+    text-align: left;
+}
+
+.profile-dropdown-content a:hover {
+    background-color: var(--off-white-color);
+    color: var(--green-color);
+}
+
+.profile-dropdown:hover .profile-dropdown-content {
+    display: flex;
+}
+
 /* When the screen width gets too narrow, hide the standard menu and use the 
    hamburger menu, making the dropdown menu a vertical list*/
 @media (max-width: 1100px) {

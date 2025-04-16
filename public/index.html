@@ -1,163 +1,41 @@
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="keywords" content="basketball, youth sports, fundraising, nonprofit, HoopFund, donations, teams, leagues">
-    <title>HoopFund</title>
-    <link rel="stylesheet" href="styles.css" />
-    <style>
-      main {
-        margin: 0 10%; 
-      }
-
-      .donate {
-        display: flex;
-        justify-content: center;
-        font-size: 25px;
-      }
-
-      .basketball-image {
-        width: 500px;
-        display: block; 
-        margin: 0 auto; 
-      }
-
-      .container {
-        display: flex;
-        align-items: flex-start; 
-        gap: 20px; 
-      }
-
-      .basketball-image {
-        width: 40%; 
-        max-width: 300px; 
-        height: auto;
-      }
-
-      .funding-text {
-        flex: 1; 
-      }
-
-      /* Media Query for screens 800px or smaller */
-      @media (max-width: 800px) {
-        .container {
-          flex-direction: column; 
-          align-items: center; 
-          text-align: center; 
-        }
-    
-        .basketball-image {
-          width: 80%; 
-          max-width: 400px;
-        }
-    
-        .funding-text {
-          text-align: left; 
-          width: 90%; 
-        }
-      }
-    </style>
-  </head>
-  <body>
-    <header>
-      <a href="index.html">
-        <img src="images/logo.jpg" alt="Logo" class="logo" />
-      </a>
-      <nav>
-        <button class="menu-toggle">☰</button>
-        <ul class="menu">
-          <li><a href="index.html">Home</a></li>
-          <li><a href="register.html">Register</a></li>
-          <li><a href="leagues.html">Leagues</a></li>
-          <li><a href="testimonials.html">Testimonials</a></li>
-          <li><a href="contact.html">Contact Us</a></li>
-          <li><a href="about.html">About Us</a></li>
-          <li class="donate"><a href="donate.html">Donate</a></li>
-        </ul>
-      </nav>
-    </header>
-
-    <script>
-      // set up the page
-      window.onload = function() {
-        // set up menu toggle for small screens
-        const menuToggle = document.querySelector('.menu-toggle')
-        const menu = document.querySelector('.menu')
-
-        menuToggle.addEventListener('click', function () {
-          menu.classList.toggle('active')
-        })
-      }
-    </script>
-
-    <h1>HoopFund</h1>
-    <main>
-
-    <!-- Intro Section -->
-    <div class="section">
-    <h3>Support Youth Basketball Today!</h3>
-    <p>
-        Whether it's making a donation, volunteering your time, or spreading
-        the word, you can make a difference! Learn more about how you can help
-        by visiting our <a href="donate.html" style="text-decoration: none;">
-        donation page</a> or getting involved with one of our many community 
-        events.
-    </p>
-    </div>
-
-    <!-- About Us Section -->
-    <div class="section">
-        <h3>Learn More About HoopFund</h3>
-        <p>
-            HoopFund is dedicated to empowering young athletes by providing them with
-            the necessary resources to thrive both on and off the basketball court. We
-            understand the transformative power of sports, and through our efforts, we
-            aim to support the development of youth basketball players in underserved
-            communities. 
-        </p>
-        <p>
-            Our mission is to ensure that every young player, regardless of their
-            background or financial situation, has access to quality coaching,
-            state-of-the-art equipment, and the opportunity to participate in organized
-            leagues and tournaments. With your support, we can create a lasting impact
-            on the lives of these athletes, helping them build confidence, leadership
-            skills, and a sense of community.
-        </p>
-        <div class="container">
-            <img src="images/basketball.jpg" class="basketball-image" alt="Basketball"/>
-            <div class="funding-text">
-                <h3>Donations to HoopFund provide essential funding for:</h3>
-                <ul>
-                    <li><strong>Equipment:</strong> Balls, shoes, uniforms, and protective gear to ensure the players have everything they need to excel.</li>
-                    <li><strong>Coaching:</strong> Professional coaches and mentorship to help players develop their skills and confidence both on and off the court.</li>
-                    <li><strong>Tournaments & Leagues:</strong> Opportunities for youth players to compete at local, regional, and national levels, fostering growth and exposure.</li>
-                    <li><strong>Scholarships:</strong> Financial support for athletes who wish to continue their basketball journey while pursuing higher education.</li>
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <meta name="keywords" content="fitness, meal prep, healthy, groceries, food, activity, lifestyle">
+        <title>Meal Prep Buddy</title>
+        <link rel="stylesheet" href="styles.css" />
+        <script src="header.js"></script>
+        <style>
+        </style>
+    </head>
+    <body>
+        <header>
+            <a href="index.html">
+                <img src="images/logo.jpg" alt="Logo" class="logo" />
+            </a>
+            <nav>
+                <button class="menu-toggle">☰</button>
+                <ul class="menu">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="meal_plan.html">Meal Plan</a></li>
+                <li><a href="recipes.html">Recipes</a></li>
+                <li><a href="subscriptions.html">Subscriptions</a></li>
+                <li><a href="contact.html">Contact Us</a></li>
+                <li><a href="about.html">About Us</a></li>
                 </ul>
-            </div>
-        </div>
-        
-        <p>
-            Every contribution, no matter how big or small, helps bring us one step closer
-            to our goal of giving these young athletes the tools they need to succeed. Join
-            us in our mission to make a difference in the lives of tomorrow's basketball stars!
-        </p>
-    </div>
-    <!-- Get Involved Section -->
-    <div class="section">
-      <h3>Get Involved Today!</h3>
-      <p>
-        Join us in making a difference for young athletes. Every little bit
-        counts, and together we can create a brighter future for youth
-        basketball.
-      </p>
-      <div class="donate"><a href="donate.html">Donate Now</a></div>
-    </div>
-    <br />
+            </nav>
+        </header>
 
-    </main>
+        <script>
+            // set up the page
+            window.onload = function() {
+                setHeader();
+            }
+        </script>
 
-    <footer>
-      <p>&copy; 2025 HoopFund. All Rights Reserved.</p>
-    </footer>
-  </body>
+        <footer>
+            <p>&copy; 2025 HoopFund. All Rights Reserved.</p>
+        </footer>
+    </body>
 </html>
