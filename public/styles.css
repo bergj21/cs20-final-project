@@ -128,8 +128,10 @@ header {
     background-color: var(--off-white-color);
     color: var(--green-color);
 }
-
+/* 
 .profile-dropdown-content {
+    position: relative;
+    top: 80px;
     list-style: none; 
     padding: 0;
     display: flex; 
@@ -146,6 +148,31 @@ header {
     color: var(--off-white-color); 
     font-size: 22px;
     display: block;
+}
+
+.profile-dropdown-content a:hover {
+    background-color: var(--off-white-color);
+    color: var(--green-color);
+}
+
+.profile-dropdown:hover .profile-dropdown-content {
+    display: flex;
+} */
+
+.profile-dropdown-content {
+    list-style: none;
+    display: none;
+    position: absolute;
+    right: 0;
+    background-color: var(--green-color);
+    flex-direction: column;
+}
+
+.profile-dropdown-content a {
+    color: var(--off-white-color);
+    text-decoration: none;
+    display: block;
+    text-align: center;
 }
 
 .profile-dropdown-content a:hover {

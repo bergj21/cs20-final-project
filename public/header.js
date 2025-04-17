@@ -26,7 +26,7 @@ function setHeader()
                         <li><a href="profile.html">My Profile</a></li>
                         <li><a href="preferences.html">Preferences</a></li>
                         <li><a href="grocery_list.html">Grocery List</a></li>
-                        <li><a href="favorites.html">Favorites</a></li>
+                        <li><a href="favorites.html">Favorite Recipes</a></li>
                         <li><a href="logout.html">Logout</a></li>
                     </ul>
                 `;
