@@ -128,36 +128,7 @@ header {
     background-color: var(--off-white-color);
     color: var(--green-color);
 }
-/* 
-.profile-dropdown-content {
-    position: relative;
-    top: 80px;
-    list-style: none; 
-    padding: 0;
-    display: flex; 
-    justify-content: flex-end;
-    align-items: center;
-    margin: 10px 0;
-    display: none;
-    flex-direction: column;
-}
 
-
-.profile-dropdown-content a {
-    text-decoration: none; 
-    color: var(--off-white-color); 
-    font-size: 22px;
-    display: block;
-}
-
-.profile-dropdown-content a:hover {
-    background-color: var(--off-white-color);
-    color: var(--green-color);
-}
-
-.profile-dropdown:hover .profile-dropdown-content {
-    display: flex;
-} */
 
 .profile-dropdown-content {
     list-style: none;
