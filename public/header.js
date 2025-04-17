@@ -22,21 +22,18 @@ function setHeader()
                 
                 profileItem.innerHTML = `
                     <button class="profile-dropbtn">Profile ▾</button>
-                    <div class="profile-dropdown-content">
-                        <a href="profile.html">My Profile</a>
-                        <a href="preferences.html">Preferences</a>
-                        <a href="grocery_list.html">Grocery List</a>
-                        <a href="favorite_recipes.html">Favorite Recipes</a>
-                        <a href="logout.html">Logout</a>
-                    </div>
+                    <ul class="profile-dropdown-content">
+                        <li><a href="profile.html">My Profile</a></li>
+                        <li><a href="preferences.html">Preferences</a></li>
+                        <li><a href="grocery_list.html">Grocery List</a></li>
+                        <li><a href="favorites.html">Favorites</a></li>
+                        <li><a href="logout.html">Logout</a></li>
+                    </ul>
                 `;
-                alert("GOT to the logged in?");
                 menu.appendChild(profileItem);
-                alert("Appended the child");
             } 
             else 
             {
-                alert("NOT logged in");
                 const loginItem = document.createElement('li');
                 loginItem.innerHTML = `<a href="login.html">Login</a>`;
                 menu.appendChild(loginItem);
