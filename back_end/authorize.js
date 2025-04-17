@@ -9,8 +9,8 @@ async function loginUser(req, res) {
             return res.status(401).send('Invalid email or password');
         }
 
-        req.session.user_id = user._id;
-        res.redirect('/'); 
+        // Respond with user ID so the client can store it
+        res.json({ userId: user._id });
     } catch (err) {
         console.error("Error logging in:", err);
         res.status(500).send('Server error');
