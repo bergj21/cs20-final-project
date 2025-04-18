@@ -204,3 +204,89 @@ header {
         width: 100%;
     }
 }
+
+
+/* Preferences form styling */
+.preferenceForm {
+    flex: 1 1 500px;
+    background-color: white;
+    padding: 30px;
+    border-radius: 15px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.preferenceForm h2 {
+    font-family: 'Rajdhani', sans-serif;
+    color: var(--charcoal-color);
+    border-bottom: 2px solid var(--green-color);
+    padding-bottom: 5px;
+    margin-bottom: 20px;
+}
+
+.min-max-group {
+    display: flex;
+    flex-direction: column;
+    margin-top: 15px;
+}
+
+.min-max-group label {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    gap: 10px;
+    font-weight: bold;
+    font-family: 'Roboto', sans-serif;
+    color: var(--charcoal-color);
+}
+
+.min-max-group input[type="number"] {
+    flex: 1;
+    margin-bottom: 0;
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 15px;
+}
+
+.form-group label {
+    font-weight: bold;
+    font-family: 'Roboto', sans-serif;
+    color: var(--charcoal-color);
+    margin-bottom: 5px;
+}
+
+.form-group input,
+.form-group select {
+    padding: 8px 10px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    font-family: 'Roboto', sans-serif;
+    font-size: 1em;
+}
+
+/* Fancy submit button */
+.submit-btn {
+    margin-top: 20px;
+    padding: 12px 20px;
+    background-color: var(--green-color); 
+    color: white;
+    border: none;
+    border-radius: 10px;
+    font-size: 1.1em;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.submit-btn:hover {
+    background-color: var(--dark-green-color);
+}
+
+.submit-wrapper {
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+}

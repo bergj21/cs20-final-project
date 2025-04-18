@@ -31,7 +31,7 @@ async function recipeSearch(preferences, meal)
     });
 
     // Create the API URL call
-    let apiCall = `${baseApi}/recipes/complexSearch?apiKey=${apiKey}&addRecipeNutrition=true`;
+    let apiCall = `${baseApi}/recipes/complexSearch?apiKey=${apiKey}`;
     for (let key in adjustedPrefs)
     {
         apiCall += `&${encodeURIComponent(key)}=${encodeURIComponent(adjustedPrefs[key])}`;
@@ -56,31 +56,70 @@ function getPreferencesForm(formId, executeFct)
     let preferencesForm = document.getElementById(formId);
 
     preferencesForm.innerHTML = `
-        <h3>General Meal Preferences</h3>
-        <label>Cuisines (comma-separated): <input type="text" name="cuisine"></label>
-        <label>Exclude Ingredients (comma-separated): <input type="text" name="excludeIngredients"></label>
-        <label>Intolerance (comma-separated): <input type="text" name="intolerance"></label>
+        <form class="preferenceForm">
+            <h2>General Meal Preferences</h2>
 
-        <h3>Daily Nutrition Preferences</h3>
-        <label>Minimum Protein: <input type="number" name="minProtein"></label>
-        <label>Maximum Protein: <input type="number" name="maxProtein"></label>
-        <label>Minimum Calories: <input type="number" name="minCalories"></label>
-        <label>Maximum Calories: <input type="number" name="maxCalories"></label>
-        <label>Minimum Carbs: <input type="number" name="minCarbs"></label>
-        <label>Maximum Carbs: <input type="number" name="maxCarbs"></label>
-        <label>Minimum Fat: <input type="number" name="minFat"></label>
-        <label>Maximum Fat: <input type="number" name="maxFat"></label>
+            <div class="form-group">
+                <label>What meal is this?: 
+                    <select name="meal">
+                        <option value="breakfast">Breakfast</option>
+                        <option value="lunch">Lunch</option>
+                        <option value="dinner">Dinner</option>
+                    </select>
+                </label>
+            </div>
 
-        <label>Meal:
-        <select name="meal">
-            <option value="breakfast">Breakfast</option>
-            <option value="lunch">Lunch</option>
-            <option value="dinner">Dinner</option>
-        </select>
-        </label>
+            <div class="form-group">
+                <label>Cuisines (comma-separated):</label>
+                <input type="text" name="cuisine">
+            </div>
 
-        <button type="submit">Search Recipes</button>
+            <div class="form-group">
+                <label>Exclude Ingredients (comma-separated):</label>
+                <input type="text" name="excludeIngredients">
+            </div>
+
+            <div class="form-group">
+                <label>Intolerance (comma-separated):</label>
+                <input type="text" name="intolerance">
+            </div>
+
+            <h2>Daily Nutrition Preferences</h2>
+
+            <div class="min-max-group">
+                <label>Protein:
+                    <input type="number" name="minProtein" placeholder="Min">
+                    <input type="number" name="maxProtein" placeholder="Max">
+                </label>
+            </div>
+
+            <div class="min-max-group">
+                <label>Calories:
+                    <input type="number" name="minCalories" placeholder="Min">
+                    <input type="number" name="maxCalories" placeholder="Max">
+                </label>
+            </div>
+
+            <div class="min-max-group">
+                <label>Carbs:
+                    <input type="number" name="minCarbs" placeholder="Min">
+                    <input type="number" name="maxCarbs" placeholder="Max">
+                </label>
+            </div>
+
+            <div class="min-max-group">
+                <label>Fat:
+                    <input type="number" name="minFat" placeholder="Min">
+                    <input type="number" name="maxFat" placeholder="Max">
+                </label>
+            </div>
+
+            <div class="submit-wrapper">
+                <button type="submit" class="submit-btn">Search Recipes</button>
+            </div>
+        </form>
     `;
+
 
     preferencesForm.addEventListener('submit', async function(e) {
         e.preventDefault();

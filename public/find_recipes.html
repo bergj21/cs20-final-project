@@ -8,10 +8,23 @@
     <script src="header.js"></script>
     <script src="apiHandler.js"></script>
     <style>
-        label { display: block; margin-top: 8px; }
-        input, select { width: 300px; padding: 5px; }
-        button { margin-top: 12px; padding: 8px 16px; }
-        pre { background: var(--off-white-color); padding: 10px; margin-top: 20px; }
+        .form-results-wrapper {
+            display: flex;
+            flex-direction: row;
+            justify-content: space-between;
+            gap: 40px;
+            margin: 40px auto;
+            padding: 0 20px;
+            flex-wrap: wrap;
+        }
+
+        .results-panel {
+            flex: 1 1 500px;
+            background-color: white;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
     </style>
 </head>
 <body>
@@ -27,12 +40,14 @@
 
     <main>
         <h1>Find a Recipe</h1>
-
-        <form id="preferenceForm">
-        </form>
-
-        <h2>Results</h2>
-        <pre id="results"></pre>
+        <div class="form-results-wrapper">
+            <div id="form-div"></div>
+    
+            <div class="results-panel">
+                <h2>Results</h2>
+                <div id="results"></div>
+            </div>
+        </div>
     </main>
 
     <script>
@@ -40,7 +55,7 @@
         window.onload = function() {
             setHeader();
             
-            getPreferencesForm("preferenceForm", async function(preferences, meal) 
+            getPreferencesForm("form-div", async function(preferences, meal) 
             {
                 const resultsEl = document.getElementById('results');
                 resultsEl.textContent = 'Loading...';
