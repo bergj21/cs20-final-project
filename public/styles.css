@@ -267,7 +267,6 @@ header {
     font-size: 1em;
 }
 
-/* Fancy submit button */
 .submit-btn {
     margin-top: 20px;
     padding: 12px 20px;
@@ -289,4 +288,62 @@ header {
     display: flex;
     justify-content: center;
     margin-top: 20px;
+}
+
+/* Recipe card formatting */
+.recipe-card {
+    display: flex;
+    align-items: flex-start; 
+    background-color: white;
+    border-radius: 15px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    width: 95%;
+    padding: 20px;
+    margin-bottom: 20px;
+    gap: 20px; 
+    box-sizing: border-box;
+}
+
+.recipe-card img {
+    width: 20%;
+    height: auto;
+    border-radius: 10px;
+    flex-shrink: 0;
+}
+
+.recipe-card .details {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.recipe-card h3 {
+    font-size: 1.5em;
+    color: var(--charcoal-color);
+    margin: 0 0 10px 0;
+    word-break: break-word;
+}
+
+.recipe-card .action-buttons {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    flex-shrink: 0;
+    width: 150px;
+}
+
+.recipe-card .action-buttons button {
+    padding: 8px 15px;
+    background-color: var(--green-color);
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-bottom: 8px;
+    transition: background-color 0.3s ease;
+}
+
+.recipe-card .action-buttons button:hover {
+    background-color: var(--dark-green-color);
 }
