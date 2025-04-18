@@ -24,7 +24,7 @@ function setHeader() {
             <ul class="profile-dropdown-content">
                 <li><a href="profile.html">My Profile</a></li>
                 <li><a href="meal_plan.html">Meal Plan</a></li>
-                <li><a href="recipes.html">Find Recipes</a></li>
+                <li><a href="find_recipes.html">Find Recipes</a></li>
                 <li><a href="grocery_list.html">Grocery List</a></li>
                 <li><a href="#" id="logout-link">Logout</a></li>
             </ul>

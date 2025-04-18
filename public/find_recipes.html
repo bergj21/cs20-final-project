@@ -6,7 +6,12 @@
     <title>Recipes</title>
     <link rel="stylesheet" href="styles.css" />
     <script src="header.js"></script>
+    <script src="apiHandler.js"></script>
     <style>
+        label { display: block; margin-top: 8px; }
+        input, select { width: 300px; padding: 5px; }
+        button { margin-top: 12px; padding: 8px 16px; }
+        pre { background: var(--off-white-color); padding: 10px; margin-top: 20px; }
     </style>
 </head>
 <body>
@@ -21,13 +26,28 @@
     </header>
 
     <main>
-        
+        <h1>Find a Recipe</h1>
+
+        <form id="preferenceForm">
+        </form>
+
+        <h2>Results</h2>
+        <pre id="results"></pre>
     </main>
 
     <script>
         // set up the page
         window.onload = function() {
             setHeader();
+            
+            getPreferencesForm("preferenceForm", async function(preferences, meal) 
+            {
+                const resultsEl = document.getElementById('results');
+                resultsEl.textContent = 'Loading...';
+
+                const result = await recipeSearch(preferences, meal);
+                resultsEl.textContent = JSON.stringify(result, null, 2);
+            });
         }
     </script>
 
