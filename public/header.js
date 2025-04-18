@@ -9,8 +9,6 @@ function setHeader() {
 
     menu.innerHTML = `
         <li><a href="index.html">Home</a></li>
-        <li><a href="meal_plan.html">Meal Plan</a></li>
-        <li><a href="recipes.html">Recipes</a></li>
         <li><a href="subscriptions.html">Subscriptions</a></li>
         <li><a href="contact.html">Contact Us</a></li>
         <li><a href="about.html">About Us</a></li>
@@ -25,9 +23,9 @@ function setHeader() {
             <button class="profile-dropbtn">Profile ▾</button>
             <ul class="profile-dropdown-content">
                 <li><a href="profile.html">My Profile</a></li>
-                <li><a href="preferences.html">Preferences</a></li>
+                <li><a href="meal_plan.html">Meal Plan</a></li>
+                <li><a href="recipes.html">Find Recipes</a></li>
                 <li><a href="grocery_list.html">Grocery List</a></li>
-                <li><a href="favorites.html">Favorite Recipes</a></li>
                 <li><a href="#" id="logout-link">Logout</a></li>
             </ul>
         `;
