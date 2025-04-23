@@ -1,5 +1,5 @@
 const express = require('express');
-const { connectToUsersCollection, disconnectDB } = require('./db_connect.js');
+const { connectToUsersCollection, disconnectDB } = require('./database.js');
 const routes = require('./routes.js');
 
 const app = express();

@@ -27,6 +27,18 @@
             overflow-y: auto;
             max-height: 80vh;
         }
+
+        .results-panel h2 {
+            border-bottom: 2px solid var(--green-color);
+        }
+
+        .instructions {
+            width: 80%;
+            margin: 0 auto;
+            color: var(--charcoal-color);
+            text-align: center;
+        }
+        /* TODO: Must make this page more responsive */
     </style>
 </head>
 <body>
@@ -42,6 +54,14 @@
 
     <main>
         <h1>Find a Recipe</h1>
+
+        <div class="instructions">
+            Get meals currated to your preferences today! Simply fill out the 
+            form below and submit to filter through our wide selection of 
+            recipes. You can even automatically populate the form by selecting 
+            "Apply Your Preferences." 
+        </div>
+
         <div class="form-results-wrapper">
             <div id="form-div"></div>
     
@@ -58,6 +78,11 @@
             setHeader();
             
             getPreferencesForm("form-div", displayRecipes);
+
+            // Wait a tick for the form to be inserted, then add custom elements
+            setTimeout(() => {
+                addUserPrefBtn();
+            }, 0);
         }
 
         async function displayRecipes(preferences, meal) 
@@ -73,7 +98,7 @@
             if (result && result.results && result.results.length > 0) {
                 // Show the number of results
                 const resultCount = document.createElement('p');
-                resultCount.textContent = `${result.number} Recipes Found`;
+                resultCount.textContent = `${result.totalResults} Recipes Found`;
                 resultsEl.appendChild(resultCount);
 
                 // Loop through each recipe and create a card
@@ -98,6 +123,53 @@
             } else {
                 resultsEl.textContent = 'No recipes found.';
             }
+        }
+
+        function addUserPrefBtn()
+        {
+            const form = document.querySelector(".preferenceForm");
+                if (!form) return;
+
+                const userPrefBtn = document.createElement("button");
+                userPrefBtn.type = "button";
+                userPrefBtn.className = "submit-btn";
+                userPrefBtn.style.marginLeft = "10px";
+                userPrefBtn.textContent = "Apply Your Preferences";
+
+                // Add it after the submit button
+                const submitBtn = form.querySelector(".submit-btn");
+                submitBtn.parentNode.appendChild(userPrefBtn);
+
+                // Add click handler
+                userPrefBtn.addEventListener("click", async () => {
+                    const userId = localStorage.userId;
+                    if (!userId) {
+                        alert("User ID not found. Please log in.");
+                        return;
+                    }
+
+                    try {
+                        const response = await fetch(`/get-user-preferences?userId=${userId}`);
+                        if (!response.ok) {
+                            alert("Could not load preferences.");
+                            return;
+                        }
+
+                        const prefs = await response.json();
+
+                        // Populate the form fields
+                        Object.entries(prefs).forEach(([key, value]) => {
+                            const input = form.querySelector(`[name="${key}"]`);
+                            if (input) input.value = value;
+                        });
+
+                        // // Submit the form programmatically
+                        // form.dispatchEvent(new Event("submit", { bubbles: true, cancelable: true }));
+                    } catch (err) {
+                        console.error("Failed to fetch user preferences:", err);
+                        alert("Server error while loading preferences.");
+                    }
+                });
         }
     </script>
 

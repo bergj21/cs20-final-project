@@ -6,6 +6,39 @@
     --charcoal-color: #333333;
 }
 
+h1, h2, h3 {
+    font-family: 'Rajdhani', sans-serif;
+    color: var(--charcoal-color);
+    padding-bottom: 10px;
+    letter-spacing: 1px;
+    transition: all 0.3s ease-in-out;
+}
+
+/* Page title */
+h1 {
+    font-size: 3.5em;
+    font-weight: bold;
+    color: var(--dark-green-color);
+    text-align: center;
+    text-shadow: 1px 1px 2px rgba(45, 106, 79, 0.2); /* soft green shadow */
+}
+
+/* Section heading */
+h2 {
+    font-size: 2.5em;
+    font-weight: bold;
+    border-bottom: 2px solid var(--green-color);
+    margin-bottom: 10px;
+}
+
+/* Subheading */
+h3 {
+    font-size: 1.5em;
+    font-weight: 500;
+    color: var(--charcoal-color);
+}
+
+
 /* General html and body style */
 html, body {
     height: 100%;
@@ -15,7 +48,7 @@ html, body {
 }
 
 body {
-    padding-top: 80px;
+    padding-top: 120px;
     display: flex;
     flex-direction: column;
     font-family: 'Roboto', sans-serif;
@@ -25,6 +58,8 @@ body {
 /* Ensures the main content expands and pushes the footer down */
 main {
     flex-grow: 1; 
+    width: 80%;
+    margin: 0 auto;
 }
 
 /* Footer style */

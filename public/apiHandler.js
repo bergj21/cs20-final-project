@@ -37,8 +37,6 @@ async function recipeSearch(preferences, meal)
         apiCall += `&${encodeURIComponent(key)}=${encodeURIComponent(adjustedPrefs[key])}`;
     }
 
-    console.log(apiCall);
-
     // Fetch the data from the API
     try {
         const response = await fetch(apiCall);

@@ -1,4 +1,4 @@
-const { MongoClient, ServerApiVersion } = require('mongodb');
+const { MongoClient, ServerApiVersion, ObjectId } = require('mongodb');
 
 const db_username = "meal_prep_buddy";
 const db_password = "Xbl6ZVWIwePsELZY";
@@ -36,7 +36,30 @@ async function disconnectDB() {
     }
 }
 
+
+async function getUserPreferences(req, res) {
+    const userId = req.query.userId;
+    try {
+        if (!usersCollection) {
+            await connectToUsersCollection();
+        }
+
+        const user = await usersCollection.findOne({ _id: new ObjectId(userId) });
+
+        if (!user) {
+            res.status(404).json({ error: "User not found" });
+        }
+
+        res.json(user.preferences);
+    } catch (err) {
+        console.error("Error retrieving user preferences:", err);
+        res.status(500).json({ error: "Server error" });
+    }
+}
+
+
 module.exports = {
     connectToUsersCollection,
-    disconnectDB
+    disconnectDB,
+    getUserPreferences
 };
