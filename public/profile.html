@@ -1,41 +1,278 @@
 <html lang="en">
-<head>
+  <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="keywords" content="fitness, meal prep, healthy, groceries, food, activity, lifestyle">
+    <meta
+      name="keywords"
+      content="fitness, meal prep, healthy, groceries, food, activity, lifestyle"
+    />
     <title>Profile</title>
     <link rel="stylesheet" href="styles.css" />
     <script src="header.js"></script>
     <style>
+      .profile-container {
+        max-width: 600px;
+        margin: auto;
+        background: white;
+        padding: 20px;
+        border-radius: 10px;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+      }
+      .profile-container h2 {
+        text-align: center;
+      }
+      .form-group {
+        margin-bottom: 15px;
+      }
+      .form-group label {
+        display: block;
+        margin-bottom: 5px;
+      }
+      .form-group input,
+      .form-group textarea {
+        width: 100%;
+        padding: 10px;
+        box-sizing: border-box;
+      }
+      .form-group textarea {
+        resize: vertical;
+      }
+      .button-group {
+        text-align: center;
+      }
+      button {
+        background-color: #007bff;
+        color: white;
+        padding: 10px 20px;
+        margin: 5px;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+      }
+      #cancelButton {
+        background-color: #6c757d;
+      }
     </style>
-</head>
-<body>
+  </head>
+  <body>
     <header>
-        <a href="index.html">
-            <img src="images/logo.jpg" alt="Logo" class="logo" />
-        </a>
-        <nav>
-            <button class="menu-toggle">☰</button>
-            <ul class="menu"></ul>
-        </nav>
+      <a href="index.html">
+        <img src="images/logo.jpg" alt="Logo" class="logo" />
+      </a>
+      <nav>
+        <button class="menu-toggle">☰</button>
+        <ul class="menu"></ul>
+      </nav>
     </header>
 
     <main>
-        <p>
-            <a href="preferences.html">Preferences</a>
-            <a href="favorites.html">Favorite Recipes</a>
-        </p>
+      <a href="preferences.html">Preferences</a>
+      <a href="favorites.html">Favorite Recipes</a>
+      <div class="profile-container">
+        <h2>User Profile</h2>
+        <form id="profileForm">
+          <div class="form-group">
+            <label for="email">Email</label>
+            <input type="email" id="email" disabled />
+          </div>
+          <div class="form-group">
+            <label for="name">Name</label>
+            <input type="text" id="name" disabled />
+          </div>
+          <div class="form-group">
+            <label for="password">Password</label>
+            <input type="password" id="password" disabled />
+          </div>
+          <h3>Preferences</h3>
+          <div class="form-group">
+            <label for="intolerances">Intolerances</label>
+            <input type="text" id="intolerances" disabled />
+          </div>
+          <div class="form-group">
+            <label for="cuisine">Preferred Cuisines</label>
+            <input type="text" id="cuisine" disabled />
+          </div>
+          <div class="form-group">
+            <label for="excludeIngredients">Exclude Ingredients</label>
+            <input type="text" id="excludeIngredients" disabled />
+          </div>
+          <div class="form-group">
+            <label for="minCalories">Min Calories</label>
+            <input type="number" id="minCalories" disabled />
+          </div>
+          <div class="form-group">
+            <label for="maxCalories">Max Calories</label>
+            <input type="number" id="maxCalories" disabled />
+          </div>
+          <div class="form-group">
+            <label for="minCarbs">Min Carbs (g)</label>
+            <input type="number" id="minCarbs" disabled />
+          </div>
+          <div class="form-group">
+            <label for="maxCarbs">Max Carbs (g)</label>
+            <input type="number" id="maxCarbs" disabled />
+          </div>
+          <div class="form-group">
+            <label for="maxFat">Max Fat (g)</label>
+            <input type="number" id="maxFat" disabled />
+          </div>
+          <div class="form-group">
+            <label for="minProtein">Min Protein (g)</label>
+            <input type="number" id="minProtein" disabled />
+          </div>
+          <div class="button-group">
+            <button type="button" id="editButton">Edit</button>
+            <button type="submit" id="saveButton" style="display: none">
+              Save Changes
+            </button>
+            <button type="button" id="cancelButton" style="display: none">
+              Cancel
+            </button>
+          </div>
+        </form>
+      </div>
     </main>
 
     <script>
-        // set up the page
-        window.onload = function() {
-            setHeader();
+      const form = document.getElementById('profileForm')
+      const editButton = document.getElementById('editButton')
+      const saveButton = document.getElementById('saveButton')
+      const cancelButton = document.getElementById('cancelButton')
+
+      function toggleFields(disabled) {
+        const inputs = form.querySelectorAll('input')
+        inputs.forEach((input) => (input.disabled = disabled))
+      }
+
+      let originalValues = {}
+
+      function storeOriginalValues() {
+        const inputs = form.querySelectorAll('input')
+        inputs.forEach((input) => {
+          originalValues[input.id] = input.value
+        })
+      }
+
+      function resetToOriginalValues() {
+        const inputs = form.querySelectorAll('input')
+        inputs.forEach((input) => {
+          if (originalValues[input.id] !== undefined) {
+            input.value = originalValues[input.id]
+          }
+        })
+      }
+
+      async function loadUserProfile() {
+        const userId = localStorage.userId
+        if (!userId) {
+          alert('User ID not found. Please log in.')
+          return
         }
+        try {
+          const response = await fetch(`/get-user?userId=${userId}`)
+          if (!response.ok) {
+            alert('Could not load user.')
+            return
+          }
+          const user = await response.json()
+          document.getElementById('email').value = user.email
+          document.getElementById('name').value = user.name
+          document.getElementById('password').value = user.password
+          document.getElementById('intolerances').value =
+            user.preferences.intolerances
+          document.getElementById('cuisine').value = user.preferences.cuisine
+          document.getElementById('excludeIngredients').value =
+            user.preferences.excludeIngredients
+          document.getElementById('minCalories').value =
+            user.preferences.minCalories
+          document.getElementById('maxCalories').value =
+            user.preferences.maxCalories
+          document.getElementById('minCarbs').value = user.preferences.minCarbs
+          document.getElementById('maxCarbs').value = user.preferences.maxCarbs
+          document.getElementById('maxFat').value = user.preferences.maxFat
+          document.getElementById('minProtein').value =
+            user.preferences.minProtein
+        } catch (err) {
+          console.error('Failed to load user profile:', err)
+        }
+      }
+
+      form.addEventListener('submit', function (e) {
+        e.preventDefault()
+        const profile = {
+          email: document.getElementById('email').value,
+          name: document.getElementById('name').value,
+          password: document.getElementById('password').value,
+          preferences: {
+            intolerances: document.getElementById('intolerances').value,
+            cuisine: document.getElementById('cuisine').value,
+            excludeIngredients:
+              document.getElementById('excludeIngredients').value,
+            minCalories: parseInt(document.getElementById('minCalories').value),
+            maxCalories: parseInt(document.getElementById('maxCalories').value),
+            minCarbs: parseInt(document.getElementById('minCarbs').value),
+            maxCarbs: parseInt(document.getElementById('maxCarbs').value),
+            maxFat: parseInt(document.getElementById('maxFat').value),
+            minProtein: parseInt(document.getElementById('minProtein').value),
+          },
+        }
+        console.log('Updated Profile:', profile)
+        alert('Profile saved successfully!')
+        toggleFields(true)
+        saveButton.style.display = 'none'
+        editButton.style.display = 'inline-block'
+      })
+
+      editButton.addEventListener('click', () => {
+        toggleFields(false)
+        storeOriginalValues()
+        editButton.style.display = 'none'
+        saveButton.style.display = 'inline-block'
+        cancelButton.style.display = 'inline-block'
+      })
+
+      cancelButton.addEventListener('click', () => {
+        resetToOriginalValues()
+        toggleFields(true)
+        saveButton.style.display = 'none'
+        cancelButton.style.display = 'none'
+        editButton.style.display = 'inline-block'
+      })
+
+      form.addEventListener('submit', function (e) {
+        e.preventDefault()
+        const profile = {
+          email: document.getElementById('email').value,
+          name: document.getElementById('name').value,
+          password: document.getElementById('password').value,
+          preferences: {
+            intolerances: document.getElementById('intolerances').value,
+            cuisine: document.getElementById('cuisine').value,
+            excludeIngredients:
+              document.getElementById('excludeIngredients').value,
+            minCalories: parseInt(document.getElementById('minCalories').value),
+            maxCalories: parseInt(document.getElementById('maxCalories').value),
+            minCarbs: parseInt(document.getElementById('minCarbs').value),
+            maxCarbs: parseInt(document.getElementById('maxCarbs').value),
+            maxFat: parseInt(document.getElementById('maxFat').value),
+            minProtein: parseInt(document.getElementById('minProtein').value),
+          },
+        }
+
+        toggleFields(true)
+        saveButton.style.display = 'none'
+        cancelButton.style.display = 'none'
+        editButton.style.display = 'inline-block'
+      })
+
+      window.onload = function () {
+        setHeader()
+        loadUserProfile()
+      }
     </script>
 
     <footer>
-        <p>&copy; 2025 Meal Prep Buddy. All Rights Reserved.</p>
+      <p>&copy; 2025 Meal Prep Buddy. All Rights Reserved.</p>
     </footer>
-</body>
+  </body>
 </html>
