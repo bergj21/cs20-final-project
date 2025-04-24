@@ -1,6 +1,8 @@
 const express = require('express')
 const router = express.Router()
-const { loginUser } = require('./authorize.js')
+// routes.js
+const { loginUser, signupUser } = require('./authorize.js');
+
 const {
   getUserPreferences,
   getUser,
@@ -10,6 +12,7 @@ const {
 // POST /login
 router.post('/login', loginUser)
 
+router.post('/signup', signupUser);
 // retrieves the user preferences
 router.get('/get-user-preferences', getUserPreferences)
 
