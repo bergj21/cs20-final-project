@@ -94,12 +94,14 @@ async function recipeSearch(preferences, meal) {
   })
 
   // Create the API URL call
-  let apiCall = `${baseApi}/recipes/complexSearch?apiKey=${apiKey}`
+  let apiCall = `${baseApi}/recipes/complexSearch?apiKey=${apiKey}&addRecipeInformation=true`
   for (let key in adjustedPrefs) {
     apiCall += `&${encodeURIComponent(key)}=${encodeURIComponent(
       adjustedPrefs[key]
     )}`
   }
+
+  console.log(apiCall);
 
   // Fetch the data from the API
   try {
@@ -201,4 +203,39 @@ function getPreferencesForm(formId, executeFct) {
 
     executeFct(preferences, meal)
   })
+}
+
+async function createRecipeCard(recipe)
+{
+    const recipeCard = document.createElement('div');
+    recipeCard.classList.add('recipe-card');
+
+    recipeCard.innerHTML = `
+        <img src="${recipe.image}" alt="${recipe.title}">
+        <div class="details">
+            <h3>${recipe.title}</h3>
+        </div>
+        <div class="action-buttons">
+            <button class="see-more">See More</button>
+            <button class="favorite">Add to Favorites</button>
+            <button class="add_to_plan">Add to Meal Plan</button>
+        </div>
+    `;
+    // Attach the redirect to the "See More" button
+    const seeMoreBtn = recipeCard.querySelector('.see-more');
+    seeMoreBtn.addEventListener('click', () => {
+        window.open(recipe.sourceUrl, '_blank');
+    });
+
+    const favBtn = recipeCard.querySelector('.favorite');
+    
+    const response = await fetch(`/check-favorite?id=${recipe.id}`);
+    if (!response.ok) {
+        alert("Could not load preferences.");
+        return;
+    }
+
+    const prefs = await response.json();
+
+    return recipeCard;
 }
