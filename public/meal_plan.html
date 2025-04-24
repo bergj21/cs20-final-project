@@ -76,6 +76,21 @@
       #generateButton:hover {
         background-color: #218838;
       }
+
+      .day-button {
+        background-color: #007bff;
+        color: white;
+        border: none;
+        padding: 10px 15px;
+        margin: 5px;
+        border-radius: 5px;
+        cursor: pointer;
+        font-size: 14px;
+      }
+
+      .day-button:hover {
+        background-color: #0056b3;
+      }
     </style>
   </head>
   <body>
@@ -90,22 +105,30 @@
     </header>
 
     <main>
-      <button id="generateButton">Generate Daily Meal Plan</button>
+      <div id="dayButtons" style="margin-top: 20px; text-align: center">
+        <button class="day-button" data-day="monday">Monday</button>
+        <button class="day-button" data-day="tuesday">Tuesday</button>
+        <button class="day-button" data-day="wednesday">Wednesday</button>
+        <button class="day-button" data-day="thursday">Thursday</button>
+        <button class="day-button" data-day="friday">Friday</button>
+        <button class="day-button" data-day="saturday">Saturday</button>
+        <button class="day-button" data-day="sunday">Sunday</button>
+      </div>
       <div class="container">
         <h1>Today's Meal Plan</h1>
+        <div id="mealPlanContent"></div>
       </div>
+      <button id="generateButton">Generate Daily Meal Plan</button>
     </main>
 
     <script>
-      // set up the page
       const generateButton = document.getElementById('generateButton')
-      generateButton.addEventListener('click', async () => {
-        const userId = localStorage.userId
-        if (!userId) {
-          alert('User ID not found. Please log in.')
-          return
-        }
+      const dayButtons = document.getElementById('dayButtons')
+      const mealPlanContent = document.getElementById('mealPlanContent')
+      let userId = localStorage.userId
+      let weeklyPlan = null
 
+      generateButton.addEventListener('click', async () => {
         try {
           const response = await fetch(`/get-user?userId=${userId}`)
           if (!response.ok) {
@@ -114,45 +137,125 @@
           }
 
           const user = await response.json()
+          weeklyPlan = await generateMealPlan(user.preferences, 'week')
 
-          const mealPromises = user.plans.map((id) => getMealById(id))
-          const plans = await Promise.all(mealPromises)
+          try {
+            await submitWeeklyMealPlan(weeklyPlan, userId)
+          } catch (err) {
+            console.error('Failed to save weekly meal plan:', err)
+          }
 
-          //   console.log(plans)
-
-          //   const plan = await generateMealPlan(user.preferences)
-
-          const container = document.querySelector('.container')
-          container.innerHTML = `<h1>Today's Meal Plan</h1>`
-
-          plans.forEach((meal) => {
-            console.log(meal)
-            container.innerHTML += `
-        <div class="meal">
-          <img src="https://spoonacular.com/recipeImages/${meal.id}-312x231.${meal.imageType}" alt="${meal.title}" />
-          <div class="meal-info">
-            <h3>${meal.title}</h3>
-            <p>Ready in ${meal.readyInMinutes} minutes | Servings: ${meal.servings}</p>
-            <a href="${meal.sourceUrl}" target="_blank">View Recipe</a>
-          </div>
-        </div>`
-          })
-
-          //       container.innerHTML += `
-          //   <div class="nutrients">
-          //     <div class="nutrient"><p>Calories</p><p>${plan.nutrients.calories}</p></div>
-          //     <div class="nutrient"><p>Carbs (g)</p><p>${plan.nutrients.carbohydrates}</p></div>
-          //     <div class="nutrient"><p>Fat (g)</p><p>${plan.nutrients.fat}</p></div>
-          //     <div class="nutrient"><p>Protein (g)</p><p>${plan.nutrients.protein}</p></div>
-          //   </div>`
+          alert('Weekly meal plan generated! Click a day to view its plan.')
         } catch (err) {
           console.error('Failed to fetch user preferences:', err)
           alert('Server error while loading preferences.')
         }
       })
 
-      window.onload = function () {
+      document.querySelectorAll('.day-button').forEach((button) => {
+        button.addEventListener('click', async () => {
+          const day = button.getAttribute('data-day')
+          if (!weeklyPlan || !weeklyPlan[day]) {
+            mealPlanContent.innerHTML = `<p>No meal plan available for ${day}.</p>`
+            return
+          }
+
+          const dayPlan = weeklyPlan[day]
+          console.log(dayPlan)
+          const nutrients = dayPlan.nutrients || {}
+
+          const mealPromises = Object.entries(dayPlan)
+            .filter(([mealType, mealId]) => mealType !== 'nutrients' && mealId) // Exclude 'nutrients' and invalid IDs
+            .map(async ([mealType, mealId]) => {
+              try {
+                const meal = await getMealById(mealId)
+                if (meal) {
+                  return { mealType, ...meal }
+                }
+              } catch (err) {
+                console.error(`Failed to fetch meal for ${mealType}:`, err)
+                return null
+              }
+            })
+
+          const meals = (await Promise.all(mealPromises)).filter(Boolean)
+
+          mealPlanContent.innerHTML = `
+            <h2>${day.charAt(0).toUpperCase() + day.slice(1)}'s Meal Plan</h2>
+            ${meals
+              .map(
+                (meal) => `
+              <div class="meal">
+                <img src="https://spoonacular.com/recipeImages/${meal.id}-312x231.${meal.imageType}" alt="${meal.title}" />
+                <div class="meal-info">
+                  <h3>${meal.title}</h3>
+                  <p>Ready in ${meal.readyInMinutes} minutes | Servings: ${meal.servings}</p>
+                  <a href="${meal.sourceUrl}" target="_blank">View Recipe</a>
+                </div>
+              </div>`
+              )
+              .join('')}
+            <div class="nutrients">
+              <div class="nutrient"><p>Calories</p><p>${
+                nutrients.calories || 0
+              }</p></div>
+              <div class="nutrient"><p>Carbs (g)</p><p>${
+                nutrients.carbohydrates || 0
+              }</p></div>
+              <div class="nutrient"><p>Fat (g)</p><p>${
+                nutrients.fat || 0
+              }</p></div>
+              <div class="nutrient"><p>Protein (g)</p><p>${
+                nutrients.protein || 0
+              }</p></div>
+            </div>
+          `
+        })
+      })
+
+      async function submitWeeklyMealPlan(weeklyPlan, userId) {
+        const res = await fetch('/save-weekly-plan', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ userId, weeklyPlan }),
+        })
+
+        const data = await res.json()
+        console.log('Saved:', data)
+      }
+
+      async function getWeeklyMealPlan(userId) {
+        const response = await fetch(`/get-user?userId=${userId}`)
+        if (!response.ok) {
+          alert('Could not load preferences.')
+          return
+        }
+
+        const user = await response.json()
+        return user.weeklyPlan
+      }
+
+      window.onload = async function () {
         setHeader()
+
+        userId = localStorage.userId
+
+        if (!userId) {
+          alert('User ID not found. Please log in.')
+          return
+        }
+
+        try {
+          weeklyPlan = await getWeeklyMealPlan(userId)
+
+          if (weeklyPlan) {
+            console.log('Weekly meal plan loaded:', weeklyPlan)
+          } else {
+            console.log('No weekly meal plan found for the user.')
+          }
+        } catch (err) {
+          console.error('Failed to load weekly meal plan:', err)
+        }
       }
     </script>
 
