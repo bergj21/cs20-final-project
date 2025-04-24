@@ -1,38 +1,163 @@
 <html lang="en">
-<head>
+  <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="keywords" content="fitness, meal prep, healthy, groceries, food, activity, lifestyle">
+    <meta
+      name="keywords"
+      content="fitness, meal prep, healthy, groceries, food, activity, lifestyle"
+    />
     <title>Meal Plan</title>
     <link rel="stylesheet" href="styles.css" />
     <script src="header.js"></script>
+    <script src="apiHandler.js"></script>
     <style>
+      .container {
+        max-width: 900px;
+        margin: auto;
+        background: white;
+        padding: 30px;
+        border-radius: 10px;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+      }
+      h1,
+      h2 {
+        text-align: center;
+        margin-bottom: 20px;
+      }
+      .meal {
+        display: flex;
+        align-items: center;
+        margin-bottom: 20px;
+        border-bottom: 1px solid #ddd;
+        padding-bottom: 15px;
+      }
+      .meal img {
+        width: 120px;
+        height: auto;
+        border-radius: 8px;
+        margin-right: 20px;
+      }
+      .meal-info {
+        flex-grow: 1;
+      }
+      .meal-info h3 {
+        margin: 0 0 10px;
+      }
+      .meal-info a {
+        color: #007bff;
+        text-decoration: none;
+      }
+      .nutrients {
+        margin-top: 30px;
+        padding-top: 15px;
+        border-top: 2px solid #ccc;
+        display: flex;
+        justify-content: space-around;
+        font-weight: bold;
+      }
+      .nutrient {
+        text-align: center;
+      }
+
+      #generateButton {
+        background-color: #28a745;
+        color: white;
+        border: none;
+        padding: 12px 20px;
+        border-radius: 6px;
+        font-size: 16px;
+        cursor: pointer;
+        margin: 20px auto;
+        display: block;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        transition: background-color 0.3s ease;
+      }
+
+      #generateButton:hover {
+        background-color: #218838;
+      }
     </style>
-</head>
-<body>
+  </head>
+  <body>
     <header>
-        <a href="index.html">
-            <img src="images/logo.jpg" alt="Logo" class="logo" />
-        </a>
-        <nav>
-            <button class="menu-toggle">☰</button>
-            <ul class="menu"></ul>
-        </nav>
+      <a href="index.html">
+        <img src="images/logo.jpg" alt="Logo" class="logo" />
+      </a>
+      <nav>
+        <button class="menu-toggle">☰</button>
+        <ul class="menu"></ul>
+      </nav>
     </header>
 
     <main>
-        
+      <button id="generateButton">Generate Daily Meal Plan</button>
+      <div class="container">
+        <h1>Today's Meal Plan</h1>
+      </div>
     </main>
 
     <script>
-        // set up the page
-        window.onload = function() {
-            setHeader();
+      // set up the page
+      const generateButton = document.getElementById('generateButton')
+      generateButton.addEventListener('click', async () => {
+        const userId = localStorage.userId
+        if (!userId) {
+          alert('User ID not found. Please log in.')
+          return
         }
+
+        try {
+          const response = await fetch(`/get-user?userId=${userId}`)
+          if (!response.ok) {
+            alert('Could not load preferences.')
+            return
+          }
+
+          const user = await response.json()
+
+          const mealPromises = user.plans.map((id) => getMealById(id))
+          const plans = await Promise.all(mealPromises)
+
+          //   console.log(plans)
+
+          //   const plan = await generateMealPlan(user.preferences)
+
+          const container = document.querySelector('.container')
+          container.innerHTML = `<h1>Today's Meal Plan</h1>`
+
+          plans.forEach((meal) => {
+            console.log(meal)
+            container.innerHTML += `
+        <div class="meal">
+          <img src="https://spoonacular.com/recipeImages/${meal.id}-312x231.${meal.imageType}" alt="${meal.title}" />
+          <div class="meal-info">
+            <h3>${meal.title}</h3>
+            <p>Ready in ${meal.readyInMinutes} minutes | Servings: ${meal.servings}</p>
+            <a href="${meal.sourceUrl}" target="_blank">View Recipe</a>
+          </div>
+        </div>`
+          })
+
+          //       container.innerHTML += `
+          //   <div class="nutrients">
+          //     <div class="nutrient"><p>Calories</p><p>${plan.nutrients.calories}</p></div>
+          //     <div class="nutrient"><p>Carbs (g)</p><p>${plan.nutrients.carbohydrates}</p></div>
+          //     <div class="nutrient"><p>Fat (g)</p><p>${plan.nutrients.fat}</p></div>
+          //     <div class="nutrient"><p>Protein (g)</p><p>${plan.nutrients.protein}</p></div>
+          //   </div>`
+        } catch (err) {
+          console.error('Failed to fetch user preferences:', err)
+          alert('Server error while loading preferences.')
+        }
+      })
+
+      window.onload = function () {
+        setHeader()
+      }
     </script>
 
     <footer>
-        <p>&copy; 2025 Meal Prep Buddy. All Rights Reserved.</p>
+      <p>&copy; 2025 Meal Prep Buddy. All Rights Reserved.</p>
     </footer>
-</body>
+  </body>
 </html>

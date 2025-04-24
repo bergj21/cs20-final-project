@@ -1,59 +1,122 @@
-const apiKey = "e075ef7a95604de8b1003d3e56d3b078";
-const baseApi = "https://api.spoonacular.com";
+const apiKey = 'e075ef7a95604de8b1003d3e56d3b078'
+const baseApi = 'https://api.spoonacular.com'
 
 const mealRatios = {
-    breakfast: 0.25,
-    lunch: 0.35,
-    dinner: 0.4
-};
-
-const stringPreferences = ['cuisine', 'excludeIngredients', 'intolerance'];
-const numericPreferences = ['minProtein', 'maxProtein', 'minCalories', 
-                            'maxCalories', 'minCarbs', 'maxCarbs',
-                            'minFat', 'maxFat']
-
-async function recipeSearch(preferences, meal)
-{
-    // Adjust the preferences for the meal
-    const ratio = mealRatios[meal.toLowerCase()] || 0.33;
-    const adjustedPrefs = {};
-
-    stringPreferences.forEach(key => {
-        if (preferences[key]) {
-            adjustedPrefs[key] = preferences[key];
-        }
-    });
-
-    numericPreferences.forEach(key => {
-        if (typeof preferences[key] === 'number') {
-          adjustedPrefs[key] = Math.round(preferences[key] * ratio);
-        }
-    });
-
-    // Create the API URL call
-    let apiCall = `${baseApi}/recipes/complexSearch?apiKey=${apiKey}`;
-    for (let key in adjustedPrefs)
-    {
-        apiCall += `&${encodeURIComponent(key)}=${encodeURIComponent(adjustedPrefs[key])}`;
-    }
-
-    // Fetch the data from the API
-    try {
-        const response = await fetch(apiCall);
-        const data = await response.json();
-    
-        return data;
-    } catch (error) {
-        console.error('API call failed:', error);
-        return null;
-    }
+  breakfast: 0.25,
+  lunch: 0.35,
+  dinner: 0.4,
 }
 
-function getPreferencesForm(formId, executeFct)
-{
-    let preferencesForm = document.getElementById(formId);
+const stringPreferences = [
+  'diet',
+  'cuisine',
+  'excludeIngredients',
+  'intolerance',
+]
+const numericPreferences = [
+  'minProtein',
+  'maxProtein',
+  'minCalories',
+  'maxCalories',
+  'minCarbs',
+  'maxCarbs',
+  'minFat',
+  'maxFat',
+]
 
-    preferencesForm.innerHTML = `
+// in progress
+async function connectUser(user) {
+  let apiCall = `${baseApi}/users/connect?apiKey=${apiKey}`
+  try {
+    const response = await fetch(apiCall)
+    const data = await response.json()
+
+    return data
+  } catch (error) {
+    console.error('API call failed:', error)
+    return null
+  }
+}
+
+async function generateMealPlan(preferences) {
+  let apiCall = `${baseApi}//mealplanner/generate?apiKey=${apiKey}&timeFrame=day`
+  apiCall += `&${encodeURIComponent('diet')}=${encodeURIComponent(
+    preferences['diet']
+  )}`
+  target = (preferences['minCalories'] + preferences['maxCalories']) / 2
+  apiCall += `&${encodeURIComponent('targetCalories')}=${encodeURIComponent(
+    target
+  )}`
+  apiCall += `&${encodeURIComponent('intolerances')}=${encodeURIComponent(
+    preferences['intolerances']
+  )}`
+
+  try {
+    const response = await fetch(apiCall)
+    const data = await response.json()
+
+    return data
+  } catch (error) {
+    console.error('API call failed:', error)
+    return null
+  }
+}
+
+async function getMealById(id) {
+  let apiCall = `${baseApi}/recipes/${id}/information?apiKey=${apiKey}`
+
+  try {
+    const response = await fetch(apiCall)
+    const recipe = await response.json()
+
+    return recipe
+  } catch (error) {
+    console.error('API call failed:', error)
+    return null
+  }
+}
+
+async function recipeSearch(preferences, meal) {
+  // Adjust the preferences for the meal
+  const ratio = mealRatios[meal.toLowerCase()] || 0.33
+  const adjustedPrefs = {}
+
+  stringPreferences.forEach((key) => {
+    if (preferences[key]) {
+      adjustedPrefs[key] = preferences[key]
+    }
+  })
+
+  numericPreferences.forEach((key) => {
+    if (typeof preferences[key] === 'number') {
+      adjustedPrefs[key] = Math.round(preferences[key] * ratio)
+    }
+  })
+
+  // Create the API URL call
+  let apiCall = `${baseApi}/recipes/complexSearch?apiKey=${apiKey}`
+  for (let key in adjustedPrefs) {
+    apiCall += `&${encodeURIComponent(key)}=${encodeURIComponent(
+      adjustedPrefs[key]
+    )}`
+  }
+
+  // Fetch the data from the API
+  try {
+    const response = await fetch(apiCall)
+    const data = await response.json()
+
+    return data
+  } catch (error) {
+    console.error('API call failed:', error)
+    return null
+  }
+}
+
+function getPreferencesForm(formId, executeFct) {
+  let preferencesForm = document.getElementById(formId)
+
+  preferencesForm.innerHTML = `
         <form class="preferenceForm">
             <h2>General Meal Preferences</h2>
 
@@ -116,27 +179,26 @@ function getPreferencesForm(formId, executeFct)
                 <button type="submit" class="submit-btn">Search Recipes</button>
             </div>
         </form>
-    `;
+    `
 
+  preferencesForm.addEventListener('submit', async function (e) {
+    e.preventDefault()
 
-    preferencesForm.addEventListener('submit', async function(e) {
-        e.preventDefault();
+    const form = e.target
+    const formData = new FormData(form)
+    const meal = formData.get('meal')
+    const preferences = {}
 
-        const form = e.target;
-        const formData = new FormData(form);
-        const meal = formData.get('meal');
-        const preferences = {};
+    stringPreferences.forEach((key) => {
+      const value = formData.get(key)
+      if (value) preferences[key] = value
+    })
 
-        stringPreferences.forEach(key => {
-            const value = formData.get(key);
-            if (value) preferences[key] = value;
-        });
+    numericPreferences.forEach((key) => {
+      const value = parseFloat(formData.get(key))
+      if (!isNaN(value)) preferences[key] = value
+    })
 
-        numericPreferences.forEach(key => {
-            const value = parseFloat(formData.get(key));
-            if (!isNaN(value)) preferences[key] = value;
-        });
-
-        executeFct(preferences, meal);
-    });    
+    executeFct(preferences, meal)
+  })
 }
