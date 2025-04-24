@@ -1,4 +1,4 @@
-const apiKey = 'e075ef7a95604de8b1003d3e56d3b078'
+const apiKey = '5fffdd1ef2284ee7b1b869e03538f404'
 const baseApi = 'https://api.spoonacular.com'
 
 const mealRatios = {
@@ -38,8 +38,8 @@ async function connectUser(user) {
   }
 }
 
-async function generateMealPlan(preferences) {
-  let apiCall = `${baseApi}//mealplanner/generate?apiKey=${apiKey}&timeFrame=day`
+async function generateMealPlan(preferences, timeFrame) {
+  let apiCall = `${baseApi}//mealplanner/generate?apiKey=${apiKey}&timeFrame=${timeFrame}`
   apiCall += `&${encodeURIComponent('diet')}=${encodeURIComponent(
     preferences['diet']
   )}`
