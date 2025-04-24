@@ -205,8 +205,7 @@ function getPreferencesForm(formId, executeFct) {
   })
 }
 
-async function createRecipeCard(recipe)
-{
+async function createRecipeCard(recipe, addMealPlan) {
     const recipeCard = document.createElement('div');
     recipeCard.classList.add('recipe-card');
 
@@ -218,24 +217,107 @@ async function createRecipeCard(recipe)
         <div class="action-buttons">
             <button class="see-more">See More</button>
             <button class="favorite">Add to Favorites</button>
-            <button class="add_to_plan">Add to Meal Plan</button>
         </div>
     `;
-    // Attach the redirect to the "See More" button
+
+    // Add "Add to Meal Plan" button conditionally
+    if (addMealPlan) addMealPlanBtn(recipeCard, recipe);
+
+    // "See More" click
     const seeMoreBtn = recipeCard.querySelector('.see-more');
     seeMoreBtn.addEventListener('click', () => {
         window.open(recipe.sourceUrl, '_blank');
     });
 
+    // Favorite button logic
     const favBtn = recipeCard.querySelector('.favorite');
-    
-    const response = await fetch(`/check-favorite?id=${recipe.id}`);
-    if (!response.ok) {
+
+    try {
+        const response = await fetch('/check-favorite', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                recipeId: recipe.id,
+                userId: localStorage.userId
+            })
+        });
+
+        if (!response.ok) throw new Error("Could not load preferences.");
+
+        const result = await response.json();
+        favBtn.textContent = result.isFavorite ? 'Remove from Favorites' : 'Add to Favorites';
+
+        favBtn.addEventListener('click', async () => {
+            try {
+                const changeResponse = await fetch('/change-favorite', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        recipeId: recipe.id,
+                        userId: localStorage.userId
+                    })
+                });
+
+                if (!changeResponse.ok) throw new Error("Failed to update favorites.");
+
+                const changeResult = await changeResponse.json();
+                favBtn.textContent = changeResult.isFavorite ? 'Remove from Favorites' : 'Add to Favorites';
+
+            } catch (err) {
+                console.error(err);
+                alert("Could not update favorites.");
+            }
+        });
+
+    } catch (err) {
+        console.error(err);
         alert("Could not load preferences.");
-        return;
     }
 
-    const prefs = await response.json();
-
     return recipeCard;
+}
+
+function addMealPlanBtn(recipeCard, recipe) {
+    const actionButtons = recipeCard.querySelector('.action-buttons');
+    const mealPlanBtn = document.createElement('button');
+    mealPlanBtn.classList.add('add_to_plan');
+    mealPlanBtn.textContent = 'Add to Meal Plan';
+
+    mealPlanBtn.addEventListener('click', async () => {
+        const day = prompt("Which day of the week would you like to add this meal to?\n(Monday, Tuesday, etc.)");
+        if (!day || !['monday','tuesday','wednesday','thursday','friday','saturday','sunday'].includes(day.toLowerCase())) {
+            alert("Please enter a valid day of the week.");
+            return;
+        }
+
+        const mealType = prompt("Which meal would you like to replace?\n(Breakfast, Lunch, or Dinner)");
+        if (!mealType || !['breakfast','lunch','dinner'].includes(mealType.toLowerCase())) {
+            alert("Please enter a valid meal type.");
+            return;
+        }
+
+        try {
+            const response = await fetch('/swap-meal', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    recipeId: recipe.id,
+                    userId: localStorage.userId,
+                    day: day.toLowerCase(),
+                    mealType: mealType.toLowerCase()
+                })
+            });
+
+            if (!response.ok) throw new Error("Failed to update meal plan.");
+
+            const result = await response.json();
+            alert(`Meal successfully added to your ${mealType} on ${day}!`);
+
+        } catch (err) {
+            console.error(err);
+            alert("Could not update meal plan.");
+        }
+    });
+
+    actionButtons.appendChild(mealPlanBtn);
 }

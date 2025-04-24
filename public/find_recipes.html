@@ -103,7 +103,7 @@
 
                 // Loop through each recipe and create a card
                 for (const recipe of result.results) {
-                    const recipeCard = await createRecipeCard(recipe);
+                    const recipeCard = await createRecipeCard(recipe, true);
                     resultsEl.appendChild(recipeCard);
                 }
             } else {
