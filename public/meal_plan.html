@@ -127,6 +127,7 @@
       const mealPlanContent = document.getElementById('mealPlanContent')
       let userId = localStorage.userId
       let weeklyPlan = null
+      let weeklyPlanRecipes = null
 
       generateButton.addEventListener('click', async () => {
         try {
@@ -154,64 +155,53 @@
 
       document.querySelectorAll('.day-button').forEach((button) => {
         button.addEventListener('click', async () => {
-          const day = button.getAttribute('data-day')
-          if (!weeklyPlan || !weeklyPlan[day]) {
-            mealPlanContent.innerHTML = `<p>No meal plan available for ${day}.</p>`
-            return
-          }
+            const day = button.getAttribute('data-day');
+            if (!weeklyPlan || !weeklyPlan[day]) {
+                mealPlanContent.innerHTML = `<p>No meal plan available for ${day}.</p>`;
+                return;
+            }
 
-          const dayPlan = weeklyPlan[day]
-          console.log(dayPlan)
-          const nutrients = dayPlan.nutrients || {}
+            const dayPlan = weeklyPlan[day];
+            console.log(dayPlan);
+            const nutrients = dayPlan.nutrients || {};
 
-          const mealPromises = Object.entries(dayPlan)
-            .filter(([mealType, mealId]) => mealType !== 'nutrients' && mealId) // Exclude 'nutrients' and invalid IDs
-            .map(async ([mealType, mealId]) => {
-              try {
-                const meal = await getMealById(mealId)
-                if (meal) {
-                  return { mealType, ...meal }
-                }
-              } catch (err) {
-                console.error(`Failed to fetch meal for ${mealType}:`, err)
-                return null
-              }
-            })
+            const mealPromises = Object.entries(dayPlan)
+                .filter(([mealType, mealId]) => mealType !== 'nutrients' && mealId)
+                .map(async ([mealType, mealId]) => {
+                    try {
+                        const meal = await getMealById(mealId);
+                        if (meal) {
+                            return { mealType, ...meal };
+                        }
+                    } catch (err) {
+                        console.error(`Failed to fetch meal for ${mealType}:`, err);
+                        return null;
+                    }
+                });
 
-          const meals = (await Promise.all(mealPromises)).filter(Boolean)
+            const meals = (await Promise.all(mealPromises)).filter(Boolean);
 
-          mealPlanContent.innerHTML = `
-            <h2>${day.charAt(0).toUpperCase() + day.slice(1)}'s Meal Plan</h2>
-            ${meals
-              .map(
-                (meal) => `
-              <div class="meal">
-                <img src="https://spoonacular.com/recipeImages/${meal.id}-312x231.${meal.imageType}" alt="${meal.title}" />
-                <div class="meal-info">
-                  <h3>${meal.title}</h3>
-                  <p>Ready in ${meal.readyInMinutes} minutes | Servings: ${meal.servings}</p>
-                  <a href="${meal.sourceUrl}" target="_blank">View Recipe</a>
+            // Clear and reset the meal plan content
+            mealPlanContent.innerHTML = `
+                <h2>${day.charAt(0).toUpperCase() + day.slice(1)}'s Meal Plan</h2>
+                <div id="meal-cards" style="display: flex; flex-wrap: wrap; gap: 20px;"></div>
+                <div class="nutrients">
+                <div class="nutrient"><p>Calories</p><p>${nutrients.calories || 0}</p></div>
+                <div class="nutrient"><p>Carbs (g)</p><p>${nutrients.carbohydrates || 0}</p></div>
+                <div class="nutrient"><p>Fat (g)</p><p>${nutrients.fat || 0}</p></div>
+                <div class="nutrient"><p>Protein (g)</p><p>${nutrients.protein || 0}</p></div>
                 </div>
-              </div>`
-              )
-              .join('')}
-            <div class="nutrients">
-              <div class="nutrient"><p>Calories</p><p>${
-                nutrients.calories || 0
-              }</p></div>
-              <div class="nutrient"><p>Carbs (g)</p><p>${
-                nutrients.carbohydrates || 0
-              }</p></div>
-              <div class="nutrient"><p>Fat (g)</p><p>${
-                nutrients.fat || 0
-              }</p></div>
-              <div class="nutrient"><p>Protein (g)</p><p>${
-                nutrients.protein || 0
-              }</p></div>
-            </div>
-          `
-        })
-      })
+            `;
+
+            // Now dynamically add each meal using createRecipeCard
+            const mealCardsContainer = document.getElementById('meal-cards');
+
+            for (const meal of meals) {
+                const recipeCard = await createRecipeCard(meal, false); 
+                mealCardsContainer.appendChild(recipeCard);
+            }
+        });
+      });
 
       async function submitWeeklyMealPlan(weeklyPlan, userId) {
         const res = await fetch('/save-weekly-plan', {
