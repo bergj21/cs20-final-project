@@ -1,4 +1,5 @@
-const apiKey = '5fffdd1ef2284ee7b1b869e03538f404'
+// const apiKey = '5fffdd1ef2284ee7b1b869e03538f404'
+const apiKey = 'e075ef7a95604de8b1003d3e56d3b078'
 const baseApi = 'https://api.spoonacular.com'
 
 const mealRatios = {
@@ -52,6 +53,7 @@ async function generateMealPlan(preferences, timeFrame) {
   )}`
 
   try {
+    console.log(apiCall)
     const response = await fetch(apiCall)
     const data = await response.json()
 
@@ -62,18 +64,70 @@ async function generateMealPlan(preferences, timeFrame) {
   }
 }
 
-async function getMealById(id) {
-  let apiCall = `${baseApi}/recipes/${id}/information?apiKey=${apiKey}`
+async function getRecipesByIds(weeklyPlan) {
+    const ids = Object.values(weeklyPlan).flatMap(day =>
+        Object.values(day)
+    );
 
-  try {
-    const response = await fetch(apiCall)
-    const recipe = await response.json()
+    const apiCall = `${baseApi}/recipes/informationBulk?apiKey=${apiKey}&ids=${ids.join(',')}&includeNutrition=true`;
 
-    return recipe
-  } catch (error) {
-    console.error('API call failed:', error)
-    return null
-  }
+    try {
+        const response = await fetch(apiCall);
+        const recipes = await response.json(); // recipes is a 21-element array
+
+        // Map recipe IDs to recipe objects
+        const recipeMap = {};
+        for (const recipe of recipes) {
+            recipeMap[recipe.id] = recipe;
+        }
+
+        // Rebuild the weekly plan
+        const structuredPlan = {};
+
+        for (const [day, meals] of Object.entries(weeklyPlan)) {
+            structuredPlan[day] = { meals: [] }; // Initialize meals array for this day
+
+            // Store the meals into the meals array
+            for (const mealType of ['breakfast', 'lunch', 'dinner']) {
+                const mealId = meals[mealType];
+                const recipe = recipeMap[mealId] || null;
+                structuredPlan[day].meals.push(recipe);
+            }
+
+            // Now calculate nutrients
+            let totalCalories = 0;
+            let totalCarbs = 0;
+            let totalFat = 0;
+            let totalProtein = 0;
+
+            for (const recipe of structuredPlan[day].meals) {
+                if (recipe && recipe.nutrition && recipe.nutrition.nutrients) {
+                    for (const nutrient of recipe.nutrition.nutrients) {
+                        const name = nutrient.name.toLowerCase();
+                        const amount = nutrient.amount;
+
+                        if (name.includes('calories')) totalCalories += amount;
+                        if (name.includes('carbohydrates')) totalCarbs += amount;
+                        if (name.includes('fat')) totalFat += amount;
+                        if (name.includes('protein')) totalProtein += amount;
+                    }
+                }
+            }
+
+            structuredPlan[day]['nutrients'] = {
+                calories: Math.round(totalCalories),
+                carbohydrates: Math.round(totalCarbs),
+                fat: Math.round(totalFat),
+                protein: Math.round(totalProtein)
+            };
+        }
+
+        return structuredPlan;
+
+    } catch (error) {
+        console.error('API call failed:', error);
+        return null;
+    }
 }
 
 async function recipeSearch(preferences, meal) {

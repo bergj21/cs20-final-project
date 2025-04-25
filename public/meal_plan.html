@@ -127,7 +127,6 @@
       const mealPlanContent = document.getElementById('mealPlanContent')
       let userId = localStorage.userId
       let weeklyPlan = null
-      let weeklyPlanRecipes = null
 
       generateButton.addEventListener('click', async () => {
         try {
@@ -139,6 +138,7 @@
 
           const user = await response.json()
           weeklyPlan = await generateMealPlan(user.preferences, 'week')
+          console.log('Generated weekly meal plan:', weeklyPlan)
 
           try {
             await submitWeeklyMealPlan(weeklyPlan, userId)
@@ -147,6 +147,7 @@
           }
 
           alert('Weekly meal plan generated! Click a day to view its plan.')
+          location.reload()
         } catch (err) {
           console.error('Failed to fetch user preferences:', err)
           alert('Server error while loading preferences.')
@@ -156,30 +157,15 @@
       document.querySelectorAll('.day-button').forEach((button) => {
         button.addEventListener('click', async () => {
             const day = button.getAttribute('data-day');
-            if (!weeklyPlan || !weeklyPlan[day]) {
+            if (!weeklyPlan) {
                 mealPlanContent.innerHTML = `<p>No meal plan available for ${day}.</p>`;
                 return;
             }
 
             const dayPlan = weeklyPlan[day];
-            console.log(dayPlan);
+            console.log("weekly plan:", weeklyPlan);
+            console.log("daily plan:", dayPlan);
             const nutrients = dayPlan.nutrients || {};
-
-            const mealPromises = Object.entries(dayPlan)
-                .filter(([mealType, mealId]) => mealType !== 'nutrients' && mealId)
-                .map(async ([mealType, mealId]) => {
-                    try {
-                        const meal = await getMealById(mealId);
-                        if (meal) {
-                            return { mealType, ...meal };
-                        }
-                    } catch (err) {
-                        console.error(`Failed to fetch meal for ${mealType}:`, err);
-                        return null;
-                    }
-                });
-
-            const meals = (await Promise.all(mealPromises)).filter(Boolean);
 
             // Clear and reset the meal plan content
             mealPlanContent.innerHTML = `
@@ -196,9 +182,11 @@
             // Now dynamically add each meal using createRecipeCard
             const mealCardsContainer = document.getElementById('meal-cards');
 
-            for (const meal of meals) {
-                const recipeCard = await createRecipeCard(meal, false); 
-                mealCardsContainer.appendChild(recipeCard);
+            for (const meal of dayPlan.meals) {
+                if (meal) {
+                    const recipeCard = await createRecipeCard(meal, false);
+                    mealCardsContainer.appendChild(recipeCard);
+                }
             }
         });
       });
@@ -222,7 +210,7 @@
         }
 
         const user = await response.json()
-        return user.weeklyPlan
+        return getRecipesByIds(user.weeklyPlan)
       }
 
       window.onload = async function () {
