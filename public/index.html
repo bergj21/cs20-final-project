@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="keywords" content="meal planning, healthy eating, nutrition, recipes" />
-  <title>Meal Prep Buddy</title>
+  <meta name="keywords" content="meal planning, healthy eating, recipe discovery, grocery lists" />
+  <title>Meal Prep Buddy • Home</title>
   <link rel="stylesheet" href="styles.css" />
   <script src="header.js"></script>
 </head>
@@ -19,24 +19,74 @@
     </nav>
   </header>
 
-  <main>
-    <!-- Mission Statement Hero -->
-    <section class="hero" style="text-align:center; padding:5rem 1rem; background: var(--off-white-color);">
-      <h1>Our Mission</h1>
-      <p style="max-width:700px; margin:1.5rem auto; font-size:1.25em; line-height:1.6; color: var(--charcoal-color);">
-        At <strong>Meal Prep Buddy</strong>, we believe nutritious eating should be simple and stress-free. We’re dedicated to providing personalized meal plans, seamless recipe discovery, and automated grocery lists, so you can spend less time planning and more time enjoying delicious, healthy meals.
+  <main style="padding:2rem 1rem;">
+    <!-- Welcome Section -->
+    <section class="welcome" style="text-align:center; max-width:800px; margin:0 auto 3rem;">
+      <h1 id="welcome-heading" style="font-size:2.5em; color:var(--dark-green-color);">Welcome to Meal Prep Buddy</h1>
+      <p id="welcome-msg" style="font-size:1.2em; color:var(--charcoal-color); margin:1rem 0;">
+        Plan. Prep. Enjoy. Healthy meals made effortless.
       </p>
-      <!-- Mission image -->
-      <div style="margin: 2rem auto; max-width: 800px;">
-        <img src="bronny.png" alt="Healthy meal spread" style="width:100%; border-radius:10px; box-shadow:0 4px 8px rgba(0,0,0,0.1);" />
+      <p style="font-size:1.1em; color:var(--charcoal-color); margin-bottom:1.5rem; line-height:1.5;">
+        Personalized meal plans, thousands of recipes, and auto-generated grocery lists—all in one intuitive platform.
+      </p>
+      <a id="getStartedBtn" href="signup.html" class="submit-btn" style="margin-bottom:2rem;">Get Started</a>
+      <div style="margin-top:2rem;">
+        <img src="images/healthy-meal.png" alt="Healthy meal spread" style="width:100%; max-width:800px; border-radius:10px; box-shadow:0 4px 8px rgba(0,0,0,0.1);" />
       </div>
-      <a href="signup.html" class="submit-btn" style="margin-top:2rem;">Join Us Today</a>
+    </section>
+
+    <!-- Feature Highlights -->
+    <section class="highlights" style="display:grid; grid-template-columns:repeat(auto-fit,minmax(220px,1fr)); gap:1.5rem; max-width:900px; margin:3rem auto;">
+      <div class="highlight-card" style="padding:1rem; background:white; border-radius:10px; box-shadow:0 2px 6px rgba(0,0,0,0.1); text-align:center;">
+        <h3>Personalized Plans</h3>
+        <img src="images/icon-personalized-plans.png" alt="Personalized Plans Icon" style="width:60px; margin:1rem 0;" />
+        <p>Customized based on your goals, allergies, and preferences.</p>
+      </div>
+      <div class="highlight-card" style="padding:1rem; background:white; border-radius:10px; box-shadow:0 2px 6px rgba(0,0,0,0.1); text-align:center;">
+        <h3>Recipe Discovery</h3>
+        <img src="images/icon-recipe-discovery.png" alt="Recipe Discovery Icon" style="width:60px; margin:1rem 0;" />
+        <p>Explore thousands of recipes that fit your style.</p>
+      </div>
+      <div class="highlight-card" style="padding:1rem; background:white; border-radius:10px; box-shadow:0 2px 6px rgba(0,0,0,0.1); text-align:center;">
+        <h3>Seamless Shopping</h3>
+        <img src="images/icon-seamless-shopping.png" alt="Seamless Shopping Icon" style="width:60px; margin:1rem 0;" />
+        <p>Auto-generate and edit grocery lists with one click.</p>
+      </div>
+    </section>
+
+    <!-- Tutorial Steps -->
+    <section class="tutorial" style="max-width:800px; margin:0 auto 4rem;">
+      <h2 style="color:var(--green-color); text-align:center; margin-bottom:1rem;">How It Works</h2>
+      <p style="font-size:1.1em; color:var(--charcoal-color); text-align:center;">
+        In just a few steps, you’ll be on your way to stress-free meal planning:
+      </p>
+
+      <ol style="margin-top:2rem; padding-left:1.2rem;">
+        <li id="step1" style="margin-bottom:1.5rem;">
+          <h3>Sign Up or Log In</h3>
+          <p>Create an account or sign in to save your preferences.</p>
+          <a href="signup.html" class="submit-btn" style="width:auto; padding:0.5rem 1rem;">Sign Up</a>
+          <a href="login.html" class="submit-btn" style="width:auto; padding:0.5rem 1rem; margin-left:1rem;">Log In</a>
+        </li>
+        <li style="margin-bottom:1.5rem;"><h3>Set Your Profile</h3><p>Enter dietary needs, calorie targets, and allergies in your Profile.</p></li>
+        <li style="margin-bottom:1.5rem;"><h3>Generate Meal Plan</h3><p>Choose daily or weekly plans and click “Generate”.</p></li>
+        <li style="margin-bottom:1.5rem;"><h3>Explore Recipes</h3><p>Browse or search recipes tailored to you.</p></li>
+        <li style="margin-bottom:1.5rem;"><h3>Build Grocery List</h3><p>Auto-populate ingredients and edit as needed.</p></li>
+        <li style="margin-bottom:1.5rem;"><h3>Save Favorites</h3><p>Bookmark recipes and plans for quick access.</p></li>
+      </ol>
     </section>
   </main>
 
   <script>
     window.onload = function() {
       setHeader();
+      const userId = localStorage.getItem('userId');
+      if (userId) {
+        document.getElementById('step1').style.display = 'none';
+        document.getElementById('getStartedBtn').style.display = 'none';
+        document.getElementById('welcome-heading').textContent = 'Welcome Back!';
+        document.getElementById('welcome-msg').textContent = 'Ready to plan your next meals?';
+      }
     };
   </script>
 
