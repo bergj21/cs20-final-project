@@ -1,38 +1,47 @@
+<!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="keywords" content="fitness, meal prep, healthy, groceries, food, activity, lifestyle">
-    <title>Meal Prep Buddy</title>
-    <link rel="stylesheet" href="styles.css" />
-    <script src="header.js"></script>
-    <style>
-    </style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="keywords" content="meal planning, healthy eating, nutrition, recipes" />
+  <title>Meal Prep Buddy</title>
+  <link rel="stylesheet" href="styles.css" />
+  <script src="header.js"></script>
 </head>
 <body>
-    <header>
-        <a href="index.html">
-            <img src="images/logo.jpg" alt="Logo" class="logo" />
-        </a>
-        <nav>
-            <button class="menu-toggle">☰</button>
-            <ul class="menu"></ul>
-        </nav>
-    </header>
+  <header>
+    <a href="index.html">
+      <img src="images/logo.jpg" alt="Meal Prep Buddy Logo" class="logo" />
+    </a>
+    <nav>
+      <button class="menu-toggle">☰</button>
+      <ul class="menu"></ul>
+    </nav>
+  </header>
 
-    <main>
-        
-    </main>
+  <main>
+    <!-- Mission Statement Hero -->
+    <section class="hero" style="text-align:center; padding:5rem 1rem; background: var(--off-white-color);">
+      <h1>Our Mission</h1>
+      <p style="max-width:700px; margin:1.5rem auto; font-size:1.25em; line-height:1.6; color: var(--charcoal-color);">
+        At <strong>Meal Prep Buddy</strong>, we believe nutritious eating should be simple and stress-free. We’re dedicated to providing personalized meal plans, seamless recipe discovery, and automated grocery lists, so you can spend less time planning and more time enjoying delicious, healthy meals.
+      </p>
+      <!-- Mission image -->
+      <div style="margin: 2rem auto; max-width: 800px;">
+        <img src="bronny.png" alt="Healthy meal spread" style="width:100%; border-radius:10px; box-shadow:0 4px 8px rgba(0,0,0,0.1);" />
+      </div>
+      <a href="signup.html" class="submit-btn" style="margin-top:2rem;">Join Us Today</a>
+    </section>
+  </main>
 
-    <script>
-        // set up the page
-        window.onload = function() {
-            setHeader();
-        }
-    </script>
+  <script>
+    window.onload = function() {
+      setHeader();
+    };
+  </script>
 
-    <footer>
-        <p>&copy; 2025 Meal Prep Buddy. All Rights Reserved.</p>
-    </footer>
+  <footer>
+    <p>&copy; 2025 Meal Prep Buddy. All Rights Reserved.</p>
+  </footer>
 </body>
 </html>
