@@ -1,7 +1,7 @@
 const express = require('express')
 const router = express.Router()
 // routes.js
-const { loginUser, signupUser } = require('./authorize.js');
+const { loginUser, signupUser, editUserProfile } = require('./authorize.js')
 
 const {
   getUserPreferences,
@@ -9,13 +9,13 @@ const {
   saveWeeklyMealPlan,
   checkFavorite,
   changeFavorite,
-  swapMeal
+  swapMeal,
 } = require('./database.js')
 
 // POST /login
 router.post('/login', loginUser)
 
-router.post('/signup', signupUser);
+router.post('/signup', signupUser)
 // retrieves the user preferences
 router.get('/get-user-preferences', getUserPreferences)
 
@@ -32,6 +32,8 @@ router.post('/check-favorite', checkFavorite)
 router.post('/change-favorite', changeFavorite)
 
 // swaps a meal in the meal plan
-router.post('/swap-meal', swapMeal);
+router.post('/swap-meal', swapMeal)
+
+router.post('/edit-user-profile', editUserProfile)
 
 module.exports = router
