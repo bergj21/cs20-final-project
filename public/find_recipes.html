@@ -102,24 +102,10 @@
                 resultsEl.appendChild(resultCount);
 
                 // Loop through each recipe and create a card
-                result.results.forEach(recipe => {
-                    const recipeCard = document.createElement('div');
-                    recipeCard.classList.add('recipe-card');
-
-                    recipeCard.innerHTML = `
-                        <img src="${recipe.image}" alt="${recipe.title}">
-                        <div class="details">
-                            <h3>${recipe.title}</h3>
-                        </div>
-                        <div class="action-buttons">
-                            <button>See More</button>
-                            <button>Add to Favorites</button>
-                            <button>Add to Meal Plan</button>
-                        </div>
-                    `;
-
+                for (const recipe of result.results) {
+                    const recipeCard = await createRecipeCard(recipe, true);
                     resultsEl.appendChild(recipeCard);
-                });
+                }
             } else {
                 resultsEl.textContent = 'No recipes found.';
             }
@@ -162,9 +148,6 @@
                             const input = form.querySelector(`[name="${key}"]`);
                             if (input) input.value = value;
                         });
-
-                        // // Submit the form programmatically
-                        // form.dispatchEvent(new Event("submit", { bubbles: true, cancelable: true }));
                     } catch (err) {
                         console.error("Failed to fetch user preferences:", err);
                         alert("Server error while loading preferences.");

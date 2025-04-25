@@ -12,7 +12,7 @@ const client = new MongoClient(uri, {
   },
 })
 
-let usersCollection
+let usersCollection;
 
 async function connectToUsersCollection() {
   try {
@@ -130,10 +130,122 @@ async function saveWeeklyMealPlan(req, res) {
   return formattedPlan
 }
 
+async function checkFavorite(req, res)
+{
+    const { recipeId, userId } = req.body;
+
+    if (!recipeId || !userId) {
+        return res.status(400).json({ error: 'Missing recipeId or userId' });
+    }
+
+    try {
+        if (!usersCollection) {
+            await connectToUsersCollection()
+        }
+    
+        const user = await usersCollection.findOne({ _id: new ObjectId(userId) })
+    
+        if (!user) {
+            res.status(404).json({ error: 'User not found' })
+        }
+    
+        const isFavorite = user.favorites && user.favorites.includes(recipeId);
+        res.json({ isFavorite });
+    } catch (err) {
+        console.error('Error retrieving user preferences:', err)
+        res.status(500).json({ error: 'Server error' })
+    }
+}
+
+async function changeFavorite(req, res) {
+    const { recipeId, userId } = req.body;
+
+    if (!recipeId || !userId) {
+        return res.status(400).json({ error: 'Missing recipeId or userId' });
+    }
+
+    try {
+        if (!usersCollection) {
+            await connectToUsersCollection();
+        }
+
+        const user = await usersCollection.findOne({ _id: new ObjectId(userId) });
+
+        if (!user) {
+            return res.status(404).json({ error: 'User not found' });
+        }
+
+        let update;
+        let updatedToFavorite;
+
+        if (!user.favorites) {
+            // Initialize favorites with recipeId
+            update = { $set: { favorites: [recipeId] } };
+            updatedToFavorite = true;
+        } else if (user.favorites.includes(recipeId)) {
+            // Remove recipeId from favorites
+            update = { $pull: { favorites: recipeId } };
+            updatedToFavorite = false;
+        } else {
+            // Add recipeId to favorites
+            update = { $addToSet: { favorites: recipeId } };
+            updatedToFavorite = true;
+        }
+
+        await usersCollection.updateOne(
+            { _id: new ObjectId(userId) }, update
+        );
+
+        res.json({ success: true, isFavorite: updatedToFavorite });
+    } catch (err) {
+        console.error('Error updating favorite status:', err);
+        res.status(500).json({ error: 'Server error' });
+    }
+}
+
+
+async function swapMeal(req, res) {
+    const { recipeId, userId, day, mealType } = req.body;
+
+    if (!recipeId || !userId || !day || !mealType) {
+        return res.status(400).json({ error: 'Missing recipeId, userId, day, or mealType' });
+    }
+
+    try {
+        if (!usersCollection) {
+            await connectToUsersCollection();
+        }
+
+        const user = await usersCollection.findOne({ _id: new ObjectId(userId) });
+
+        if (!user) {
+            return res.status(404).json({ error: 'User not found' });
+        }
+
+        // Build the field path dynamically for nested update
+        const fieldPath = `weeklyPlan.${day}.${mealType}`;
+
+        // Update the nested field with the new recipeId
+        await usersCollection.updateOne(
+            { _id: new ObjectId(userId) },
+            { $set: { [fieldPath]: recipeId } }
+        );
+
+        res.json({ success: true });
+    } catch (err) {
+        console.error('Error updating meal plan:', err);
+        res.status(500).json({ error: 'Server error' });
+    }
+}
+
+
 module.exports = {
   connectToUsersCollection,
   disconnectDB,
   getUserPreferences,
   getUser,
   saveWeeklyMealPlan,
+  checkFavorite,
+  changeFavorite,
+  swapMeal
 }
