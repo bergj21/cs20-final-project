@@ -66,14 +66,12 @@
     </header>
 
     <main>
-      <a href="preferences.html">Preferences</a>
-      <a href="favorites.html">Favorite Recipes</a>
       <div class="profile-container">
         <h2>User Profile</h2>
         <form id="profileForm">
           <div class="form-group">
             <label for="email">Email</label>
-            <input type="email" id="email" disabled />
+            <input type="email" id="email" disabled readonly />
           </div>
           <div class="form-group">
             <label for="name">Name</label>
@@ -84,6 +82,10 @@
             <input type="password" id="password" disabled />
           </div>
           <h3>Preferences</h3>
+          <div class="form-group">
+            <label for="diet">Diet</label>
+            <input type="text" id="diet" disabled />
+          </div>
           <div class="form-group">
             <label for="intolerances">Intolerances</label>
             <input type="text" id="intolerances" disabled />
@@ -113,12 +115,20 @@
             <input type="number" id="maxCarbs" disabled />
           </div>
           <div class="form-group">
+            <label for="minFat">Min Fat (g)</label>
+            <input type="number" id="minFat" disabled />
+          </div>
+          <div class="form-group">
             <label for="maxFat">Max Fat (g)</label>
             <input type="number" id="maxFat" disabled />
           </div>
           <div class="form-group">
             <label for="minProtein">Min Protein (g)</label>
             <input type="number" id="minProtein" disabled />
+          </div>
+          <div class="form-group">
+            <label for="maxProtein">Max Protein (g)</label>
+            <input type="number" id="maxProtein" disabled />
           </div>
           <div class="button-group">
             <button type="button" id="editButton">Edit</button>
@@ -178,50 +188,29 @@
           document.getElementById('email').value = user.email
           document.getElementById('name').value = user.name
           document.getElementById('password').value = user.password
+          document.getElementById('diet').value = user.preferences.diet || ''
           document.getElementById('intolerances').value =
-            user.preferences.intolerances
-          document.getElementById('cuisine').value = user.preferences.cuisine
+            user.preferences.intolerances || ''
+          document.getElementById('cuisine').value =
+            user.preferences.cuisine || ''
           document.getElementById('excludeIngredients').value =
-            user.preferences.excludeIngredients
+            user.preferences.excludeIngredients || ''
           document.getElementById('minCalories').value =
             user.preferences.minCalories
           document.getElementById('maxCalories').value =
             user.preferences.maxCalories
           document.getElementById('minCarbs').value = user.preferences.minCarbs
           document.getElementById('maxCarbs').value = user.preferences.maxCarbs
+          document.getElementById('minFat').value = user.preferences.minFat
           document.getElementById('maxFat').value = user.preferences.maxFat
           document.getElementById('minProtein').value =
             user.preferences.minProtein
+          document.getElementById('maxProtein').value =
+            user.preferences.maxProtein
         } catch (err) {
           console.error('Failed to load user profile:', err)
         }
       }
-
-      form.addEventListener('submit', function (e) {
-        e.preventDefault()
-        const profile = {
-          email: document.getElementById('email').value,
-          name: document.getElementById('name').value,
-          password: document.getElementById('password').value,
-          preferences: {
-            intolerances: document.getElementById('intolerances').value,
-            cuisine: document.getElementById('cuisine').value,
-            excludeIngredients:
-              document.getElementById('excludeIngredients').value,
-            minCalories: parseInt(document.getElementById('minCalories').value),
-            maxCalories: parseInt(document.getElementById('maxCalories').value),
-            minCarbs: parseInt(document.getElementById('minCarbs').value),
-            maxCarbs: parseInt(document.getElementById('maxCarbs').value),
-            maxFat: parseInt(document.getElementById('maxFat').value),
-            minProtein: parseInt(document.getElementById('minProtein').value),
-          },
-        }
-        console.log('Updated Profile:', profile)
-        alert('Profile saved successfully!')
-        toggleFields(true)
-        saveButton.style.display = 'none'
-        editButton.style.display = 'inline-block'
-      })
 
       editButton.addEventListener('click', () => {
         toggleFields(false)
@@ -239,13 +228,14 @@
         editButton.style.display = 'inline-block'
       })
 
-      form.addEventListener('submit', function (e) {
+      form.addEventListener('submit', async function (e) {
         e.preventDefault()
         const profile = {
-          email: document.getElementById('email').value,
+          userId: localStorage.userId,
           name: document.getElementById('name').value,
           password: document.getElementById('password').value,
           preferences: {
+            diet: document.getElementById('diet').value,
             intolerances: document.getElementById('intolerances').value,
             cuisine: document.getElementById('cuisine').value,
             excludeIngredients:
@@ -254,10 +244,18 @@
             maxCalories: parseInt(document.getElementById('maxCalories').value),
             minCarbs: parseInt(document.getElementById('minCarbs').value),
             maxCarbs: parseInt(document.getElementById('maxCarbs').value),
+            minFat: parseInt(document.getElementById('minFat').value),
             maxFat: parseInt(document.getElementById('maxFat').value),
             minProtein: parseInt(document.getElementById('minProtein').value),
+            maxProtein: parseInt(document.getElementById('maxProtein').value),
           },
         }
+
+        const res = await fetch('/edit-user-profile', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(profile),
+        })
 
         toggleFields(true)
         saveButton.style.display = 'none'
