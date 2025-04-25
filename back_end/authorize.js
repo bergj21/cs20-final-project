@@ -20,7 +20,6 @@ async function loginUser(req, res) {
   
   // Sign up a new user *with* preferences, only storing fields the user actually filled
   async function signupUser(req, res) {
-    console.log('signupUser payload:', req.body);
     const { name, email, password, preferences = {} } = req.body;
     const usersCollection = req.app.locals.users;
   
