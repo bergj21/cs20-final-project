@@ -91,6 +91,7 @@
       .day-button:hover {
         background-color: #0056b3;
       }
+      /* TODO: Double check the functionality for this page. Ran out of api calls when trying to verify */
     </style>
   </head>
   <body>
@@ -128,67 +129,6 @@
       let userId = localStorage.userId
       let weeklyPlan = null
 
-      generateButton.addEventListener('click', async () => {
-        try {
-          const response = await fetch(`/get-user?userId=${userId}`)
-          if (!response.ok) {
-            alert('Could not load preferences.')
-            return
-          }
-
-          const user = await response.json()
-          weeklyPlan = await generateMealPlan(user.preferences, 'week')
-          console.log('Generated weekly meal plan:', weeklyPlan)
-
-          try {
-            await submitWeeklyMealPlan(weeklyPlan, userId)
-          } catch (err) {
-            console.error('Failed to save weekly meal plan:', err)
-          }
-
-          alert('Weekly meal plan generated! Click a day to view its plan.')
-          location.reload()
-        } catch (err) {
-          console.error('Failed to fetch user preferences:', err)
-          alert('Server error while loading preferences.')
-        }
-      })
-
-      document.querySelectorAll('.day-button').forEach((button) => {
-        button.addEventListener('click', async () => {
-            const day = button.getAttribute('data-day');
-            if (!weeklyPlan) {
-                mealPlanContent.innerHTML = `<p>No meal plan available for ${day}.</p>`;
-                return;
-            }
-
-            const dayPlan = weeklyPlan[day];
-            const nutrients = dayPlan.nutrients || {};
-
-            // Clear and reset the meal plan content
-            mealPlanContent.innerHTML = `
-                <h2>${day.charAt(0).toUpperCase() + day.slice(1)}'s Meal Plan</h2>
-                <div id="meal-cards" style="display: flex; flex-wrap: wrap; gap: 20px;"></div>
-                <div class="nutrients">
-                <div class="nutrient"><p>Calories</p><p>${nutrients.calories || 0}</p></div>
-                <div class="nutrient"><p>Carbs (g)</p><p>${nutrients.carbohydrates || 0}</p></div>
-                <div class="nutrient"><p>Fat (g)</p><p>${nutrients.fat || 0}</p></div>
-                <div class="nutrient"><p>Protein (g)</p><p>${nutrients.protein || 0}</p></div>
-                </div>
-            `;
-
-            // Now dynamically add each meal using createRecipeCard
-            const mealCardsContainer = document.getElementById('meal-cards');
-
-            for (const meal of dayPlan.meals) {
-                if (meal) {
-                    const recipeCard = await createRecipeCard(meal, false);
-                    mealCardsContainer.appendChild(recipeCard);
-                }
-            }
-        });
-      });
-
       async function submitWeeklyMealPlan(weeklyPlan, userId) {
         const res = await fetch('/save-weekly-plan', {
           method: 'POST',
@@ -214,8 +154,6 @@
       window.onload = async function () {
         setHeader()
 
-        userId = localStorage.userId
-
         if (!userId) {
           alert('User ID not found. Please log in.')
           return
@@ -232,6 +170,67 @@
         } catch (err) {
           console.error('Failed to load weekly meal plan:', err)
         }
+
+        generateButton.addEventListener('click', async () => {
+            try {
+                const response = await fetch(`/get-user?userId=${userId}`)
+                if (!response.ok) {
+                    alert('Could not load preferences.')
+                    return
+                }
+
+                const user = await response.json()
+                weeklyPlan = await generateMealPlan(user.preferences, 'week')
+                console.log('Generated weekly meal plan:', weeklyPlan)
+
+                try {
+                    await submitWeeklyMealPlan(weeklyPlan, userId)
+                    alert('Weekly meal plan generated! Click a day to view its plan.')
+                    mealPlanContent.innerHTML = `<p>Weekly meal plan generated! Click a day to view its plan.</p>`
+                } catch (err) {
+                    console.error('Failed to save weekly meal plan:', err)
+                }
+
+            } catch (err) {
+                console.error('Failed to fetch user preferences:', err)
+                alert('Server error while loading preferences.')
+            }
+        })
+
+        document.querySelectorAll('.day-button').forEach((button) => {
+            button.addEventListener('click', async () => {
+                const day = button.getAttribute('data-day');
+                if (!weeklyPlan) {
+                    mealPlanContent.innerHTML = `<p>No meal plan available for ${day}.</p>`;
+                    return;
+                }
+
+                const dayPlan = weeklyPlan[day];
+                const nutrients = dayPlan.nutrients || {};
+
+                // Clear and reset the meal plan content
+                mealPlanContent.innerHTML = `
+                    <h2>${day.charAt(0).toUpperCase() + day.slice(1)}'s Meal Plan</h2>
+                    <div id="meal-cards" style="display: flex; flex-wrap: wrap; gap: 20px;"></div>
+                    <div class="nutrients">
+                    <div class="nutrient"><p>Calories</p><p>${nutrients.calories || 0}</p></div>
+                    <div class="nutrient"><p>Carbs (g)</p><p>${nutrients.carbohydrates || 0}</p></div>
+                    <div class="nutrient"><p>Fat (g)</p><p>${nutrients.fat || 0}</p></div>
+                    <div class="nutrient"><p>Protein (g)</p><p>${nutrients.protein || 0}</p></div>
+                    </div>
+                `;
+
+                // Now dynamically add each meal using createRecipeCard
+                const mealCardsContainer = document.getElementById('meal-cards');
+
+                for (const meal of dayPlan.meals) {
+                    if (meal) {
+                        const recipeCard = await createRecipeCard(meal, false);
+                        mealCardsContainer.appendChild(recipeCard);
+                    }
+                }
+            });
+        });
       }
     </script>
 

@@ -238,6 +238,26 @@ async function swapMeal(req, res) {
     }
 }
 
+async function getFavorites(req, res) {
+    const userId = req.query.userId
+    try {
+        if (!usersCollection) {
+            await connectToUsersCollection()
+        }
+
+        const user = await usersCollection.findOne({ _id: new ObjectId(userId) })
+
+        if (!user) {
+            res.status(404).json({ error: 'User not found' })
+        }
+
+        res.json(user.favorites)
+    } catch (err) {
+        console.error('Error retrieving user preferences:', err)
+        res.status(500).json({ error: 'Server error' })
+    }
+}
+
 
 module.exports = {
   connectToUsersCollection,
@@ -247,5 +267,6 @@ module.exports = {
   saveWeeklyMealPlan,
   checkFavorite,
   changeFavorite,
-  swapMeal
+  swapMeal,
+  getFavorites
 }

@@ -10,6 +10,7 @@ const {
   checkFavorite,
   changeFavorite,
   swapMeal,
+  getFavorites
 } = require('./database.js')
 
 // POST /login
@@ -35,5 +36,7 @@ router.post('/change-favorite', changeFavorite)
 router.post('/swap-meal', swapMeal)
 
 router.post('/edit-user-profile', editUserProfile)
+
+router.get('/get-favorites', getFavorites)
 
 module.exports = router

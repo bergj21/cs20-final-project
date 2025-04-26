@@ -27,53 +27,50 @@ const numericPreferences = [
 
 // in progress
 async function connectUser(user) {
-  let apiCall = `${baseApi}/users/connect?apiKey=${apiKey}`
-  try {
-    const response = await fetch(apiCall)
-    const data = await response.json()
+    let apiCall = `${baseApi}/users/connect?apiKey=${apiKey}`;
+    try {
+        const response = await fetch(apiCall);
+        const data = await response.json();
 
-    return data
-  } catch (error) {
-    console.error('API call failed:', error)
-    return null
-  }
+        if (checkApiLimitReached(data)) return null; // Check API limit
+
+        return data;
+    } catch (error) {
+        console.error('API call failed:', error);
+        return null;
+    }
 }
 
 async function generateMealPlan(preferences, timeFrame) {
-  let apiCall = `${baseApi}//mealplanner/generate?apiKey=${apiKey}&timeFrame=${timeFrame}`
-  apiCall += `&${encodeURIComponent('diet')}=${encodeURIComponent(
-    preferences['diet']
-  )}`
-  target = (preferences['minCalories'] + preferences['maxCalories']) / 2
-  apiCall += `&${encodeURIComponent('targetCalories')}=${encodeURIComponent(
-    target
-  )}`
-  apiCall += `&${encodeURIComponent('intolerances')}=${encodeURIComponent(
-    preferences['intolerances']
-  )}`
+    let apiCall = `${baseApi}//mealplanner/generate?apiKey=${apiKey}&timeFrame=${timeFrame}`;
+    apiCall += `&${encodeURIComponent('diet')}=${encodeURIComponent(preferences['diet'])}`;
+    const target = (preferences['minCalories'] + preferences['maxCalories']) / 2;
+    apiCall += `&${encodeURIComponent('targetCalories')}=${encodeURIComponent(target)}`;
+    apiCall += `&${encodeURIComponent('intolerances')}=${encodeURIComponent(preferences['intolerances'])}`;
 
-  try {
-    console.log(apiCall)
-    const response = await fetch(apiCall)
-    const data = await response.json()
+    try {
+        console.log(apiCall);
+        const response = await fetch(apiCall);
+        const data = await response.json();
 
-    return data
-  } catch (error) {
-    console.error('API call failed:', error)
-    return null
-  }
+        if (checkApiLimitReached(data)) return null; // Check API limit
+
+        return data;
+    } catch (error) {
+        console.error('API call failed:', error);
+        return null;
+    }
 }
 
 async function getRecipesByIds(weeklyPlan) {
-    const ids = Object.values(weeklyPlan).flatMap(day =>
-        Object.values(day)
-    );
-
+    const ids = Object.values(weeklyPlan).flatMap(day => Object.values(day));
     const apiCall = `${baseApi}/recipes/informationBulk?apiKey=${apiKey}&ids=${ids.join(',')}&includeNutrition=true`;
 
     try {
         const response = await fetch(apiCall);
-        const recipes = await response.json(); // recipes is a 21-element array
+        const recipes = await response.json();
+
+        if (checkApiLimitReached(recipes)) return null; // Check API limit
 
         // Map recipe IDs to recipe objects
         const recipeMap = {};
@@ -123,7 +120,6 @@ async function getRecipesByIds(weeklyPlan) {
         }
 
         return structuredPlan;
-
     } catch (error) {
         console.error('API call failed:', error);
         return null;
@@ -131,42 +127,40 @@ async function getRecipesByIds(weeklyPlan) {
 }
 
 async function recipeSearch(preferences, meal) {
-  // Adjust the preferences for the meal
-  const ratio = mealRatios[meal.toLowerCase()] || 0.33
-  const adjustedPrefs = {}
+    // Adjust the preferences for the meal
+    const ratio = mealRatios[meal.toLowerCase()] || 0.33;
+    const adjustedPrefs = {};
 
-  stringPreferences.forEach((key) => {
-    if (preferences[key]) {
-      adjustedPrefs[key] = preferences[key]
+    stringPreferences.forEach((key) => {
+        if (preferences[key]) {
+            adjustedPrefs[key] = preferences[key];
+        }
+    });
+
+    numericPreferences.forEach((key) => {
+        if (typeof preferences[key] === 'number') {
+            adjustedPrefs[key] = Math.round(preferences[key] * ratio);
+        }
+    });
+
+    // Create the API URL call
+    let apiCall = `${baseApi}/recipes/complexSearch?apiKey=${apiKey}&addRecipeInformation=true`;
+    for (let key in adjustedPrefs) {
+        apiCall += `&${encodeURIComponent(key)}=${encodeURIComponent(adjustedPrefs[key])}`;
     }
-  })
 
-  numericPreferences.forEach((key) => {
-    if (typeof preferences[key] === 'number') {
-      adjustedPrefs[key] = Math.round(preferences[key] * ratio)
+    // Fetch the data from the API
+    try {
+        const response = await fetch(apiCall);
+        const data = await response.json();
+
+        if (checkApiLimitReached(data)) return null; // Check API limit
+
+        return data;
+    } catch (error) {
+        console.error('API call failed:', error);
+        return null;
     }
-  })
-
-  // Create the API URL call
-  let apiCall = `${baseApi}/recipes/complexSearch?apiKey=${apiKey}&addRecipeInformation=true`
-  for (let key in adjustedPrefs) {
-    apiCall += `&${encodeURIComponent(key)}=${encodeURIComponent(
-      adjustedPrefs[key]
-    )}`
-  }
-
-  console.log(apiCall);
-
-  // Fetch the data from the API
-  try {
-    const response = await fetch(apiCall)
-    const data = await response.json()
-
-    return data
-  } catch (error) {
-    console.error('API call failed:', error)
-    return null
-  }
 }
 
 function getPreferencesForm(formId, executeFct) {
@@ -348,7 +342,7 @@ function addMealPlanBtn(recipeCard, recipe) {
         if (!mealType || !['breakfast','lunch','dinner'].includes(mealType.toLowerCase())) {
             alert("Please enter a valid meal type.");
             return;
-        }
+    }
 
         try {
             const response = await fetch('/swap-meal', {
@@ -362,16 +356,60 @@ function addMealPlanBtn(recipeCard, recipe) {
                 })
             });
 
-            if (!response.ok) throw new Error("Failed to update meal plan.");
+        if (!response.ok) throw new Error("Failed to update meal plan.");
 
-            const result = await response.json();
-            alert(`Meal successfully added to your ${mealType} on ${day}!`);
+        const result = await response.json();
+        alert(`Meal successfully added to your ${mealType} on ${day}!`);
 
         } catch (err) {
             console.error(err);
             alert("Could not update meal plan.");
-        }
+    }
     });
 
     actionButtons.appendChild(mealPlanBtn);
+}
+
+async function generateRecipeCards(recipeIds, container) {
+    const apiCall = `${baseApi}/recipes/informationBulk?apiKey=${apiKey}&ids=${recipeIds.join(',')}&includeNutrition=true`;
+
+    try {
+        const response = await fetch(apiCall);
+        const recipes = await response.json(); 
+
+        if (checkApiLimitReached(recipes)) return null; // Check API limit
+        
+        for (const recipe of recipes) {
+            const recipeCard = await createRecipeCard(recipe, true);
+
+            // Look for the "favorite" button inside the created card
+            const favBtn = recipeCard.querySelector('.favorite');
+
+            if (favBtn) {
+                favBtn.addEventListener('click', async () => {
+                    // After a short delay, check if it was removed
+                    setTimeout(() => {
+                        if (favBtn.textContent.trim().toLowerCase() === 'add to favorites') {
+                            // If the user removed it, remove the card from the container
+                            recipeCard.remove();
+                        }
+                    }, 200); // small delay to let server update button text
+                });
+            }
+
+            container.appendChild(recipeCard);
+        }
+    } catch (error) {
+        console.error('API call failed:', error);
+        return null;
+    }
+}
+
+function checkApiLimitReached(response) {
+    if (response.status === "failure" && response.code === 402) {
+        console.error("API limit reached:", response.message);
+        alert("API limit reached: " + response.message);
+        return true;
+    }
+    return false;
 }

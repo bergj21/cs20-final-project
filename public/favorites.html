@@ -6,6 +6,7 @@
     <title>Favorite Recipes</title>
     <link rel="stylesheet" href="styles.css" />
     <script src="header.js"></script>
+    <script src="apiHandler.js"></script>
     <style>
     </style>
 </head>
@@ -21,13 +22,44 @@
     </header>
 
     <main>
-        
+        <h1>Favorite Recipes</h1>
+        <div class="recipes"></div>
     </main>
 
     <script>
         // set up the page
         window.onload = function() {
             setHeader();
+            showFavorites(); // Call showFavorites to display favorite recipes
+        }
+
+        async function showFavorites()
+        {
+            const recipesContainer = document.querySelector('.recipes');
+            recipesContainer.innerHTML = ''; // Clear previous content
+
+            // fetch favorites
+            try {
+                const response = await fetch(`/get-favorites?userId=${localStorage.getItem('userId')}`);
+                if (!response.ok) {
+                    alert("Could not load preferences.");
+                    return;
+                }
+
+                const favorites = await response.json();
+
+                if (favorites.length === 0) {
+                    recipesContainer.innerHTML = 
+                            `<p>You currently have no favorite recipes. Navigate to the 
+                             <a href="find_recipes.html">recipe page</a> to start saving recipes.</p>`;
+                    return;
+                } else {
+                    generateRecipeCards(favorites, recipesContainer);
+                }
+            } catch (err) {
+                console.error("Failed to fetch user preferences:", err);
+                alert("Server error while loading preferences.");
+            }
         }
     </script>
 
