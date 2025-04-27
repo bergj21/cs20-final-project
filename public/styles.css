@@ -399,7 +399,7 @@ header {
     border-radius: 15px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     padding: 30px;
-    width: 300px;
+    width: 500px;
     box-sizing: border-box;
   }
   
@@ -420,6 +420,7 @@ header {
     padding-left: 20px;
     margin-top: 15px;
   }
+
   
   .pricing-card li {
     margin-bottom: 10px;
@@ -460,9 +461,13 @@ header {
   }
   .section-content {
     max-width: 900px;
-    margin: auto;
+    margin: 30px;
     text-align: center;
-    padding: 40px 20px;
+    padding: 20px 15px;
+    background: #fafafa; /* Add background color */
+    border-radius: 10px; /* Add rounded corners */
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.8);
+    transition: box-shadow 0.3s ease; /* Smooth hover effect */
   }
   .features ul {
     list-style: none;
@@ -507,6 +512,39 @@ header {
     transition: transform 0.3s ease;
   }
 
+
+  .styled-list {
+    list-style-type: disc;
+    padding-left: 1.5rem;
+    margin-top: 1rem;
+    color: #333;
+    font-size: 1.1rem;
+    line-height: 1.6;
+  }
+
+  .styled-list li {
+    margin-bottom: 0.5rem;
+  }
+
+  .section-content {
+    text-align: left; /* Makes all text inside align left */
+    max-width: 600px; 
+    margin: 2rem auto; /* Adds vertical spacing above and below */
+    padding: 2rem; /* Adds inner space inside the section */
+    background-color: #f9f9f9; 
+    border-radius: 8px; 
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05); 
+  }
+  .about-page {
+    background-image: url('images/background.jpg');
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-attachment: fixed; 
+  }
+
+
+
 /*contact us page style*/
 .contact-container {
     max-width: 600px;
@@ -543,3 +581,62 @@ header {
 .contact-form button:hover {
     background-color: #218838;
 }
+
+.contact-page {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 40px;
+    padding: 40px 20px;
+    flex-wrap: wrap; /* so it stacks nicely on small screens */
+}
+
+.contact-container {
+    background: #f9f9f9;
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    flex: 1;
+    min-width: 320px;
+    max-width: 500px;
+}
+
+.contact-form {
+    display: flex;
+    flex-direction: column;
+}
+
+.contact-form input,
+.contact-form textarea {
+    margin-bottom: 15px;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+.contact-form button {
+    padding: 10px;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.contact-form button:hover {
+    background-color: #45a049;
+}
+
+.contact-image {
+    flex: 1;
+    min-width: 300px;
+    text-align: center;
+}
+
+.contact-image img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 10px;
+}
+
+
