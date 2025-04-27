@@ -105,7 +105,7 @@
         id="dayButtons"
         style="margin: 20px 0px 20px 0px; text-align: center"
       >
-        <h2>Weekly Meal Plan</h2>
+        <h1>Weekly Meal Plan</h1>
         <button class="day-button" data-day="monday">Monday</button>
         <button class="day-button" data-day="tuesday">Tuesday</button>
         <button class="day-button" data-day="wednesday">Wednesday</button>
@@ -202,13 +202,9 @@
               return
             }
 
-            console.log('day button called on day: ' + day)
             const dayPlan = weeklyPlan[day]
-            console.log('what about here?')
-            console.log('Debug: dayPlan:', dayPlan)
-            console.log('Debug: weeklyPlan:', weeklyPlan)
             const nutrients = dayPlan.nutrients || {}
-            console.log('and here?')
+
             // Clear and reset the meal plan content
             mealPlanContent.innerHTML = `
                     <h2>${
@@ -230,11 +226,9 @@
                     }</p></div>
                     </div>
                 `
-            console.log('got here')
 
             // Now dynamically add each meal using createRecipeCard
             const mealCardsContainer = document.getElementById('meal-cards')
-            console.log('and got here')
 
             for (const meal of dayPlan.meals) {
               if (meal) {
