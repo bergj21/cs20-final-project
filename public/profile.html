@@ -104,7 +104,20 @@
           <h3>Preferences</h3>
           <div class="form-group">
             <label for="diet">Diet</label>
-            <input type="text" id="diet" disabled />
+            <select id="diet" disabled>
+              <option value="">Select a diet</option>
+              <option value="Gluten Free">Gluten Free</option>
+              <option value="Ketogenic">Ketogenic</option>
+              <option value="Vegetarian">Vegetarian</option>
+              <option value="Lacto-Vegetarian">Lacto-Vegetarian</option>
+              <option value="Ovo-Vegetarian">Ovo-Vegetarian</option>
+              <option value="Vegan">Vegan</option>
+              <option value="Pescetarian">Pescetarian</option>
+              <option value="Paleo">Paleo</option>
+              <option value="Primal">Primal</option>
+              <option value="Low FODMAP">Low FODMAP</option>
+              <option value="Whole30">Whole30</option>
+            </select>
           </div>
           <div class="form-group">
             <label for="intolerances">Intolerances</label>
@@ -188,21 +201,21 @@
       const templateContainer = document.getElementById('templateContainer')
 
       function toggleFields(disabled) {
-        const inputs = form.querySelectorAll('input')
+        const inputs = form.querySelectorAll('input, select')
         inputs.forEach((input) => (input.disabled = disabled))
       }
 
       let originalValues = {}
 
       function storeOriginalValues() {
-        const inputs = form.querySelectorAll('input')
+        const inputs = form.querySelectorAll('input, select')
         inputs.forEach((input) => {
           originalValues[input.id] = input.value
         })
       }
 
       function resetToOriginalValues() {
-        const inputs = form.querySelectorAll('input')
+        const inputs = form.querySelectorAll('input, select')
         inputs.forEach((input) => {
           if (input.type === 'radio') {
             return

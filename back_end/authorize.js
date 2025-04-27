@@ -99,12 +99,14 @@ async function editUserProfile(req, res) {
     const updatedPreferences = {}
 
     // String-based preferences
-    ;['intolerances', 'cuisine', 'excludeIngredients'].forEach((key) => {
-      const val = preferences[key]
-      if (typeof val === 'string' && val.trim() !== '') {
-        updatedPreferences[key] = val.trim()
+    ;['diet', 'intolerances', 'cuisine', 'excludeIngredients'].forEach(
+      (key) => {
+        const val = preferences[key]
+        if (typeof val === 'string' && val.trim() !== '') {
+          updatedPreferences[key] = val.trim()
+        }
       }
-    })
+    )
 
     // Numeric preferences
     ;[
