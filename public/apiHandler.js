@@ -4,10 +4,16 @@
 const apiKey = '258415058f10403486235ffa1cac1851' 
 const baseApi = 'https://api.spoonacular.com'
 
-const mealRatios = {
-  breakfast: 0.25,
-  lunch: 0.35,
-  dinner: 0.4,
+const mealLowerRatios = {
+  breakfast: 0.15,
+  lunch: 0.2,
+  dinner: 0.3,
+}
+
+const mealUpperRatios = {
+  breakfast: 0.4,
+  lunch: 0.5,
+  dinner: 0.6,
 }
 
 const stringPreferences = [
@@ -17,14 +23,14 @@ const stringPreferences = [
   'intolerance',
 ]
 const numericPreferences = [
-  'minProtein',
-  'maxProtein',
-  'minCalories',
-  'maxCalories',
-  'minCarbs',
-  'maxCarbs',
-  'minFat',
-  'maxFat',
+  'Protein',
+  'Protein',
+  'Calories',
+  'Calories',
+  'Carbs',
+  'Carbs',
+  'Fat',
+  'Fat',
 ]
 
 // in progress
@@ -152,7 +158,8 @@ async function getRecipesByIds(weeklyPlan) {
 
 async function recipeSearch(preferences, meal) {
     // Adjust the preferences for the meal
-    const ratio = mealRatios[meal.toLowerCase()] || 0.33;
+    const minRatio = mealLowerRatios[meal.toLowerCase()] || 0.33;
+    const maxRatio = mealUpperRatios[meal.toLowerCase()] || 0.5;
     const adjustedPrefs = {};
 
     stringPreferences.forEach((key) => {
@@ -162,8 +169,13 @@ async function recipeSearch(preferences, meal) {
     });
 
     numericPreferences.forEach((key) => {
-        if (typeof preferences[key] === 'number') {
-            adjustedPrefs[key] = Math.round(preferences[key] * ratio);
+        minKey = 'min' + key;
+        if (typeof preferences[minKey] === 'number') {
+            adjustedPrefs[minKey] = Math.round(preferences[minKey] * minRatio);
+        }
+        maxKey = 'max' + key;
+        if (typeof preferences[maxKey] === 'number') {
+            adjustedPrefs[maxKey] = Math.round(preferences[maxKey] * maxRatio);
         }
     });
 
@@ -269,8 +281,13 @@ function getPreferencesForm(formId, executeFct) {
     })
 
     numericPreferences.forEach((key) => {
-      const value = parseFloat(formData.get(key))
-      if (!isNaN(value)) preferences[key] = value
+      const minKey = 'min' + key
+      const value = parseFloat(formData.get(minKey))
+      if (!isNaN(value)) preferences[minKey] = value
+
+      const maxKey = 'max' + key
+      const value2 = parseFloat(formData.get(maxKey))
+      if (!isNaN(value2)) preferences[maxKey] = value2
     })
 
     executeFct(preferences, meal)

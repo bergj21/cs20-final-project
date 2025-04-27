@@ -147,7 +147,7 @@
                         // Populate the form fields
                         Object.entries(prefs).forEach(([key, value]) => {
                             const input = form.querySelector(`[name="${key}"]`);
-                            if (input) input.value = value;
+                            if (input && value !== 0) input.value = value;
                         });
                     } catch (err) {
                         console.error("Failed to fetch user preferences:", err);
