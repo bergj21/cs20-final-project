@@ -6,6 +6,9 @@
     "start": "node back_end/server.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
+  "dependencies": {
+    "express": "^4.18.2"
+  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/bergj21/cs20-final-project.git"
