@@ -1,5 +1,5 @@
-// const apiKey = '5fffdd1ef2284ee7b1b869e03538f404'
-const apiKey = 'e075ef7a95604de8b1003d3e56d3b078'
+const apiKey = '5fffdd1ef2284ee7b1b869e03538f404'
+// const apiKey = 'e075ef7a95604de8b1003d3e56d3b078'
 const baseApi = 'https://api.spoonacular.com'
 
 const mealRatios = {
@@ -43,10 +43,22 @@ async function connectUser(user) {
 
 async function generateMealPlan(preferences, timeFrame) {
     let apiCall = `${baseApi}//mealplanner/generate?apiKey=${apiKey}&timeFrame=${timeFrame}`;
-    apiCall += `&${encodeURIComponent('diet')}=${encodeURIComponent(preferences['diet'])}`;
-    const target = (preferences['minCalories'] + preferences['maxCalories']) / 2;
-    apiCall += `&${encodeURIComponent('targetCalories')}=${encodeURIComponent(target)}`;
-    apiCall += `&${encodeURIComponent('intolerances')}=${encodeURIComponent(preferences['intolerances'])}`;
+
+    // Add diet if it exists
+    if (preferences['diet']) {
+        apiCall += `&${encodeURIComponent('diet')}=${encodeURIComponent(preferences['diet'])}`;
+    }
+
+    // Add targetCalories if minCalories and maxCalories exist
+    if (preferences['minCalories'] && preferences['maxCalories']) {
+        const target = (preferences['minCalories'] + preferences['maxCalories']) / 2;
+        apiCall += `&${encodeURIComponent('targetCalories')}=${encodeURIComponent(target)}`;
+    }
+
+    // Add intolerances if they exist
+    if (preferences['intolerances']) {
+        apiCall += `&${encodeURIComponent('intolerances')}=${encodeURIComponent(preferences['intolerances'])}`;
+    }
 
     try {
         console.log(apiCall);
@@ -55,7 +67,17 @@ async function generateMealPlan(preferences, timeFrame) {
 
         if (checkApiLimitReached(data)) return null; // Check API limit
 
-        return data;
+        // Update image URLs for each meal in data.week
+        for (const day in data.week) {
+            for (const mealType in data.week[day].meals) {
+                const meal = data.week[day].meals[mealType];
+                if (meal && meal.image) {
+                    meal.image = `https://spoonacular.com/recipeImages/${meal.image}`;
+                }
+            }
+        }
+
+        return data.week;
     } catch (error) {
         console.error('API call failed:', error);
         return null;
@@ -112,10 +134,10 @@ async function getRecipesByIds(weeklyPlan) {
             }
 
             structuredPlan[day]['nutrients'] = {
-                calories: Math.round(totalCalories),
-                carbohydrates: Math.round(totalCarbs),
-                fat: Math.round(totalFat),
-                protein: Math.round(totalProtein)
+                calories: parseFloat(totalCalories.toFixed(2)),
+                carbohydrates: parseFloat(totalCarbs.toFixed(2)),
+                fat: parseFloat(totalFat.toFixed(2)),
+                protein: parseFloat(totalProtein.toFixed(2))
             };
         }
 

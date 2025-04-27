@@ -78,7 +78,7 @@ async function getUser(req, res) {
 
 async function saveWeeklyMealPlan(req, res) {
   const userId = req.body.userId
-  const weeklyPlan = req.body.weeklyPlan?.week
+  const weeklyPlan = req.body.weeklyPlan
   const days = [
     'monday',
     'tuesday',
