@@ -1,5 +1,6 @@
-const apiKey = '5fffdd1ef2284ee7b1b869e03538f404'
+// const apiKey = '5fffdd1ef2284ee7b1b869e03538f404'
 // const apiKey = 'e075ef7a95604de8b1003d3e56d3b078'
+const apiKey = '00a2d2dbfecf4a8e82423a2f8415ac88'
 const baseApi = 'https://api.spoonacular.com'
 
 const mealRatios = {
