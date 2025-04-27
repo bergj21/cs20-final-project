@@ -1,0 +1,44 @@
+{
+  "template1": {
+    "goal": "Weight Loss & Lean Muscle Maintenance",
+    "diet": "",
+    "intolerances": ["Dairy"],
+    "excludeIngredients": ["Sugar", "Cream", "White Rice"],
+    "minCalories": 1200,
+    "maxCalories": 1600,
+    "minCarbs": 20,
+    "maxCarbs": 100,
+    "minFat": 20,
+    "maxFat": 50,
+    "minProtein": 80,
+    "maxProtein": 150
+  },
+  "template2": {
+    "goal": "Muscle Gain & Strength Building",
+    "diet": "",
+    "intolerances": [],
+    "excludeIngredients": [],
+    "minCalories": 2500,
+    "maxCalories": 3200,
+    "minCarbs": 200,
+    "maxCarbs": 350,
+    "minFat": 60,
+    "maxFat": 100,
+    "minProtein": 150,
+    "maxProtein": 250
+  },
+  "template3": {
+    "goal": "Improve Endurance & Overall Health",
+    "diet": "Vegetarian",
+    "intolerances": ["Gluten"],
+    "excludeIngredients": [],
+    "minCalories": 1800,
+    "maxCalories": 2400,
+    "minCarbs": 150,
+    "maxCarbs": 250,
+    "minFat": 30,
+    "maxFat": 70,
+    "minProtein": 70,
+    "maxProtein": 130
+  }
+}

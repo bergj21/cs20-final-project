@@ -52,6 +52,26 @@
       #cancelButton {
         background-color: #6c757d;
       }
+
+      #templateContainer {
+        text-align: center; /* Center the content inside the container */
+      }
+
+      #templateContainer .form-group {
+        display: inline-block; /* Make the form group inline to center it */
+        text-align: left; /* Align the labels and inputs inside the group to the left */
+      }
+
+      #templateContainer label {
+        display: block; /* Ensure each label is on its own line */
+        margin-bottom: 10px; /* Add spacing between labels */
+        font-size: 16px; /* Optional: Adjust font size for better readability */
+        cursor: pointer; /* Make the labels clickable */
+      }
+
+      #templateContainer input[type='radio'] {
+        margin-right: 10px; /* Add spacing between the radio button and the label text */
+      }
     </style>
   </head>
   <body>
@@ -130,6 +150,23 @@
             <label for="maxProtein">Max Protein (g)</label>
             <input type="number" id="maxProtein" disabled />
           </div>
+          <div id="templateContainer" style="display: none">
+            <h3>Preference Templates</h3>
+            <div class="form-group">
+              <label>
+                <input type="radio" name="template" value="template1" />
+                Weight Loss & Lean Muscle Maintenance
+              </label>
+              <label>
+                <input type="radio" name="template" value="template2" />
+                Muscle Gain & Strength Building
+              </label>
+              <label>
+                <input type="radio" name="template" value="template3" />
+                Improve Endurance & Overall Health
+              </label>
+            </div>
+          </div>
           <div class="button-group">
             <button type="button" id="editButton">Edit</button>
             <button type="submit" id="saveButton" style="display: none">
@@ -148,6 +185,7 @@
       const editButton = document.getElementById('editButton')
       const saveButton = document.getElementById('saveButton')
       const cancelButton = document.getElementById('cancelButton')
+      const templateContainer = document.getElementById('templateContainer')
 
       function toggleFields(disabled) {
         const inputs = form.querySelectorAll('input')
@@ -166,6 +204,9 @@
       function resetToOriginalValues() {
         const inputs = form.querySelectorAll('input')
         inputs.forEach((input) => {
+          if (input.type === 'radio') {
+            return
+          }
           if (originalValues[input.id] !== undefined) {
             input.value = originalValues[input.id]
           }
@@ -218,6 +259,7 @@
         editButton.style.display = 'none'
         saveButton.style.display = 'inline-block'
         cancelButton.style.display = 'inline-block'
+        templateContainer.style.display = 'block'
       })
 
       cancelButton.addEventListener('click', () => {
@@ -226,6 +268,14 @@
         saveButton.style.display = 'none'
         cancelButton.style.display = 'none'
         editButton.style.display = 'inline-block'
+        templateContainer.style.display = 'none'
+
+        document.querySelectorAll('input[name="template"]').forEach((radio) => {
+          radio.checked = false // Uncheck the radio button
+        })
+
+        // Reapply event listeners to the radio buttons
+        // initializeRadioButtons()
       })
 
       form.addEventListener('submit', async function (e) {
@@ -261,11 +311,65 @@
         saveButton.style.display = 'none'
         cancelButton.style.display = 'none'
         editButton.style.display = 'inline-block'
+        templateContainer.style.display = 'none'
       })
+
+      async function loadTemplate(templateName) {
+        try {
+          // Fetch the preferences template JSON file
+          const response = await fetch('/preference-templates.json')
+          if (!response.ok) {
+            throw new Error('Failed to load preferences template')
+          }
+
+          const templates = await response.json()
+          const template = templates[templateName]
+
+          if (!template) {
+            alert('Template not found')
+            return
+          }
+
+          // Populate the form with the template data
+          console.log('HERE!')
+          console.log(template)
+          document.getElementById('diet').value = template.diet || ''
+          document.getElementById('intolerances').value =
+            template.intolerances || ''
+          document.getElementById('cuisine').value = template.cuisine || ''
+          document.getElementById('excludeIngredients').value =
+            template.excludeIngredients || ''
+          document.getElementById('minCalories').value =
+            template.minCalories || ''
+          document.getElementById('maxCalories').value =
+            template.maxCalories || ''
+          document.getElementById('minCarbs').value = template.minCarbs || ''
+          document.getElementById('maxCarbs').value = template.maxCarbs || ''
+          document.getElementById('minFat').value = template.minFat || ''
+          document.getElementById('maxFat').value = template.maxFat || ''
+          document.getElementById('minProtein').value =
+            template.minProtein || ''
+          document.getElementById('maxProtein').value =
+            template.maxProtein || ''
+        } catch (err) {
+          console.error('Error loading template:', err)
+          alert('Failed to load template')
+        }
+      }
+
+      function initializeRadioButtons() {
+        document.querySelectorAll('input[name="template"]').forEach((radio) => {
+          radio.addEventListener('change', (event) => {
+            const templateName = event.target.value
+            loadTemplate(templateName)
+          })
+        })
+      }
 
       window.onload = function () {
         setHeader()
         loadUserProfile()
+        initializeRadioButtons()
       }
     </script>
 
