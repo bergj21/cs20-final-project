@@ -8,7 +8,7 @@
     <script src="header.js"></script>
     <style>
       .signup-form {
-        max-width: 500px;
+        max-width: 800px;
         margin: 2rem auto;
         background: white;
         padding: 2rem;
@@ -27,10 +27,10 @@
         margin-bottom: 0.25rem;
         font-weight: bold;
       }
-      .signup-form input[type="text"],
-      .signup-form input[type="email"],
-      .signup-form input[type="password"],
-      .signup-form input[type="number"] {
+      .signup-form input[type='text'],
+      .signup-form input[type='email'],
+      .signup-form input[type='password'],
+      .signup-form input[type='number'] {
         width: 100%;
         padding: 0.5rem;
         border: 1px solid #ccc;
@@ -50,6 +50,29 @@
       .signup-form button:hover {
         background: var(--dark-green-color);
       }
+
+      .template-options {
+        display: flex;
+        flex-direction: column; /* Stack the labels vertically */
+        align-items: center; /* Center the labels horizontally */
+        gap: 10px; /* Add spacing between the labels */
+      }
+
+      .template-options label {
+        width: 60%;
+        flex: 1;
+        padding: 1rem;
+        background: var(--off-white-color);
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        text-align: center;
+        cursor: pointer;
+      }
+
+      .template-options input {
+        margin-right: 0.5rem;
+      }
+
       .subscription-options {
         display: flex;
         gap: 1rem;
@@ -101,6 +124,23 @@
 
         <!-- Dietary preferences -->
         <div class="form-group">
+          <label for="diet">Diet</label>
+          <select id="diet">
+            <option value="">Select a diet</option>
+            <option value="Gluten Free">Gluten Free</option>
+            <option value="Ketogenic">Ketogenic</option>
+            <option value="Vegetarian">Vegetarian</option>
+            <option value="Lacto-Vegetarian">Lacto-Vegetarian</option>
+            <option value="Ovo-Vegetarian">Ovo-Vegetarian</option>
+            <option value="Vegan">Vegan</option>
+            <option value="Pescetarian">Pescetarian</option>
+            <option value="Paleo">Paleo</option>
+            <option value="Primal">Primal</option>
+            <option value="Low FODMAP">Low FODMAP</option>
+            <option value="Whole30">Whole30</option>
+          </select>
+        </div>
+        <div class="form-group">
           <label for="intolerances">Intolerances (comma-separated)</label>
           <input
             type="text"
@@ -147,12 +187,33 @@
 
         <hr />
 
+        <!-- Preference Templates -->
+
+        <div id="templateContainer" s>
+          <label>Preference Templates</label>
+          <div class="template-options">
+            <label>
+              <input type="radio" name="template" value="template1" />
+              Weight Loss & Lean Muscle Maintenance
+            </label>
+            <label>
+              <input type="radio" name="template" value="template2" />
+              Muscle Gain & Strength Building
+            </label>
+            <label>
+              <input type="radio" name="template" value="template3" />
+              Improve Endurance & Overall Health
+            </label>
+          </div>
+        </div>
+
         <!-- Subscription Plan -->
         <div class="form-group">
           <label>Choose a Plan</label>
           <div class="subscription-options">
             <label>
-              <input type="radio" name="plan" value="Pro" required /> Pro — $9.99/mo
+              <input type="radio" name="plan" value="Pro" required /> Pro —
+              $9.99/mo
             </label>
             <label>
               <input type="radio" name="plan" value="Elite" /> Elite — $19.99/mo
@@ -165,8 +226,60 @@
     </main>
 
     <script>
+      async function loadTemplate(templateName) {
+        try {
+          // Fetch the preferences template JSON file
+          const response = await fetch('/preference-templates.json')
+          if (!response.ok) {
+            throw new Error('Failed to load preferences template')
+          }
+
+          const templates = await response.json()
+          const template = templates[templateName]
+
+          if (!template) {
+            alert('Template not found')
+            return
+          }
+
+          // Populate the form with the template data
+          document.getElementById('diet').value = template.diet || ''
+          document.getElementById('intolerances').value =
+            template.intolerances || ''
+          document.getElementById('cuisine').value = template.cuisine || ''
+          document.getElementById('excludeIngredients').value =
+            template.excludeIngredients || ''
+          document.getElementById('minCalories').value =
+            template.minCalories || ''
+          document.getElementById('maxCalories').value =
+            template.maxCalories || ''
+          document.getElementById('minCarbs').value = template.minCarbs || ''
+          document.getElementById('maxCarbs').value = template.maxCarbs || ''
+          document.getElementById('minFat').value = template.minFat || ''
+          document.getElementById('maxFat').value = template.maxFat || ''
+          document.getElementById('minProtein').value =
+            template.minProtein || ''
+          document.getElementById('maxProtein').value =
+            template.maxProtein || ''
+        } catch (err) {
+          console.error('Error loading template:', err)
+          alert('Failed to load template')
+        }
+      }
+
+      function initializeRadioButtons() {
+        document.querySelectorAll('input[name="template"]').forEach((radio) => {
+          radio.addEventListener('change', (event) => {
+            const templateName = event.target.value
+            loadTemplate(templateName)
+          })
+        })
+      }
+
       window.onload = () => {
         setHeader()
+
+        initializeRadioButtons()
 
         document
           .getElementById('signupForm')
@@ -179,7 +292,7 @@
               email: e.target.email.value,
               password: e.target.password.value,
               preferences: {},
-              plan: e.target.plan.value
+              plan: e.target.plan.value,
             }
 
             // include string prefs only if non-empty

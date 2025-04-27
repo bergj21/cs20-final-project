@@ -11,12 +11,13 @@
     <script src="header.js"></script>
     <style>
       .profile-container {
-        max-width: 600px;
+        max-width: 800px;
         margin: auto;
         background: white;
         padding: 20px;
         border-radius: 10px;
         box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        margin-bottom: 20px;
       }
       .profile-container h2 {
         text-align: center;
@@ -52,6 +53,29 @@
       #cancelButton {
         background-color: #6c757d;
       }
+
+      .template-options {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 10px;
+        margin-bottom: 10px;
+      }
+
+      .template-options label {
+        width: 60%;
+        flex: 1;
+        padding: 1rem;
+        background: var(--off-white-color);
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        text-align: center;
+        cursor: pointer;
+      }
+
+      .template-options input {
+        margin-right: 0.5rem;
+      }
     </style>
   </head>
   <body>
@@ -84,7 +108,20 @@
           <h3>Preferences</h3>
           <div class="form-group">
             <label for="diet">Diet</label>
-            <input type="text" id="diet" disabled />
+            <select id="diet" disabled>
+              <option value="">Select a diet</option>
+              <option value="Gluten Free">Gluten Free</option>
+              <option value="Ketogenic">Ketogenic</option>
+              <option value="Vegetarian">Vegetarian</option>
+              <option value="Lacto-Vegetarian">Lacto-Vegetarian</option>
+              <option value="Ovo-Vegetarian">Ovo-Vegetarian</option>
+              <option value="Vegan">Vegan</option>
+              <option value="Pescetarian">Pescetarian</option>
+              <option value="Paleo">Paleo</option>
+              <option value="Primal">Primal</option>
+              <option value="Low FODMAP">Low FODMAP</option>
+              <option value="Whole30">Whole30</option>
+            </select>
           </div>
           <div class="form-group">
             <label for="intolerances">Intolerances</label>
@@ -130,6 +167,23 @@
             <label for="maxProtein">Max Protein (g)</label>
             <input type="number" id="maxProtein" disabled />
           </div>
+          <div id="templateContainer" style="display: none">
+            <h3>Preference Templates</h3>
+            <div class="template-options">
+              <label>
+                <input type="radio" name="template" value="template1" />
+                Weight Loss & Lean Muscle Maintenance
+              </label>
+              <label>
+                <input type="radio" name="template" value="template2" />
+                Muscle Gain & Strength Building
+              </label>
+              <label>
+                <input type="radio" name="template" value="template3" />
+                Improve Endurance & Overall Health
+              </label>
+            </div>
+          </div>
           <div class="button-group">
             <button type="button" id="editButton">Edit</button>
             <button type="submit" id="saveButton" style="display: none">
@@ -148,24 +202,28 @@
       const editButton = document.getElementById('editButton')
       const saveButton = document.getElementById('saveButton')
       const cancelButton = document.getElementById('cancelButton')
+      const templateContainer = document.getElementById('templateContainer')
 
       function toggleFields(disabled) {
-        const inputs = form.querySelectorAll('input')
+        const inputs = form.querySelectorAll('input, select')
         inputs.forEach((input) => (input.disabled = disabled))
       }
 
       let originalValues = {}
 
       function storeOriginalValues() {
-        const inputs = form.querySelectorAll('input')
+        const inputs = form.querySelectorAll('input, select')
         inputs.forEach((input) => {
           originalValues[input.id] = input.value
         })
       }
 
       function resetToOriginalValues() {
-        const inputs = form.querySelectorAll('input')
+        const inputs = form.querySelectorAll('input, select')
         inputs.forEach((input) => {
+          if (input.type === 'radio') {
+            return
+          }
           if (originalValues[input.id] !== undefined) {
             input.value = originalValues[input.id]
           }
@@ -218,6 +276,7 @@
         editButton.style.display = 'none'
         saveButton.style.display = 'inline-block'
         cancelButton.style.display = 'inline-block'
+        templateContainer.style.display = 'block'
       })
 
       cancelButton.addEventListener('click', () => {
@@ -226,6 +285,11 @@
         saveButton.style.display = 'none'
         cancelButton.style.display = 'none'
         editButton.style.display = 'inline-block'
+        templateContainer.style.display = 'none'
+
+        document.querySelectorAll('input[name="template"]').forEach((radio) => {
+          radio.checked = false
+        })
       })
 
       form.addEventListener('submit', async function (e) {
@@ -261,11 +325,63 @@
         saveButton.style.display = 'none'
         cancelButton.style.display = 'none'
         editButton.style.display = 'inline-block'
+        templateContainer.style.display = 'none'
       })
+
+      async function loadTemplate(templateName) {
+        try {
+          // Fetch the preferences template JSON file
+          const response = await fetch('/preference-templates.json')
+          if (!response.ok) {
+            throw new Error('Failed to load preferences template')
+          }
+
+          const templates = await response.json()
+          const template = templates[templateName]
+
+          if (!template) {
+            alert('Template not found')
+            return
+          }
+
+          // Populate the form with the template data
+          document.getElementById('diet').value = template.diet || ''
+          document.getElementById('intolerances').value =
+            template.intolerances || ''
+          document.getElementById('cuisine').value = template.cuisine || ''
+          document.getElementById('excludeIngredients').value =
+            template.excludeIngredients || ''
+          document.getElementById('minCalories').value =
+            template.minCalories || ''
+          document.getElementById('maxCalories').value =
+            template.maxCalories || ''
+          document.getElementById('minCarbs').value = template.minCarbs || ''
+          document.getElementById('maxCarbs').value = template.maxCarbs || ''
+          document.getElementById('minFat').value = template.minFat || ''
+          document.getElementById('maxFat').value = template.maxFat || ''
+          document.getElementById('minProtein').value =
+            template.minProtein || ''
+          document.getElementById('maxProtein').value =
+            template.maxProtein || ''
+        } catch (err) {
+          console.error('Error loading template:', err)
+          alert('Failed to load template')
+        }
+      }
+
+      function initializeRadioButtons() {
+        document.querySelectorAll('input[name="template"]').forEach((radio) => {
+          radio.addEventListener('change', (event) => {
+            const templateName = event.target.value
+            loadTemplate(templateName)
+          })
+        })
+      }
 
       window.onload = function () {
         setHeader()
         loadUserProfile()
+        initializeRadioButtons()
       }
     </script>
 
