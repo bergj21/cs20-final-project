@@ -27,7 +27,10 @@
         margin-bottom: 0.25rem;
         font-weight: bold;
       }
-      .signup-form input {
+      .signup-form input[type="text"],
+      .signup-form input[type="email"],
+      .signup-form input[type="password"],
+      .signup-form input[type="number"] {
         width: 100%;
         padding: 0.5rem;
         border: 1px solid #ccc;
@@ -46,6 +49,22 @@
       }
       .signup-form button:hover {
         background: var(--dark-green-color);
+      }
+      .subscription-options {
+        display: flex;
+        gap: 1rem;
+      }
+      .subscription-options label {
+        flex: 1;
+        padding: 1rem;
+        background: var(--off-white-color);
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        text-align: center;
+        cursor: pointer;
+      }
+      .subscription-options input {
+        margin-right: 0.5rem;
       }
     </style>
   </head>
@@ -126,6 +145,21 @@
           <input type="number" id="maxProtein" placeholder="Max" />
         </div>
 
+        <hr />
+
+        <!-- Subscription Plan -->
+        <div class="form-group">
+          <label>Choose a Plan</label>
+          <div class="subscription-options">
+            <label>
+              <input type="radio" name="plan" value="Pro" required /> Pro — $9.99/mo
+            </label>
+            <label>
+              <input type="radio" name="plan" value="Elite" /> Elite — $19.99/mo
+            </label>
+          </div>
+        </div>
+
         <button type="submit">Sign Up</button>
       </form>
     </main>
@@ -145,6 +179,7 @@
               email: e.target.email.value,
               password: e.target.password.value,
               preferences: {},
+              plan: e.target.plan.value
             }
 
             // include string prefs only if non-empty
