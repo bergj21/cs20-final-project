@@ -1,13 +1,13 @@
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="keywords" content="fitness, meal prep, healthy, groceries, food, activity, lifestyle">
-    <title>Contact Us</title>
+    <title>Contact Us - Meal Prep Buddy</title>
     <link rel="stylesheet" href="styles.css" />
     <script src="header.js"></script>
-    <style>
-    </style>
+   
 </head>
 <body>
     <header>
@@ -21,18 +21,25 @@
     </header>
 
     <main>
-        
+        <div class="contact-container">
+            <h2>Contact Us!</h2>
+            <form class="contact-form" action="/submit_contact" method="POST">
+                <input type="text" name="name" placeholder="Your Name" required />
+                <input type="email" name="email" placeholder="Your Email" required pattern="^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$" title="Please enter a valid email address." />
+                <textarea name="message" rows="6" placeholder="Your Message" required></textarea>
+                <button type="submit">Send Message</button>
+            </form>
+        </div>
     </main>
-
-    <script>
-        // set up the page
-        window.onload = function() {
-            setHeader();
-        }
-    </script>
 
     <footer>
         <p>&copy; 2025 Meal Prep Buddy. All Rights Reserved.</p>
     </footer>
+
+    <script>
+        window.onload = function() {
+            setHeader();
+        }
+    </script>
 </body>
 </html>

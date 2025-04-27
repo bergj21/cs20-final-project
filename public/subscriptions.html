@@ -1,38 +1,62 @@
+<!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="keywords" content="fitness, meal prep, healthy, groceries, food, activity, lifestyle">
-    <title>Subscriptions</title>
-    <link rel="stylesheet" href="styles.css" />
-    <script src="header.js"></script>
-    <style>
-    </style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="keywords" content="fitness, meal prep, healthy, groceries, food, activity, lifestyle">
+  <title>Subscriptions</title>
+  <link rel="stylesheet" href="styles.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@400;500;700&family=Roboto&display=swap" rel="stylesheet">
+  <script src="header.js"></script>
 </head>
 <body>
-    <header>
-        <a href="index.html">
-            <img src="images/logo.jpg" alt="Logo" class="logo" />
-        </a>
-        <nav>
-            <button class="menu-toggle">☰</button>
-            <ul class="menu"></ul>
-        </nav>
-    </header>
+  <header>
+    <a href="index.html">
+      <img src="images/logo.jpg" alt="Logo" class="logo" />
+    </a>
+    <nav>
+      <button class="menu-toggle">☰</button>
+      <ul class="menu"></ul>
+    </nav>
+  </header>
 
-    <main>
-        
-    </main>
+  <main class="pricing-container">
+    <section class="pricing-card">
+      <h2>Pro</h2>
+      <p class="price">$9.99/month</p>
+      <ul>
+        <li>Personalized weekly meal plans</li>
+        <li>Automatic grocery list generation</li>
+        <li>Basic macro tracking</li>
+        <li>Email support</li>
+      </ul>
+      <a href="signup.html" class="signup-button">Sign Up</a>
+    </section>
 
-    <script>
-        // set up the page
-        window.onload = function() {
-            setHeader();
-        }
-    </script>
+    <section class="pricing-card">
+      <h2>Elite</h2>
+      <p class="price">$19.99/month</p>
+      <ul>
+        <li>Everything in Pro</li>
+        <li>AI-enhanced grocery list generator with store-specific suggestions</li>
+        <li>Advanced macro & calorie tracking with fitness app sync</li>
+        <li>1-on-1 virtual nutritionist consultations (monthly)</li>
+        <li>Priority customer support</li>
+        <li>Exclusive recipes & premium content</li>
+      </ul>
+      <a href="signup.html" class="signup-button">Sign Up</a>
+    </section>
+  </main>
 
-    <footer>
-        <p>&copy; 2025 Meal Prep Buddy. All Rights Reserved.</p>
-    </footer>
+  <script>
+    // set up the page
+    window.onload = function() {
+      setHeader();
+    }
+  </script>
+
+  <footer>
+    <p>&copy; 2025 Meal Prep Buddy. All Rights Reserved.</p>
+  </footer>
 </body>
 </html>
