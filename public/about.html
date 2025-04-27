@@ -6,6 +6,88 @@
   <meta name="keywords" content="fitness, meal prep, healthy, groceries, food, activity, lifestyle">
   <title>About Us - Meal Prep Buddy</title>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+
+  <style>
+    .team-member:hover {
+      transform: translateY(-5px);
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+    }
+    section:hover {
+      box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
+      transition: box-shadow 0.3s ease;
+    }
+    .section-content {
+      max-width: 600px;
+      margin: 2rem auto;
+      text-align: left;
+      padding: 2rem;
+      background-color: #f9f9f9;
+      border-radius: 8px;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+    }
+    .features ul {
+      list-style: none;
+      padding: 0;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 20px;
+    }
+    .features li {
+      background: #fafafa;
+      padding: 20px;
+      border-radius: 10px;
+      flex: 1 1 250px;
+      box-shadow: 0 3px 6px rgba(0, 0, 0, 0.05);
+      transition: transform 0.3s ease;
+    }
+    .features li:hover {
+      transform: translateY(-5px);
+    }
+    .team-member img {
+      width: 120px;
+      height: 120px;
+      object-fit: cover;
+      border-radius: 50%;
+      margin-bottom: 15px;
+    }
+    .team-members {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 30px;
+      justify-items: center;
+    }
+    .team-member {
+      background: #fafafa;
+      padding: 20px;
+      border-radius: 10px;
+      width: 100%;
+      max-width: 300px;
+      box-shadow: 0 3px 6px rgba(0, 0, 0, 0.05);
+      text-align: center;
+      transition: transform 0.3s ease;
+    }
+    .styled-list {
+      list-style-type: disc;
+      padding-left: 1.5rem;
+      margin-top: 1rem;
+      color: #333;
+      font-size: 1.1rem;
+      line-height: 1.6;
+    }
+    .styled-list li {
+      margin-bottom: 0.5rem;
+    }
+    .about-page {
+      background-image: url('images/background.jpg');
+      background-size: cover;
+      background-repeat: no-repeat;
+      background-position: center;
+      background-attachment: fixed;
+    }
+  </style>
+
   <link rel="stylesheet" href="styles.css">
 </head>
 <body class="about-page"> <!-- Added class here -->
@@ -26,14 +108,14 @@
 
   <main>
     <section class="section-content">
-        <h2>Why Meal Prep Buddy?</h2>
-        <ul class="styled-list">
-          <li>Save Time: No more hours spent planning, shopping, and cooking every day.</li>
-          <li>Eat Healthier: Professionally designed meals can help meet nutrition goals.</li>
-          <li>Support Fitness Goals: Meals tailored to muscle gain, weight loss, or performance.</li>
-          <li>Customized Plans: Accommodates dietary restrictions like gluten-free, vegan, or allergy-sensitive needs.</li>
-        </ul>
-      </section>
+      <h2>Why Meal Prep Buddy?</h2>
+      <ul class="styled-list">
+        <li>Save Time: No more hours spent planning, shopping, and cooking every day.</li>
+        <li>Eat Healthier: Professionally designed meals can help meet nutrition goals.</li>
+        <li>Support Fitness Goals: Meals tailored to muscle gain, weight loss, or performance.</li>
+        <li>Customized Plans: Accommodates dietary restrictions like gluten-free, vegan, or allergy-sensitive needs.</li>
+      </ul>
+    </section>
 
     <section class="our-team section-content">
       <h2>Meet the Experts</h2>
