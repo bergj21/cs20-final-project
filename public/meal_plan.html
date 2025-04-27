@@ -199,15 +199,19 @@
 
         document.querySelectorAll('.day-button').forEach((button) => {
             button.addEventListener('click', async () => {
-                const day = button.getAttribute('data-day');
+                const day = button.getAttribute('data-day')
                 if (!weeklyPlan) {
                     mealPlanContent.innerHTML = `<p>No meal plan available for ${day}.</p>`;
                     return;
                 }
 
+                console.log('day button called on day: ' + day)
                 const dayPlan = weeklyPlan[day];
+                console.log('what about here?')
+                console.log('Debug: dayPlan:', dayPlan)
+                console.log('Debug: weeklyPlan:', weeklyPlan)
                 const nutrients = dayPlan.nutrients || {};
-
+                console.log('and here?')
                 // Clear and reset the meal plan content
                 mealPlanContent.innerHTML = `
                     <h2>${day.charAt(0).toUpperCase() + day.slice(1)}'s Meal Plan</h2>
@@ -219,9 +223,11 @@
                     <div class="nutrient"><p>Protein (g)</p><p>${nutrients.protein || 0}</p></div>
                     </div>
                 `;
+                console.log('got here')
 
                 // Now dynamically add each meal using createRecipeCard
                 const mealCardsContainer = document.getElementById('meal-cards');
+                console.log('and got here')
 
                 for (const meal of dayPlan.meals) {
                     if (meal) {
