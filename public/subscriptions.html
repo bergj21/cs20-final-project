@@ -17,6 +17,7 @@
       justify-content: center;
       flex-wrap: wrap;
       margin-top: 40px;
+      padding: 20px;
     }
 
     /* Pricing card style */
@@ -95,7 +96,15 @@
 
   <script>
     window.onload = function() {
-      setHeader();
+        setHeader();
+
+        const userId = localStorage.getItem('userId');
+        if (userId) {
+            const signUpButtons = document.querySelectorAll('.signup-button');
+            signUpButtons.forEach(button => {
+                button.style.display = 'none';
+            });
+        }
     }
   </script>
 
