@@ -310,6 +310,23 @@ header {
   margin-bottom: 0;
 }
 
+@media (max-width: 670px) {
+    .min-max-group {
+      flex-direction: column; /* Stack elements vertically */
+      gap: 15px; /* Add spacing between the stacked elements */
+    }
+  
+    .min-max-group label {
+      justify-content: flex-start; /* Align labels to the start */
+      flex-direction: column; /* Stack label content vertically */
+      gap: 5px; /* Add spacing between label text and input */
+    }
+  
+    .min-max-group input[type='number'] {
+      width: 100%; /* Ensure inputs take full width */
+    }
+}
+
 .form-group {
   display: flex;
   flex-direction: column;

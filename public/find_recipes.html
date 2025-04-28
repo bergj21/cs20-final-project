@@ -18,6 +18,20 @@
             flex-wrap: wrap;
         }
 
+        @media (max-width: 1600px) {
+            .form-results-wrapper {
+                flex-direction: column; /* Stack items vertically */
+                gap: 20px; /* Add spacing between stacked items */
+                padding: 0 10px; /* Adjust padding for smaller screens */
+            }
+
+            .preferenceForm,
+            .results-panel {
+                flex: 1 1 auto; /* Allow items to adjust their size */
+                max-width: 100%; /* Prevent horizontal overflow */
+            }
+        }
+
         .results-panel {
             flex: 1 1 500px;
             background-color: white;
