@@ -16,6 +16,22 @@
       box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
       transition: box-shadow 0.3s ease;
     }
+
+    .small-section {
+    width: 630px;
+    height: 100px; 
+    margin: 1rem auto;
+    padding: 1rem;
+    background-color: #f9f9f9;
+    border-radius: 8px;
+    text-align: center;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+
+    display: flex;           
+    align-items: center;     
+    justify-content: center; 
+  }
+
     .section-content {
       max-width: 600px;
       margin: 1rem auto;
@@ -85,71 +101,140 @@
       background-position: center;
       background-attachment: fixed;
     }
-
     .page-title {
-  text-align: center;
-  margin-top: 60px;
-  font-family: 'Inter', sans-serif;
+      text-align: center;
+      margin-top: 60px;
+      font-family: 'Inter', sans-serif;
+    }
+
+    /* ------------------------------------------ */
+    /* Responsive tweaks                          */
+    /* ------------------------------------------ */
+
+    /* 1. Tablet & below */
+    @media (max-width: 768px) {
+      nav {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+      }
+      .menu {
+        display: none;
+        flex-direction: column;
+        width: 100%;
+        margin: 0.5rem 0;
+        background: rgba(255,255,255,0.9);
+        padding: 1rem 0;
+        list-style: none;
+      }
+      .menu.show {
+        display: flex;
+      }
+      .menu li {
+        margin: 0.5rem 0;
+        text-align: center;
+      }
+      .logo {
+        max-width: 100px;
+        height: auto;
+      }
+      .page-title {
+        font-size: 1.8rem;
+        margin-top: 30px;
+      }
+    }
+
+    /* 2. Phone & below */
+    @media (max-width: 600px) {
+      .section-content {
+        margin: 1rem;
+        padding: 1.5rem;
+      }
+      .features ul {
+        flex-direction: column;
+        gap: 1rem;
+      }
+      .team-members {
+        grid-template-columns: 1fr;
+        gap: 1.5rem;
+      }
+      section.section-content h2,
+      .our-team h2 {
+        font-size: 1.5rem;
+      }
+    }
+
+    /* 3. Ultra-small phones */
+    @media (max-width: 400px) {
+      .page-title {
+        font-size: 1.4rem;
+      }
+      body {
+        font-size: 0.95rem;
+      }
     }
   </style>
 
   <link rel="stylesheet" href="styles.css">
 </head>
+
 <body class="about-page">
-    <header>
-      <a href="index.html">
-        <img src="images/logo.jpg" alt="Meal Prep Buddy Logo" class="logo" />
-      </a>
-      <nav>
-        <button class="menu-toggle" onclick="document.querySelector('nav ul').classList.toggle('show')">☰</button>
-        <ul class="menu">
-          <li><a href="index.html">Home</a></li>
-          <li><a href="about.html">About</a></li>
-          <li><a href="services.html">Services</a></li>
-          <li><a href="contact.html">Contact</a></li>
-        </ul>
-      </nav>
-    </header>
-  
-    <h1 class="page-title">About Us</h1>
-  
-    <main>
-      <section class="section-content">
-        <h2>Why Meal Prep Buddy?</h2>
-        <ul class="styled-list">
-          <li>Save Time: No more hours spent planning, shopping, and cooking every day.</li>
-          <li>Eat Healthier: Professionally designed meals can help meet nutrition goals.</li>
-          <li>Support Fitness Goals: Meals tailored to muscle gain, weight loss, or performance.</li>
-          <li>Customized Plans: Accommodates dietary restrictions like gluten-free, vegan, or allergy-sensitive needs.</li>
-        </ul>
-      </section>
-  
-      <section class="our-team section-content">
-        <h2>Meet the Experts</h2>
-        <div class="team-members">
-          <div class="team-member">
-            <img src="images/Bob.jpg" alt="Bob">
-            <h3>Bob Bobberson</h3>
-            <p>Nutritionist with 10+ years crafting wellness strategies.</p>
-          </div>
-          <div class="team-member">
-            <img src="images/Bailey.jpg" alt="Bailey">
-            <h3>Bailey Baylerson</h3>
-            <p>Dietitian specializing in balanced, practical eating plans.</p>
-          </div>
-          <div class="team-member">
-            <img src="images/Frank.jpg" alt="Frank">
-            <h3>Frank Franky</h3>
-            <p>Sports nutrition counselor advocating sustainable habits.</p>
-          </div>
-          <div class="team-member">
-            <img src="images/Andrew.jpg" alt="Andrew">
-            <h3>Andrew Anderson</h3>
-            <p>Meal planning innovator for all dietary needs.</p>
-          </div>
+  <header>
+    <a href="index.html">
+      <img src="images/logo.jpg" alt="Meal Prep Buddy Logo" class="logo" />
+    </a>
+    <nav>
+      <button class="menu-toggle" onclick="document.querySelector('nav ul').classList.toggle('show')">☰</button>
+      <ul class="menu">
+        <li><a href="index.html">Home</a></li>
+        <li><a href="about.html">About</a></li>
+        <li><a href="services.html">Services</a></li>
+        <li><a href="contact.html">Contact</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <main>
+    <section class="small-section">
+        <h1 class="page-title">About Us</h1>
+    </section>
+
+    <section class="section-content">
+      <h2>Why Meal Prep Buddy?</h2>
+      <ul class="styled-list">
+        <li>Save Time: No more hours spent planning, shopping, and cooking every day.</li>
+        <li>Eat Healthier: Professionally designed meals can help meet nutrition goals.</li>
+        <li>Support Fitness Goals: Meals tailored to muscle gain, weight loss, or performance.</li>
+        <li>Customized Plans: Accommodates dietary restrictions like gluten-free, vegan, or allergy-sensitive needs.</li>
+      </ul>
+    </section>
+
+    <section class="our-team section-content">
+      <h2>Meet the Experts</h2>
+      <div class="team-members">
+        <div class="team-member">
+          <img src="images/Bob.jpg" alt="Bob">
+          <h3>Bob Bobberson</h3>
+          <p>Nutritionist with 10+ years crafting wellness strategies.</p>
         </div>
-      </section>
-    </main>
+        <div class="team-member">
+          <img src="images/Bailey.jpg" alt="Bailey">
+          <h3>Bailey Baylerson</h3>
+          <p>Dietitian specializing in balanced, practical eating plans.</p>
+        </div>
+        <div class="team-member">
+          <img src="images/Frank.jpg" alt="Frank">
+          <h3>Frank Franky</h3>
+          <p>Sports nutrition counselor advocating sustainable habits.</p>
+        </div>
+        <div class="team-member">
+          <img src="images/Andrew.jpg" alt="Andrew">
+          <h3>Andrew Anderson</h3>
+          <p>Meal planning innovator for all dietary needs.</p>
+        </div>
+      </div>
+    </section>
+  </main>
 
   <footer>
     <p>&copy; 2025 Meal Prep Buddy. All Rights Reserved.</p>
