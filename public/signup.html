@@ -7,10 +7,16 @@
     <link rel="stylesheet" href="styles.css" />
     <script src="header.js"></script>
     <style>
+    /* Page background */
+      body {
+        background: url('images/background-signup.jpg') no-repeat center center fixed;
+        background-size: cover;
+      }
+
       .signup-form {
         max-width: 800px;
         margin: 2rem auto;
-        background: white;
+        background: rgba(255, 255, 255, 0.9);
         padding: 2rem;
         border-radius: 10px;
         box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
@@ -30,7 +36,8 @@
       .signup-form input[type='text'],
       .signup-form input[type='email'],
       .signup-form input[type='password'],
-      .signup-form input[type='number'] {
+      .signup-form input[type='number'],
+      .signup-form select {
         width: 100%;
         padding: 0.5rem;
         border: 1px solid #ccc;
@@ -46,16 +53,17 @@
         font-weight: bold;
         margin-top: 1rem;
         cursor: pointer;
+        transition: filter 0.2s;
       }
       .signup-form button:hover {
-        background: var(--dark-green-color);
+        filter: var(--dark-green-color);
       }
 
       .template-options {
         display: flex;
-        flex-direction: column; /* Stack the labels vertically */
-        align-items: center; /* Center the labels horizontally */
-        gap: 10px; /* Add spacing between the labels */
+        flex-direction: column;
+        align-items: center;
+        gap: 10px;
       }
 
       .template-options label {
