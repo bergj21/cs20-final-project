@@ -5,6 +5,16 @@ const routes = require('./routes.js')
 const app = express()
 const PORT = process.env.PORT || 3000
 
+// ONLY force HTTPS if in production (on Heroku)
+if (process.env.NODE_ENV === 'production') {
+  app.use((req, res, next) => {
+    if (req.header('x-forwarded-proto') !== 'https') {
+      return res.redirect(`https://${req.header('host')}${req.url}`);
+    }
+    next();
+  });
+}
+
 // Static files and body parsing
 app.use(express.static('public'))
 app.use(express.urlencoded({ extended: true }))
