@@ -1,246 +1,240 @@
+
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta
-      name="keywords"
-      content="fitness, meal prep, healthy, groceries, food, activity, lifestyle"
-    />
-    <title>Meal Plan</title>
-    <link rel="stylesheet" href="styles.css" />
-    <script src="header.js"></script>
-    <script src="apiHandler.js"></script>
-    <style>
-      .container {
-        max-width: 900px;
-        margin: auto;
-        background: white;
-        padding: 30px;
-        border-radius: 10px;
-        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="keywords" content="fitness, meal prep, healthy, groceries, food, activity, lifestyle" />
+  <title>Meal Plan</title>
+  <link rel="stylesheet" href="styles.css" />
+  <script src="header.js"></script>
+  <script src="apiHandler.js"></script>
+  <style>
+    .container {
+      max-width: 900px;
+      margin: auto;
+      background: white;
+      padding: 30px;
+      border-radius: 10px;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    }
+    .meal {
+      display: flex;
+      align-items: center;
+      margin-bottom: 20px;
+      border-bottom: 1px solid #ddd;
+      padding-bottom: 15px;
+    }
+    .meal img {
+      width: 120px;
+      height: auto;
+      border-radius: 8px;
+      margin-right: 20px;
+    }
+    .meal-info {
+      flex-grow: 1;
+    }
+    .meal-info h3 {
+      margin: 0 0 10px;
+    }
+    .meal-info a {
+      color: #007bff;
+      text-decoration: none;
+    }
+    #generateButton {
+      background-color: var(--green-color);
+      color: white;
+      border: none;
+      padding: 12px 20px;
+      border-radius: 6px;
+      font-size: 16px;
+      cursor: pointer;
+      margin: 20px auto;
+      display: block;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      transition: background-color 0.3s ease;
+    }
+    #generateButton:hover {
+      background-color: var(--dark-green-color);
+    }
+    .day-button {
+      background-color: #007bff;
+      color: white;
+      border: none;
+      padding: 10px 15px;
+      margin: 5px;
+      border-radius: 5px;
+      cursor: pointer;
+      font-size: 14px;
+    }
+    .day-button:hover {
+      background-color: #0056b3;
+    }
+    /* Table styling */
+    .nutrients-table {
+      width: 100%;
+      margin-top: 30px;
+      border-collapse: collapse;
+    }
+    .nutrients-table th,
+    .nutrients-table td {
+      padding: 10px;
+      text-align: left;
+    }
+    .nutrients-table th {
+      border-bottom: 2px solid #ccc;
+    }
+    .nutrients-table tr:nth-child(even) {
+      background-color: #f9f9f9;
+    }
+  </style>
+</head>
+
+<body>
+  <header>
+    <a href="index.html">
+      <img src="images/logo.jpg" alt="Logo" class="logo" />
+    </a>
+    <nav>
+      <button class="menu-toggle">☰</button>
+      <ul class="menu"></ul>
+    </nav>
+  </header>
+
+  <main>
+    <div id="dayButtons" style="margin: 20px 0; text-align: center">
+      <h1>Weekly Meal Plan</h1>
+      <button class="day-button" data-day="monday">Monday</button>
+      <button class="day-button" data-day="tuesday">Tuesday</button>
+      <button class="day-button" data-day="wednesday">Wednesday</button>
+      <button class="day-button" data-day="thursday">Thursday</button>
+      <button class="day-button" data-day="friday">Friday</button>
+      <button class="day-button" data-day="saturday">Saturday</button>
+      <button class="day-button" data-day="sunday">Sunday</button>
+    </div>
+
+    <div class="container">
+      <div id="mealPlanContent"></div>
+    </div>
+
+    <button id="generateButton">Generate Weekly Meal Plan</button>
+  </main>
+
+  <script>
+    const generateButton = document.getElementById('generateButton')
+    const dayButtons = document.getElementById('dayButtons')
+    const mealPlanContent = document.getElementById('mealPlanContent')
+    let userId = localStorage.userId
+    let weeklyPlan = null
+
+    async function submitWeeklyMealPlan(weeklyPlan, userId) {
+      const res = await fetch('/save-weekly-plan', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ userId, weeklyPlan }),
+      })
+      const data = await res.json()
+      console.log('Saved:', data)
+    }
+
+    async function getWeeklyMealPlan(userId) {
+      const response = await fetch(`/get-user?userId=${userId}`)
+      if (!response.ok) {
+        alert('Could not load preferences.')
+        return
       }
-      .meal {
-        display: flex;
-        align-items: center;
-        margin-bottom: 20px;
-        border-bottom: 1px solid #ddd;
-        padding-bottom: 15px;
-      }
-      .meal img {
-        width: 120px;
-        height: auto;
-        border-radius: 8px;
-        margin-right: 20px;
-      }
-      .meal-info {
-        flex-grow: 1;
-      }
-      .meal-info h3 {
-        margin: 0 0 10px;
-      }
-      .meal-info a {
-        color: #007bff;
-        text-decoration: none;
-      }
-      .nutrients {
-        margin-top: 30px;
-        padding-top: 15px;
-        border-top: 2px solid #ccc;
-        display: flex;
-        justify-content: space-around;
-        font-weight: bold;
-      }
-      .nutrient {
-        text-align: center;
+      const user = await response.json()
+      return getRecipesByIds(user.weeklyPlan)
+    }
+
+    window.onload = async function () {
+      setHeader()
+      if (!userId) {
+        alert('User ID not found. Please log in.')
+        return
       }
 
-      #generateButton {
-        background-color: var(--green-color);
-        color: white;
-        border: none;
-        padding: 12px 20px;
-        border-radius: 6px;
-        font-size: 16px;
-        cursor: pointer;
-        margin: 20px auto;
-        display: block;
-        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-        transition: background-color 0.3s ease;
-      }
-
-      #generateButton:hover {
-        background-color: var(--dark-green-color);
-      }
-
-      .day-button {
-        background-color: #007bff;
-        color: white;
-        border: none;
-        padding: 10px 15px;
-        margin: 5px;
-        border-radius: 5px;
-        cursor: pointer;
-        font-size: 14px;
-      }
-
-      .day-button:hover {
-        background-color: #0056b3;
-      }
-      /* TODO: Double check the functionality for this page. Ran out of api calls when trying to verify */
-    </style>
-  </head>
-  <body>
-    <header>
-      <a href="index.html">
-        <img src="images/logo.jpg" alt="Logo" class="logo" />
-      </a>
-      <nav>
-        <button class="menu-toggle">☰</button>
-        <ul class="menu"></ul>
-      </nav>
-    </header>
-
-    <main>
-      <div
-        id="dayButtons"
-        style="margin: 20px 0px 20px 0px; text-align: center"
-      >
-        <h1>Weekly Meal Plan</h1>
-        <button class="day-button" data-day="monday">Monday</button>
-        <button class="day-button" data-day="tuesday">Tuesday</button>
-        <button class="day-button" data-day="wednesday">Wednesday</button>
-        <button class="day-button" data-day="thursday">Thursday</button>
-        <button class="day-button" data-day="friday">Friday</button>
-        <button class="day-button" data-day="saturday">Saturday</button>
-        <button class="day-button" data-day="sunday">Sunday</button>
-      </div>
-      <div class="container">
-        <div id="mealPlanContent"></div>
-      </div>
-      <button id="generateButton">Generate Weekly Meal Plan</button>
-    </main>
-
-    <script>
-      const generateButton = document.getElementById('generateButton')
-      const dayButtons = document.getElementById('dayButtons')
-      const mealPlanContent = document.getElementById('mealPlanContent')
-      let userId = localStorage.userId
-      let weeklyPlan = null
-
-      async function submitWeeklyMealPlan(weeklyPlan, userId) {
-        const res = await fetch('/save-weekly-plan', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ userId, weeklyPlan }),
-        })
-
-        const data = await res.json()
-        console.log('Saved:', data)
-      }
-
-      async function getWeeklyMealPlan(userId) {
-        const response = await fetch(`/get-user?userId=${userId}`)
-        if (!response.ok) {
-          alert('Could not load preferences.')
-          return
+      try {
+        weeklyPlan = await getWeeklyMealPlan(userId)
+        if (weeklyPlan) {
+          console.log('Weekly meal plan loaded:', weeklyPlan)
+        } else {
+          console.log('No weekly meal plan found for the user.')
         }
-        const user = await response.json()
-        return getRecipesByIds(user.weeklyPlan)
+      } catch (err) {
+        console.error('Failed to load weekly meal plan:', err)
       }
 
-      window.onload = async function () {
-        setHeader()
-        if (!userId) {
-            alert('User ID not found. Please log in.')
-            return
-        }
-
+      generateButton.addEventListener('click', async () => {
         try {
-          weeklyPlan = await getWeeklyMealPlan(userId)
+          const response = await fetch(`/get-user?userId=${userId}`)
+          if (!response.ok) {
+            alert('Could not load preferences.')
+            return
+          }
 
-          if (weeklyPlan) {
-            console.log('Weekly meal plan loaded:', weeklyPlan)
-          } else {
-            console.log('No weekly meal plan found for the user.')
+          const user = await response.json()
+          weeklyPlan = await generateMealPlan(user.preferences, 'week')
+          console.log('Generated weekly meal plan:', weeklyPlan)
+
+          try {
+            await submitWeeklyMealPlan(weeklyPlan, userId)
+            alert('Weekly meal plan generated! Click a day to view its plan.')
+            mealPlanContent.innerHTML = `<p>Weekly meal plan generated! Click a day to view its plan.</p>`
+          } catch (err) {
+            console.error('Failed to save weekly meal plan:', err)
           }
         } catch (err) {
-          console.error('Failed to load weekly meal plan:', err)
+          console.error('Failed to fetch user preferences:', err)
+          alert('Server error while loading preferences.')
         }
+      })
 
-        generateButton.addEventListener('click', async () => {
-          try {
-            const response = await fetch(`/get-user?userId=${userId}`)
-            if (!response.ok) {
-              alert('Could not load preferences.')
-              return
+      document.querySelectorAll('.day-button').forEach((button) => {
+        button.addEventListener('click', async () => {
+          const day = button.getAttribute('data-day')
+          if (!weeklyPlan || !weeklyPlan[day]) {
+            mealPlanContent.innerHTML = `<p>No meal plan available for ${day.charAt(0).toUpperCase() + day.slice(1)}.</p>`
+            return
+          }
+
+          const dayPlan = weeklyPlan[day]
+          const nutrients = dayPlan.nutrients || {}
+
+          mealPlanContent.innerHTML = `
+            <h2>${day.charAt(0).toUpperCase() + day.slice(1)}'s Meal Plan</h2>
+            <div id="meal-cards" style="display: flex; flex-wrap: wrap; gap: 20px;"></div>
+
+            <table class="nutrients-table">
+              <thead>
+                <tr>
+                  <th>Nutrient</th>
+                  <th>Amount</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr><td>Calories</td><td>${nutrients.calories || 0}</td></tr>
+                <tr><td>Carbs (g)</td><td>${nutrients.carbohydrates || 0}</td></tr>
+                <tr><td>Fat (g)</td><td>${nutrients.fat || 0}</td></tr>
+                <tr><td>Protein (g)</td><td>${nutrients.protein || 0}</td></tr>
+              </tbody>
+            </table>
+          `
+
+          const mealCardsContainer = document.getElementById('meal-cards')
+
+          for (const meal of dayPlan.meals) {
+            if (meal) {
+              const recipeCard = await createRecipeCard(meal, false)
+              mealCardsContainer.appendChild(recipeCard)
             }
-
-            const user = await response.json()
-            weeklyPlan = await generateMealPlan(user.preferences, 'week')
-            console.log('Generated weekly meal plan:', weeklyPlan)
-
-            try {
-              await submitWeeklyMealPlan(weeklyPlan, userId)
-              alert('Weekly meal plan generated! Click a day to view its plan.')
-              mealPlanContent.innerHTML = `<p>Weekly meal plan generated! Click a day to view its plan.</p>`
-            } catch (err) {
-              console.error('Failed to save weekly meal plan:', err)
-            }
-          } catch (err) {
-            console.error('Failed to fetch user preferences:', err)
-            alert('Server error while loading preferences.')
           }
         })
+      })
+    }
+  </script>
 
-        document.querySelectorAll('.day-button').forEach((button) => {
-          button.addEventListener('click', async () => {
-            const day = button.getAttribute('data-day')
-            if (!weeklyPlan || !weeklyPlan[day]) {
-              mealPlanContent.innerHTML = `<p>No meal plan available for ${day.charAt(0).toUpperCase() + day.slice(1)}.</p>`
-              return
-            }
-
-            const dayPlan = weeklyPlan[day]
-            const nutrients = dayPlan.nutrients || {}
-
-            // Clear and reset the meal plan content
-            mealPlanContent.innerHTML = `
-                    <h2>${
-                      day.charAt(0).toUpperCase() + day.slice(1)
-                    }'s Meal Plan</h2>
-                    <div id="meal-cards" style="display: flex; flex-wrap: wrap; gap: 20px;"></div>
-                    <div class="nutrients">
-                    <div class="nutrient"><p>Calories</p><p>${
-                      nutrients.calories || 0
-                    }</p></div>
-                    <div class="nutrient"><p>Carbs (g)</p><p>${
-                      nutrients.carbohydrates || 0
-                    }</p></div>
-                    <div class="nutrient"><p>Fat (g)</p><p>${
-                      nutrients.fat || 0
-                    }</p></div>
-                    <div class="nutrient"><p>Protein (g)</p><p>${
-                      nutrients.protein || 0
-                    }</p></div>
-                    </div>
-                `
-
-            // Now dynamically add each meal using createRecipeCard
-            const mealCardsContainer = document.getElementById('meal-cards')
-
-            for (const meal of dayPlan.meals) {
-              if (meal) {
-                const recipeCard = await createRecipeCard(meal, false)
-                mealCardsContainer.appendChild(recipeCard)
-              }
-            }
-          })
-        })
-      }
-    </script>
-
-    <footer>
-      <p>&copy; 2025 Meal Prep Buddy. All Rights Reserved.</p>
-    </footer>
-  </body>
+  <footer>
+    <p>&copy; 2025 Meal Prep Buddy. All Rights Reserved.</p>
+  </footer>
+</body>
 </html>
