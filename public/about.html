@@ -87,9 +87,76 @@
     }
 
     .page-title {
-  text-align: center;
-  margin-top: 60px;
-  font-family: 'Inter', sans-serif;
+      text-align: center;
+      margin-top: 60px;
+      font-family: 'Inter', sans-serif;
+    }
+
+    /* ------------------------------------------ */
+    /* Responsive tweaks                          */
+    /* ------------------------------------------ */
+
+    /* 1. Tablet & below */
+    @media (max-width: 768px) {
+      nav {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+      }
+      .menu {
+        display: none;
+        flex-direction: column;
+        width: 100%;
+        margin: 0.5rem 0;
+        background: rgba(255,255,255,0.9);
+        padding: 1rem 0;
+        list-style: none;
+      }
+      .menu.show {
+        display: flex;
+      }
+      .menu li {
+        margin: 0.5rem 0;
+        text-align: center;
+      }
+      .logo {
+        max-width: 100px;
+        height: auto;
+      }
+      .page-title {
+        font-size: 1.8rem;
+        margin-top: 30px;
+      }
+    }
+
+    /* 2. Phone & below */
+    @media (max-width: 600px) {
+      .section-content {
+        margin: 1rem;
+        padding: 1.5rem;
+      }
+      .features ul {
+        flex-direction: column;
+        gap: 1rem;
+      }
+      .team-members {
+        grid-template-columns: 1fr;
+        gap: 1.5rem;
+      }
+      section.section-content h2,
+      .our-team h2 {
+        font-size: 1.5rem;
+      }
+    }
+
+    /* 3. Ultra-small phones */
+    @media (max-width: 400px) {
+      .page-title {
+        font-size: 1.4rem;
+      }
+      body {
+        font-size: 0.95rem;
+      }
     }
   </style>
 
