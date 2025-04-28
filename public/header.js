@@ -56,16 +56,6 @@ function setHeader() {
       signupItem.innerHTML = `<a href="signup.html">Sign Up</a>`;
       menu.appendChild(signupItem);
     }
-  }
-  
-  // Expose for use in HTML
-  window.setHeader = setHeader;
-  
-  // Logout helper (if not using inline)
-  function logout() {
-    localStorage.removeItem('userId');
-    window.location.href = 'index.html';
-  }
-  window.logout = logout;
+}
   
   
