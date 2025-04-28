@@ -1,13 +1,20 @@
 <html lang="en">
 <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="keywords" content="fitness, meal prep, healthy, groceries, food, activity, lifestyle">
-    <title>Recipes</title>
-    <link rel="stylesheet" href="styles.css" />
-    <script src="header.js"></script>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="keywords" content="fitness, meal prep, healthy, groceries, food, activity, lifestyle">
+  <title>Recipes</title>
+  <link rel="stylesheet" href="styles.css" />
+  <script src="header.js"></script>
 
-  <style>    
+  <style>
+    /* Background Image */
+    body {
+      background: url('images/backgroundhome.jpg') no-repeat center center fixed;
+      background-size: cover;
+      font-family: sans-serif;
+    }
+
     main.main-content {
       padding: 2rem 1rem;
     }
@@ -17,7 +24,7 @@
       text-align: center;
       max-width: 800px;
       margin: 0 auto 3rem;
-      background: white;
+      background: rgba(255,255,255,0.9);
       padding: 20px;
       border-radius: 10px;
       box-shadow: 0 2px 8px rgba(0,0,0,0.1);
@@ -26,14 +33,16 @@
       font-size: 2.5em;
       color: var(--dark-green-color);
     }
+    section.welcome p#welcome-msg,
+    section.welcome p.lead {
+      color: var(--charcoal-color);
+    }
     section.welcome p#welcome-msg {
       font-size: 1.2em;
-      color: var(--charcoal-color);
       margin: 1rem 0;
     }
     section.welcome p.lead {
       font-size: 1.1em;
-      color: var(--charcoal-color);
       margin-bottom: 1.5rem;
       line-height: 1.5;
     }
@@ -49,7 +58,7 @@
       transition: background 0.2s;
     }
     a.submit-btn:hover {
-      background: darken(var(--turquoise-color),10%);
+      background: #30b0b0;
     }
 
     /* Feature Highlights */
@@ -76,6 +85,7 @@
     .highlight-card img {
       width: 100px;
       margin: 1rem 0;
+      border-radius: 80%; /* make images rounded */
     }
 
     /* Tutorial Steps */
@@ -104,8 +114,6 @@
     section.tutorial ol li {
       margin-bottom: 1.5rem;
     }
-
-  
   </style>
 </head>
 
@@ -129,9 +137,7 @@
         Personalized meal plans, thousands of recipes, and auto-generated grocery lists—all in one intuitive platform.
       </p>
       <a id="getStartedBtn" href="signup.html" class="submit-btn">Get Started</a>
-      <div style="margin-top:2rem;">
-        <img src="images/healthy.jpg" alt="Healthy meal spread" style="width:100%; max-width:500px; border-radius:10px; box-shadow:0 4px 8px rgba(0,0,0,0.1);" />
-      </div>
+      <!-- Removed welcome image as requested -->
     </section>
 
     <!-- Feature Highlights -->
@@ -149,7 +155,7 @@
       <div class="highlight-card">
         <h3>Seamless Shopping</h3>
         <img src="images/shopping.jpg" alt="Seamless Shopping Icon" />
-        <p>Save your favorite meals and ingredients in one place.</p>
+        <p>Save your favorite meals in one place.</p>
       </div>
     </section>
 
@@ -164,7 +170,7 @@
           <h3>Sign Up or Log In</h3>
           <p>Create an account or sign in to save your preferences.</p>
           <a href="signup.html" class="submit-btn">Sign Up</a>
-          <!-- <a href="login.html" class="submit-btn" style="margin-left:1rem;">Log In</a> -->
+          <a href="login.html" class="submit-btn" style="margin-left:1rem;">Log In</a>
         </li>
         <li><h3>Set Your Profile</h3><p>Enter dietary needs, calorie targets, and allergies in your Profile.</p></li>
         <li><h3>Generate Meal Plan</h3><p>Choose daily or weekly plans and click “Generate”.</p></li>
