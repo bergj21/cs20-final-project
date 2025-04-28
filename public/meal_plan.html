@@ -55,7 +55,7 @@
       }
 
       #generateButton {
-        background-color: #28a745;
+        background-color: var(--green-color);
         color: white;
         border: none;
         padding: 12px 20px;
@@ -69,7 +69,7 @@
       }
 
       #generateButton:hover {
-        background-color: #218838;
+        background-color: var(--dark-green-color);
       }
 
       .day-button {
@@ -144,17 +144,15 @@
           alert('Could not load preferences.')
           return
         }
-
         const user = await response.json()
         return getRecipesByIds(user.weeklyPlan)
       }
 
       window.onload = async function () {
         setHeader()
-
         if (!userId) {
-          alert('User ID not found. Please log in.')
-          return
+            alert('User ID not found. Please log in.')
+            return
         }
 
         try {
@@ -197,8 +195,8 @@
         document.querySelectorAll('.day-button').forEach((button) => {
           button.addEventListener('click', async () => {
             const day = button.getAttribute('data-day')
-            if (!weeklyPlan) {
-              mealPlanContent.innerHTML = `<p>No meal plan available for ${day}.</p>`
+            if (!weeklyPlan || !weeklyPlan[day]) {
+              mealPlanContent.innerHTML = `<p>No meal plan available for ${day.charAt(0).toUpperCase() + day.slice(1)}.</p>`
               return
             }
 

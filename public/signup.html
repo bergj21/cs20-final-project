@@ -39,7 +39,7 @@
       .signup-form button {
         width: 100%;
         padding: 0.75rem;
-        background: var(--turquoise-color);
+        background: var(--green-color);
         color: white;
         border: none;
         border-radius: 5px;
@@ -216,7 +216,7 @@
               $9.99/mo
             </label>
             <label>
-              <input type="radio" name="plan" value="Annual" /> Annual — $19.99/mo
+              <input type="radio" name="plan" value="Annual" /> Annual — $69.99/year
             </label>
           </div>
         </div>
@@ -296,7 +296,7 @@
             }
 
             // include string prefs only if non-empty
-            ;['intolerances', 'cuisine', 'excludeIngredients'].forEach(
+            ;['diet', 'intolerances', 'cuisine', 'excludeIngredients'].forEach(
               (key) => {
                 const raw = e.target.querySelector('#' + key).value.trim()
                 if (raw) payload.preferences[key] = raw

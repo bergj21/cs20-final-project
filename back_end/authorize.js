@@ -35,7 +35,7 @@ async function signupUser(req, res) {
     const userPrefs = {}
 
     // String-based preferences
-    ;['intolerances', 'cuisine', 'excludeIngredients'].forEach((key) => {
+    ;['diet', 'intolerances', 'cuisine', 'excludeIngredients'].forEach((key) => {
       const val = preferences[key]
       if (typeof val === 'string' && val.trim() !== '') {
         userPrefs[key] = val.trim()

@@ -1,7 +1,7 @@
 // const apiKey = '5fffdd1ef2284ee7b1b869e03538f404'
 // const apiKey = 'e075ef7a95604de8b1003d3e56d3b078'
-// const apiKey = '00a2d2dbfecf4a8e82423a2f8415ac88'
-const apiKey = '258415058f10403486235ffa1cac1851' 
+const apiKey = '00a2d2dbfecf4a8e82423a2f8415ac88'
+// const apiKey = '258415058f10403486235ffa1cac1851' 
 const baseApi = 'https://api.spoonacular.com'
 
 const mealLowerRatios = {
@@ -40,7 +40,7 @@ async function connectUser(user) {
         const response = await fetch(apiCall);
         const data = await response.json();
 
-        if (checkApiLimitReached(data)) return null; // Check API limit
+        if (checkApiFailure(data)) return null; // Check API limit
 
         return data;
     } catch (error) {
@@ -69,11 +69,10 @@ async function generateMealPlan(preferences, timeFrame) {
     }
 
     try {
-        console.log(apiCall);
         const response = await fetch(apiCall);
         const data = await response.json();
 
-        if (checkApiLimitReached(data)) return null; // Check API limit
+        if (checkApiFailure(data)) return null; // Check API limit
 
         // Update image URLs for each meal in data.week
         for (const day in data.week) {
@@ -95,19 +94,16 @@ async function generateMealPlan(preferences, timeFrame) {
 async function getRecipesByIds(weeklyPlan) {
     const ids = Object.values(weeklyPlan).flatMap(day => Object.values(day));
     const apiCall = `${baseApi}/recipes/informationBulk?apiKey=${apiKey}&ids=${ids.join(',')}&includeNutrition=true`;
-
     try {
         const response = await fetch(apiCall);
         const recipes = await response.json();
 
-        if (checkApiLimitReached(recipes)) return null; // Check API limit
-
+        if (checkApiFailure(recipes)) return null; // Check API limit
         // Map recipe IDs to recipe objects
         const recipeMap = {};
         for (const recipe of recipes) {
             recipeMap[recipe.id] = recipe;
         }
-
         // Rebuild the weekly plan
         const structuredPlan = {};
 
@@ -190,7 +186,7 @@ async function recipeSearch(preferences, meal) {
         const response = await fetch(apiCall);
         const data = await response.json();
 
-        if (checkApiLimitReached(data)) return null; // Check API limit
+        if (checkApiFailure(data)) return null; // Check API limit
 
         return data;
     } catch (error) {
@@ -418,7 +414,7 @@ async function generateRecipeCards(recipeIds, container) {
         const response = await fetch(apiCall);
         const recipes = await response.json(); 
 
-        if (checkApiLimitReached(recipes)) return null; // Check API limit
+        if (checkApiFailure(recipes)) return null; // Check API limit
         
         for (const recipe of recipes) {
             const recipeCard = await createRecipeCard(recipe, true);
@@ -446,11 +442,38 @@ async function generateRecipeCards(recipeIds, container) {
     }
 }
 
-function checkApiLimitReached(response) {
-    if (response.status === "failure" && response.code === 402) {
-        console.error("API limit reached:", response.message);
-        alert("API limit reached: " + response.message);
-        return true;
+function checkApiFailure(response) {
+    if (response.status === "failure") {
+        console.error(`API failure detected: ${response.message || "Unknown error"}`);
+        
+        // Handle specific error codes
+        switch (response.code) {
+            case 402:
+                alert("API limit reached: " + response.message);
+                break;
+            case 400:
+                alert("Bad request: " + response.message);
+                break;
+            case 401:
+                alert("Unauthorized access: " + response.message);
+                break;
+            case 404:
+                alert("Resource not found: " + response.message);
+                break;
+            case 500:
+                alert("Server error: " + response.message);
+                break;
+            case 503:
+                alert("Service unavailable: " + response.message);
+                break;
+            default:
+                alert("An error occurred: " + response.message);
+        }
+
+        return true; // Indicate that a failure was detected
     }
-    return false;
+
+    return false; // No failure detected
 }
+
+

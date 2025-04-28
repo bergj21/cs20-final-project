@@ -41,9 +41,9 @@
       .button-group {
         text-align: center;
       }
-      /* TODO: This is screwing with the profile button in the header */
-      button {
-        background-color: #007bff;
+
+      .edit-button {
+        background-color: var(--green-color);
         color: white;
         padding: 10px 20px;
         margin: 5px;
@@ -51,8 +51,17 @@
         border-radius: 5px;
         cursor: pointer;
       }
+
+      .edit-button:hover {
+        background-color: var(--dark-green-color);
+      }
+
       #cancelButton {
         background-color: #6c757d;
+      }
+
+      #cancelButton:hover {
+        background-color: black;
       }
 
       .template-options {
@@ -186,11 +195,11 @@
             </div>
           </div>
           <div class="button-group">
-            <button type="button" id="editButton">Edit</button>
-            <button type="submit" id="saveButton" style="display: none">
+            <button class="edit-button" type="button" id="editButton">Edit</button>
+            <button class="edit-button" type="submit" id="saveButton" style="display: none">
               Save Changes
             </button>
-            <button type="button" id="cancelButton" style="display: none">
+            <button class="edit-button" type="button" id="cancelButton" style="display: none">
               Cancel
             </button>
           </div>
