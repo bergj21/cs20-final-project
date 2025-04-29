@@ -108,10 +108,10 @@
     <div class="contact-page">
       <div class="contact-container">
         <h2>Contact Us!</h2>
-        <form class="contact-form" action="/submit_contact" method="POST">
-            <input type="text" name="name" placeholder="Your Name" required />
-            <input type="email" name="email" placeholder="Your Email" required pattern="^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$" title="Please enter a valid email address." />
-            <textarea name="message" rows="6" placeholder="Your Message" required></textarea>
+        <form class="contact-form" id="contactForm" method="POST">
+            <input type="text" name="name" id="name" placeholder="Your Name" required />
+            <input type="email" name="email" id="email" placeholder="Your Email" required pattern="^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$" title="Please enter a valid email address." />
+            <textarea name="message" id="message" rows="6" placeholder="Your Message" required></textarea>
             <button type="submit">Send Message</button>
         </form>
       </div>
@@ -128,10 +128,25 @@
     <p>&copy; 2025 Meal Prep Buddy. All Rights Reserved.</p>
   </footer>
 
-  <!-- JavaScript to initialize the header -->
+  <!-- JavaScript to initialize the header and handle form submission -->
   <script>
     window.onload = function() {
-      setHeader();
+      setHeader()
+
+      // Add event listener to the contact form
+      const contactForm = document.getElementById('contactForm')
+      contactForm.addEventListener('submit', function(e) {
+        e.preventDefault() // Prevent default form submission
+
+        // Get the user's name from the form
+        const name = document.getElementById('name').value
+
+        // Clear the form fields
+        contactForm.reset()
+
+        // Show a thank-you alert
+        alert(`Thank you, ${name}, for your message!`)
+      })
     }
   </script>
 </body>
