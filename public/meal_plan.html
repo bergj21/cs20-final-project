@@ -1,13 +1,19 @@
-
 <html lang="en">
 <head>
+<!-- Metadata for the page -->
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta name="keywords" content="fitness, meal prep, healthy, groceries, food, activity, lifestyle" />
   <title>Meal Plan</title>
+
+  <!-- Link to external stylesheet -->
   <link rel="stylesheet" href="styles.css" />
+
+  <!-- Include JavaScript for the header and API handling -->
   <script src="header.js"></script>
   <script src="apiHandler.js"></script>
+
+  <!-- Inline styles for the page -->
   <style>
     .container {
       max-width: 900px;
@@ -17,6 +23,8 @@
       border-radius: 10px;
       box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
     }
+
+    /* Styling for individual meal items */
     .meal {
       display: flex;
       align-items: center;
@@ -24,22 +32,32 @@
       border-bottom: 1px solid #ddd;
       padding-bottom: 15px;
     }
+
+    /* Styling for meal images */
     .meal img {
       width: 120px;
       height: auto;
       border-radius: 8px;
       margin-right: 20px;
     }
+
+    /* Styling for meal information */
     .meal-info {
       flex-grow: 1;
     }
+
+    /* Styling for meal titles */
     .meal-info h3 {
       margin: 0 0 10px;
     }
+
+    /* Styling for links in meal information */
     .meal-info a {
       color: #007bff;
       text-decoration: none;
     }
+
+    /* Styling for the "Generate Weekly Meal Plan" button */
     #generateButton {
       background-color: var(--green-color);
       color: white;
@@ -53,9 +71,13 @@
       box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
       transition: background-color 0.3s ease;
     }
+
+    /* Hover effect for the "Generate Weekly Meal Plan" button */
     #generateButton:hover {
       background-color: var(--dark-green-color);
     }
+
+    /* Styling for day buttons */
     .day-button {
       background-color: #007bff;
       color: white;
@@ -66,23 +88,32 @@
       cursor: pointer;
       font-size: 14px;
     }
+
+    /* Hover effect for day buttons */
     .day-button:hover {
       background-color: #0056b3;
     }
-    /* Table styling */
+
+    /* Styling for the nutrients table */
     .nutrients-table {
       width: 100%;
       margin-top: 30px;
       border-collapse: collapse;
     }
+
+    /* Styling for table headers and cells */
     .nutrients-table th,
     .nutrients-table td {
       padding: 10px;
       text-align: left;
     }
+
+    /* Styling for table headers */
     .nutrients-table th {
       border-bottom: 2px solid #ccc;
     }
+
+    /* Styling for alternating row colors */
     .nutrients-table tr:nth-child(even) {
       background-color: #f9f9f9;
     }
@@ -90,6 +121,7 @@
 </head>
 
 <body>
+  <!-- Header section -->
   <header>
     <a href="index.html">
       <img src="images/logo.jpg" alt="Logo" class="logo" />
@@ -100,7 +132,9 @@
     </nav>
   </header>
 
+  <!-- Main content -->
   <main>
+    <!-- Buttons for selecting days -->
     <div id="dayButtons" style="margin: 20px 0; text-align: center">
       <h1>Weekly Meal Plan</h1>
       <button class="day-button" data-day="monday">Monday</button>
@@ -112,30 +146,35 @@
       <button class="day-button" data-day="sunday">Sunday</button>
     </div>
 
+    <!-- Container for displaying meal plan content -->
     <div class="container">
       <div id="mealPlanContent"></div>
     </div>
 
+    <!-- Button to generate a weekly meal plan -->
     <button id="generateButton">Generate Weekly Meal Plan</button>
   </main>
 
   <script>
-    const generateButton = document.getElementById('generateButton')
-    const dayButtons = document.getElementById('dayButtons')
-    const mealPlanContent = document.getElementById('mealPlanContent')
-    let userId = localStorage.userId
-    let weeklyPlan = null
+    // References to DOM elements
+    const generateButton = document.getElementById('generateButton');
+    const dayButtons = document.getElementById('dayButtons');
+    const mealPlanContent = document.getElementById('mealPlanContent');
+    let userId = localStorage.userId; // Retrieve user ID from local storage
+    let weeklyPlan = null; // Variable to store the weekly meal plan
 
+    // Function to save the weekly meal plan to the server
     async function submitWeeklyMealPlan(weeklyPlan, userId) {
       const res = await fetch('/save-weekly-plan', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ userId, weeklyPlan }),
-      })
-      const data = await res.json()
-      console.log('Saved:', data)
+      });
+      const data = await res.json();
+      console.log('Saved:', data);
     }
 
+    // Function to fetch the user's weekly meal plan from the server
     async function getWeeklyMealPlan(userId) {
       const response = await fetch(`/get-user?userId=${userId}`)
       if (!response.ok) {
@@ -146,6 +185,7 @@
       return getRecipesByIds(user.weeklyPlan)
     }
 
+      // Initialize the page when it loads
     window.onload = async function () {
       setHeader()
       if (!userId) {
@@ -154,7 +194,8 @@
       }
 
       try {
-        weeklyPlan = await getWeeklyMealPlan(userId)
+        // Load the user's weekly meal plan
+        weeklyPlan = await getWeeklyMealPlan(userId);
         if (weeklyPlan) {
           console.log('Weekly meal plan loaded:', weeklyPlan)
         } else {
@@ -164,6 +205,7 @@
         console.error('Failed to load weekly meal plan:', err)
       }
 
+      // Event listener for the "Generate Weekly Meal Plan" button
       generateButton.addEventListener('click', async () => {
         try {
           const response = await fetch(`/get-user?userId=${userId}`)
@@ -189,6 +231,7 @@
         }
       })
 
+      // Event listeners for day buttons
       document.querySelectorAll('.day-button').forEach((button) => {
         button.addEventListener('click', async () => {
           const day = button.getAttribute('data-day')
@@ -200,6 +243,7 @@
           const dayPlan = weeklyPlan[day]
           const nutrients = dayPlan.nutrients || {}
 
+          // Display the meal plan for the selected day
           mealPlanContent.innerHTML = `
             <h2>${day.charAt(0).toUpperCase() + day.slice(1)}'s Meal Plan</h2>
             <div id="meal-cards" style="display: flex; flex-wrap: wrap; gap: 20px;"></div>
@@ -233,6 +277,7 @@
     }
   </script>
 
+  <!-- Footer section -->
   <footer>
     <p>&copy; 2025 Meal Prep Buddy. All Rights Reserved.</p>
   </footer>

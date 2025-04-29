@@ -20,6 +20,7 @@ app.use(express.static('public'))
 app.use(express.urlencoded({ extended: true }))
 app.use(express.json())
 
+// Starts the server and connects to the database
 async function startServer() {
   try {
     let usersCollection = await connectToUsersCollection()

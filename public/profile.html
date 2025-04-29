@@ -1,5 +1,6 @@
 <html lang="en">
   <head>
+    <!-- Metadata for the page -->
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta
@@ -7,9 +8,16 @@
       content="fitness, meal prep, healthy, groceries, food, activity, lifestyle"
     />
     <title>Profile</title>
+
+    <!-- Link to external stylesheet -->
     <link rel="stylesheet" href="styles.css" />
+
+    <!-- Include JavaScript for the header -->
     <script src="header.js"></script>
+
+    <!-- Inline styles for the profile page -->
     <style>
+      /* Styling for the profile container */
       .profile-container {
         max-width: 800px;
         margin: auto;
@@ -19,29 +27,42 @@
         box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
         margin-bottom: 20px;
       }
+
+      /* Center the profile header */
       .profile-container h2 {
         text-align: center;
       }
+
+      /* Styling for form groups */
       .form-group {
         margin-bottom: 15px;
       }
+
+      /* Styling for form labels */
       .form-group label {
         display: block;
         margin-bottom: 5px;
       }
+
+      /* Styling for input fields and textareas */
       .form-group input,
       .form-group textarea {
         width: 100%;
         padding: 10px;
         box-sizing: border-box;
       }
+
+      /* Allow vertical resizing for textareas */
       .form-group textarea {
         resize: vertical;
       }
+
+      /* Center the button group */
       .button-group {
         text-align: center;
       }
 
+      /* Styling for the edit button */
       .edit-button {
         background-color: var(--green-color);
         color: white;
@@ -52,18 +73,22 @@
         cursor: pointer;
       }
 
+      /* Hover effect for the edit button */
       .edit-button:hover {
         background-color: var(--dark-green-color);
       }
 
+      /* Styling for the cancel button */
       #cancelButton {
         background-color: #6c757d;
       }
 
+      /* Hover effect for the cancel button */
       #cancelButton:hover {
         background-color: black;
       }
 
+      /* Styling for preference templates */
       .template-options {
         display: flex;
         flex-direction: column;
@@ -72,6 +97,7 @@
         margin-bottom: 10px;
       }
 
+      /* Styling for template labels */
       .template-options label {
         width: 60%;
         flex: 1;
@@ -83,39 +109,54 @@
         cursor: pointer;
       }
 
+      /* Styling for template radio buttons */
       .template-options input {
         margin-right: 0.5rem;
       }
     </style>
   </head>
   <body>
+    <!-- Header section -->
     <header>
+      <!-- Logo linking back to the homepage -->
       <a href="index.html">
         <img src="images/logo.jpg" alt="Logo" class="logo" />
       </a>
+      <!-- Navigation menu -->
       <nav>
         <button class="menu-toggle">☰</button>
         <ul class="menu"></ul>
       </nav>
     </header>
 
+    <!-- Main content -->
     <main>
+      <!-- Profile container -->
       <div class="profile-container">
         <h2>User Profile</h2>
         <form id="profileForm">
+          <!-- Email field (read-only) -->
           <div class="form-group">
             <label for="email">Email</label>
             <input type="email" id="email" disabled readonly />
           </div>
+
+          <!-- Name field -->
           <div class="form-group">
             <label for="name">Name</label>
             <input type="text" id="name" disabled />
           </div>
+
+          <!-- Password field -->
           <div class="form-group">
             <label for="password">Password</label>
             <input type="password" id="password" disabled />
           </div>
+
+          <!-- Preferences section -->
           <h3>Preferences</h3>
+
+          <!-- Diet preference dropdown -->
           <div class="form-group">
             <label for="diet">Diet</label>
             <select id="diet" disabled>
@@ -133,6 +174,8 @@
               <option value="Whole30">Whole30</option>
             </select>
           </div>
+
+          <!-- Other preference fields -->
           <div class="form-group">
             <label for="intolerances">Intolerances</label>
             <input type="text" id="intolerances" disabled />
@@ -177,6 +220,8 @@
             <label for="maxProtein">Max Protein (g)</label>
             <input type="number" id="maxProtein" disabled />
           </div>
+
+          <!-- Preference templates -->
           <div id="templateContainer" style="display: none">
             <h3>Preference Templates</h3>
             <div class="template-options">
@@ -194,6 +239,8 @@
               </label>
             </div>
           </div>
+
+          <!-- Buttons for editing, saving, and canceling -->
           <div class="button-group">
             <button class="edit-button" type="button" id="editButton">Edit</button>
             <button class="edit-button" type="submit" id="saveButton" style="display: none">
@@ -208,12 +255,14 @@
     </main>
 
     <script>
-      const form = document.getElementById('profileForm')
-      const editButton = document.getElementById('editButton')
-      const saveButton = document.getElementById('saveButton')
-      const cancelButton = document.getElementById('cancelButton')
-      const templateContainer = document.getElementById('templateContainer')
+      // References to form and buttons
+      const form = document.getElementById('profileForm');
+      const editButton = document.getElementById('editButton');
+      const saveButton = document.getElementById('saveButton');
+      const cancelButton = document.getElementById('cancelButton');
+      const templateContainer = document.getElementById('templateContainer');
 
+      // Function to toggle input fields between editable and read-only
       function toggleFields(disabled) {
         const inputs = form.querySelectorAll('input, select')
         inputs.forEach((input) => (input.disabled = disabled))
@@ -228,6 +277,7 @@
         })
       }
 
+      // Reset form fields to their original values
       function resetToOriginalValues() {
         const inputs = form.querySelectorAll('input, select')
         inputs.forEach((input) => {
@@ -240,6 +290,7 @@
         })
       }
 
+      // Load user profile data from the server
       async function loadUserProfile() {
         const userId = localStorage.userId
         if (!userId) {
@@ -280,6 +331,7 @@
         }
       }
 
+      // Event listener for the "Edit" button
       editButton.addEventListener('click', () => {
         toggleFields(false)
         storeOriginalValues()
@@ -289,6 +341,7 @@
         templateContainer.style.display = 'block'
       })
 
+      // Event listener for the "Cancel" button
       cancelButton.addEventListener('click', () => {
         resetToOriginalValues()
         toggleFields(true)
@@ -302,6 +355,7 @@
         })
       })
 
+      // Event listener for the form submission
       form.addEventListener('submit', async function (e) {
         e.preventDefault()
         const profile = {
@@ -312,8 +366,7 @@
             diet: document.getElementById('diet').value,
             intolerances: document.getElementById('intolerances').value,
             cuisine: document.getElementById('cuisine').value,
-            excludeIngredients:
-              document.getElementById('excludeIngredients').value,
+            excludeIngredients: document.getElementById('excludeIngredients').value,
             minCalories: parseInt(document.getElementById('minCalories').value),
             maxCalories: parseInt(document.getElementById('maxCalories').value),
             minCarbs: parseInt(document.getElementById('minCarbs').value),
@@ -325,6 +378,7 @@
           },
         }
 
+        // Send a POST request to save the updated profile
         const res = await fetch('/edit-user-profile', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
@@ -338,6 +392,7 @@
         templateContainer.style.display = 'none'
       })
 
+      // Function to load a preference template
       async function loadTemplate(templateName) {
         try {
           // Fetch the preferences template JSON file
@@ -346,9 +401,11 @@
             throw new Error('Failed to load preferences template')
           }
 
+          // Parse the JSON response
           const templates = await response.json()
           const template = templates[templateName]
 
+          // Check if the template exists
           if (!template) {
             alert('Template not found')
             return
@@ -356,29 +413,25 @@
 
           // Populate the form with the template data
           document.getElementById('diet').value = template.diet || ''
-          document.getElementById('intolerances').value =
-            template.intolerances || ''
+          document.getElementById('intolerances').value = template.intolerances || ''
           document.getElementById('cuisine').value = template.cuisine || ''
-          document.getElementById('excludeIngredients').value =
-            template.excludeIngredients || ''
-          document.getElementById('minCalories').value =
-            template.minCalories || ''
-          document.getElementById('maxCalories').value =
-            template.maxCalories || ''
+          document.getElementById('excludeIngredients').value = template.excludeIngredients || ''
+          document.getElementById('minCalories').value = template.minCalories || ''
+          document.getElementById('maxCalories').value = template.maxCalories || ''
           document.getElementById('minCarbs').value = template.minCarbs || ''
           document.getElementById('maxCarbs').value = template.maxCarbs || ''
           document.getElementById('minFat').value = template.minFat || ''
           document.getElementById('maxFat').value = template.maxFat || ''
-          document.getElementById('minProtein').value =
-            template.minProtein || ''
-          document.getElementById('maxProtein').value =
-            template.maxProtein || ''
+          document.getElementById('minProtein').value = template.minProtein || ''
+          document.getElementById('maxProtein').value = template.maxProtein || ''
         } catch (err) {
+          // Log and alert the user if an error occurs
           console.error('Error loading template:', err)
           alert('Failed to load template')
         }
       }
 
+      // Function to initialize event listeners for template radio buttons
       function initializeRadioButtons() {
         document.querySelectorAll('input[name="template"]').forEach((radio) => {
           radio.addEventListener('change', (event) => {
@@ -388,6 +441,7 @@
         })
       }
 
+      // Initialize the page when it loads
       window.onload = function () {
         setHeader()
         loadUserProfile()

@@ -1,22 +1,30 @@
 <html lang="en">
 <head>
+  <!-- Metadata for the page -->
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta name="keywords" content="fitness, meal prep, healthy, groceries, food, activity, lifestyle">
-  <title>Contact Us - Meal Prep Buddy</title>
+  <title>Contact Us</title>
+
+  <!-- Link to external stylesheet -->
   <link rel="stylesheet" href="styles.css" />
+
+  <!-- Include JavaScript for the header -->
   <script src="header.js"></script>
 
+  <!-- Inline styles for the Contact Us page -->
   <style>
+    /* Main container for the contact page */
     .contact-page {
       display: flex;
       align-items: center;
       justify-content: center;
       gap: 40px;
       padding: 40px 20px;
-      flex-wrap: wrap; /* stack nicely on small screens */
+      flex-wrap: wrap;
     }
 
+    /* Styling for the contact form container */
     .contact-container {
       max-width: 600px;
       margin: 50px auto;
@@ -29,16 +37,19 @@
       text-align: center;
     }
 
+    /* Header inside the contact form container */
     .contact-container h2 {
       text-align: center;
       margin-bottom: 20px;
     }
 
+    /* Styling for the contact form */
     .contact-form {
       display: flex;
       flex-direction: column;
     }
 
+    /* Input fields and textarea styling */
     .contact-form input,
     .contact-form textarea {
       width: 100%;
@@ -48,6 +59,7 @@
       border-radius: 5px;
     }
 
+    /* Submit button styling */
     .contact-form button {
       padding: 10px 20px;
       background-color: var(--green-color);
@@ -57,26 +69,30 @@
       cursor: pointer;
     }
 
+    /* Hover effect for the submit button */
     .contact-form button:hover {
       background-color: var(--dark-green-color);
     }
 
+    /* Styling for the contact image container */
     .contact-image {
       flex: 1;
       min-width: 300px;
       text-align: center;
     }
 
+    /* Styling for the contact image */
     .contact-image img {
       max-width: 100%;
       height: 470px;
-      width:  370px;
+      width: 370px;
       border-radius: 10px;
     }
   </style>
 </head>
 
 <body>
+  <!-- Header section -->
   <header>
     <a href="index.html">
       <img src="images/logo.jpg" alt="Logo" class="logo" />
@@ -87,27 +103,32 @@
     </nav>
   </header>
 
+  <!-- Main content -->
   <main>
     <div class="contact-page">
       <div class="contact-container">
         <h2>Contact Us!</h2>
         <form class="contact-form" action="/submit_contact" method="POST">
-          <input type="text" name="name" placeholder="Your Name" required />
-          <input type="email" name="email" placeholder="Your Email" required pattern="^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$" title="Please enter a valid email address." />
-          <textarea name="message" rows="6" placeholder="Your Message" required></textarea>
-          <button type="submit">Send Message</button>
+            <input type="text" name="name" placeholder="Your Name" required />
+            <input type="email" name="email" placeholder="Your Email" required pattern="^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$" title="Please enter a valid email address." />
+            <textarea name="message" rows="6" placeholder="Your Message" required></textarea>
+            <button type="submit">Send Message</button>
         </form>
       </div>
+
+      <!-- Contact image container -->
       <div class="contact-image">
         <img src="images/contact-us.jpg" alt="Contact Us" />
       </div>
     </div>
   </main>
 
+  <!-- Footer section -->
   <footer>
     <p>&copy; 2025 Meal Prep Buddy. All Rights Reserved.</p>
   </footer>
 
+  <!-- JavaScript to initialize the header -->
   <script>
     window.onload = function() {
       setHeader();

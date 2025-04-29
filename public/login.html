@@ -1,23 +1,30 @@
 <html lang="en">
 <head>
+<!-- Metadata for the page -->
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <title>Login</title>
+
+    <!-- Link to external stylesheet -->
     <link rel="stylesheet" href="styles.css" />
+
+    <!-- Include JavaScript for the header -->
     <script src="header.js"></script>
+
+    <!-- Inline styles for the login page -->
     <style>
+        /* Background styling for the login page */
+        body {
+            background-image: url('images/banana.jpg');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            min-height: 80vh;
+            margin: 0;
+            font-family: Arial, sans-serif;
+        }
 
-    body {
-        background-image: url('images/banana.jpg');
-        background-size: cover;
-        background-position: center;
-        background-repeat: no-repeat;
-        min-height: 80vh;
-        margin: 0;
-        font-family: Arial, sans-serif;
-    }
-
-
+        /* Styling for the login form container */
         .login-form {
             max-width: 400px;
             margin: 0 auto;
@@ -29,10 +36,12 @@
             box-shadow: 0 2px 10px rgba(0,0,0,0.1);
         }
 
+        /* Styling for the login form header */
         .login-form h2 {
             margin-bottom: 1rem;
         }
 
+        /* Styling for input fields */
         .login-form input {
             width: 100%;
             padding: 0.75rem;
@@ -41,6 +50,7 @@
             border-radius: 5px;
         }
 
+        /* Styling for the login button */
         .login-form button {
             padding: 0.75rem;
             width: 100%;
@@ -51,12 +61,14 @@
             font-weight: bold;
         }
 
+        /* Hover effect for the login button */
         .login-form button:hover {
             background: var(--turquoise-color);
         }
     </style>
 </head>
 <body>
+<!-- Header section -->
     <header>
         <a href="index.html">
             <img src="images/logo.jpg" alt="Logo" class="logo" />
@@ -67,7 +79,9 @@
         </nav>
     </header>
 
+    <!-- Main content -->
     <main>
+        <!-- Login form -->
         <form class="login-form" id="loginForm">
             <h2>Login</h2>
             <input type="email" name="email" id="email" placeholder="Email" required />
@@ -77,22 +91,27 @@
     </main>
 
     <script>
+        // Initialize the page when it loads
         window.onload = function() {
             setHeader();
 
+            // Add event listener to the login form
             const form = document.getElementById('loginForm');
             form.addEventListener('submit', async function (e) {
                 e.preventDefault();
 
+                // Get the email and password values from the form
                 const email = document.getElementById('email').value;
                 const password = document.getElementById('password').value;
 
+                // Send a POST request to the server to log in
                 const response = await fetch('/login', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ email, password })
                 });
 
+                // Handle the server's response
                 if (response.ok) {
                     const data = await response.json();
                     localStorage.setItem('userId', data.userId);
@@ -104,6 +123,7 @@
         };
     </script>
 
+    <!-- Footer section -->
     <footer>
         <p>&copy; 2025 Meal Prep Buddy. All Rights Reserved.</p>
     </footer>

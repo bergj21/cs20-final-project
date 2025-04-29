@@ -1,13 +1,21 @@
 <html lang="en">
 <head>
+<!-- Metadata for the page -->
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="keywords" content="fitness, meal prep, healthy, groceries, food, activity, lifestyle">
     <title>Recipes</title>
+
+    <!-- Link to external stylesheet -->
     <link rel="stylesheet" href="styles.css" />
+
+    <!-- Include JavaScript for the header and API handling -->
     <script src="header.js"></script>
     <script src="apiHandler.js"></script>
+
+    <!-- Inline styles for the page -->
     <style>
+        /* Wrapper for the form and results panel */
         .form-results-wrapper {
             display: flex;
             flex-direction: row;
@@ -15,9 +23,10 @@
             gap: 40px;
             margin: 40px auto;
             padding: 0 20px;
-            flex-wrap: wrap;
+            flex-wrap: wrap; /* Allow wrapping on smaller screens */
         }
 
+        /* Responsive styles for smaller screens */
         @media (max-width: 1600px) {
             .form-results-wrapper {
                 flex-direction: column; /* Stack items vertically */
@@ -32,31 +41,34 @@
             }
         }
 
+        /* Styling for the results panel */
         .results-panel {
             flex: 1 1 500px;
             background-color: white;
             padding: 30px;
             border-radius: 15px;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-            overflow-y: auto;
-            max-height: 80vh;
+            overflow-y: auto; /* Enable scrolling if content overflows */
+            max-height: 80vh; /* Limit the height of the panel */
         }
 
+        /* Styling for the results panel header */
         .results-panel h2 {
             border-bottom: 2px solid var(--turquoise-color);
         }
 
+        /* Instructions section styling */
         .instructions {
             width: 80%;
             margin: 0 auto;
             color: var(--charcoal-color);
             text-align: center;
         }
-        /* TODO: Must make this page more responsive */
-        /* TODO: Add diet to the preferences page */
+
     </style>
 </head>
 <body>
+<!-- Header section -->
     <header>
         <a href="index.html">
             <img src="images/logo.jpg" alt="Logo" class="logo" />
@@ -67,16 +79,19 @@
         </nav>
     </header>
 
+    <!-- Main content -->
     <main>
         <h1>Find a Recipe</h1>
 
+        <!-- Instructions for the user -->
         <div class="instructions">
-            Get meals currated to your preferences today! Simply fill out the 
+            Get meals curated to your preferences today! Simply fill out the 
             form below and submit to filter through our wide selection of 
             recipes. You can even automatically populate the form by selecting 
             "Apply Your Preferences." 
         </div>
 
+        <!-- Wrapper for the form and results panel -->
         <div class="form-results-wrapper">
             <div id="form-div"></div>
     
@@ -88,24 +103,24 @@
     </main>
 
     <script>
-        // set up the page
+        // Set up the page when it loads
         window.onload = function() {
-            setHeader();
+            setHeader(); // Initialize the header
             
-            getPreferencesForm("form-div", displayRecipes);
+            getPreferencesForm("form-div", displayRecipes); // Load the preferences form
 
-            // Wait a tick for the form to be inserted, then add custom elements
+            // Wait for the form to load, then add custom elements
             setTimeout(() => {
-                addUserPrefBtn();
+                addUserPrefBtn(); // Add the "Apply Your Preferences" button
             }, 0);
         }
 
-        async function displayRecipes(preferences, meal) 
-        {
-            const resultsEl = document.getElementById('results');
-            resultsEl.textContent = 'Loading...';
+        // Function to display recipes based on user preferences
+        async function displayRecipes(preferences, meal) {
+            const resultsEl = document.getElementById('results'); // Select the results container
+            resultsEl.textContent = 'Loading...'; // Show a loading message
 
-            const result = await recipeSearch(preferences, meal);
+            const result = await recipeSearch(preferences, meal); // Fetch recipes based on preferences
 
             // Clear the existing content
             resultsEl.innerHTML = '';
@@ -122,34 +137,36 @@
                     resultsEl.appendChild(recipeCard);
                 }
             } else {
-                resultsEl.textContent = 'No recipes found.';
+                resultsEl.textContent = 'No recipes found.'; // Show a message if no recipes are found
             }
         }
 
-        function addUserPrefBtn()
-        {
-            const form = document.querySelector(".preferenceForm");
+        // Function to add the "Apply Your Preferences" button
+        function addUserPrefBtn() {
+            const form = document.querySelector(".preferenceForm"); // Select the preferences form
                 if (!form) return;
 
+                // Create the button
                 const userPrefBtn = document.createElement("button");
                 userPrefBtn.type = "button";
                 userPrefBtn.className = "submit-btn";
                 userPrefBtn.style.marginLeft = "10px";
                 userPrefBtn.textContent = "Apply Your Preferences";
 
-                // Add it after the submit button
+                // Add the button after the submit button
                 const submitBtn = form.querySelector(".submit-btn");
                 submitBtn.parentNode.appendChild(userPrefBtn);
 
-                // Add click handler
+                // Add click handler for the button
                 userPrefBtn.addEventListener("click", async () => {
-                    const userId = localStorage.userId;
+                    const userId = localStorage.userId; // Get the user ID from local storage
                     if (!userId) {
                         alert("User ID not found. Please log in.");
                         return;
                     }
 
                     try {
+                        // Fetch user preferences from the server
                         const response = await fetch(`/get-user-preferences?userId=${userId}`);
                         if (!response.ok) {
                             alert("Could not load preferences.");
@@ -158,7 +175,7 @@
 
                         const prefs = await response.json();
 
-                        // Populate the form fields
+                        // Populate the form fields with the user's preferences
                         Object.entries(prefs).forEach(([key, value]) => {
                             const input = form.querySelector(`[name="${key}"]`);
                             if (input && value !== 0) input.value = value;
@@ -171,6 +188,7 @@
         }
     </script>
 
+    <!-- Footer section -->
     <footer>
         <p>&copy; 2025 Meal Prep Buddy. All Rights Reserved.</p>
     </footer>

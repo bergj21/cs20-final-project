@@ -1,22 +1,27 @@
 <html lang="en">
 <head>
+  <!-- Metadata for the page -->
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta name="keywords" content="fitness, meal prep, healthy, groceries, food, activity, lifestyle">
-  <title>About Us - Meal Prep Buddy</title>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+  <title>About Us</title>
 
+  <!-- Inline styles for the About Us page -->
   <style>
+    /* Hover effect for team member cards */
     .team-member:hover {
       transform: translateY(-5px);
       transition: transform 0.3s ease, box-shadow 0.3s ease;
       box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
     }
+
+    /* Hover effect for sections */
     section:hover {
       box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
       transition: box-shadow 0.3s ease;
     }
 
+    /* Small section styling */
     .small-section {
         width: 300px;
         height: 60px; 
@@ -30,8 +35,9 @@
         display: flex;           
         align-items: center;     
         justify-content: center; 
-  }
+    }
 
+    /* Section content styling */
     .section-content {
       max-width: 600px;
       margin: 1rem auto;
@@ -41,6 +47,8 @@
       border-radius: 8px;
       box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
     }
+
+    /* Features list styling */
     .features ul {
       list-style: none;
       padding: 0;
@@ -49,6 +57,8 @@
       justify-content: center;
       gap: 20px;
     }
+
+    /* Individual feature item styling */
     .features li {
       background: #fafafa;
       padding: 20px;
@@ -57,9 +67,13 @@
       box-shadow: 0 3px 6px rgba(0, 0, 0, 0.05);
       transition: transform 0.3s ease;
     }
+
+    /* Hover effect for feature items */
     .features li:hover {
       transform: translateY(-5px);
     }
+
+    /* Team member image styling */
     .team-member img {
       width: 120px;
       height: 120px;
@@ -67,12 +81,16 @@
       border-radius: 50%;
       margin-bottom: 15px;
     }
+
+    /* Team members grid layout */
     .team-members {
       display: grid;
       grid-template-columns: repeat(2, 1fr);
       gap: 30px;
       justify-items: center;
     }
+
+    /* Individual team member card styling */
     .team-member {
       background: #fafafa;
       padding: 20px;
@@ -83,6 +101,8 @@
       text-align: center;
       transition: transform 0.3s ease;
     }
+
+    /* Styled list for the "Why Meal Prep Buddy?" section */
     .styled-list {
       list-style-type: disc;
       padding-left: 1.5rem;
@@ -91,9 +111,13 @@
       font-size: 1.1rem;
       line-height: 1.6;
     }
+
+    /* Individual list item styling */
     .styled-list li {
       margin-bottom: 0.5rem;
     }
+
+    /* Background styling for the About Us page */
     .about-page {
       background-image: url('images/background.jpg');
       background-size: cover;
@@ -101,6 +125,8 @@
       background-position: center;
       background-attachment: fixed;
     }
+
+    /* Page title styling */
     .page-title {
       text-align: center;
       margin-top: 60px;
@@ -175,10 +201,12 @@
     }
   </style>
 
+  <!-- Link to external stylesheet -->
   <link rel="stylesheet" href="styles.css">
 </head>
 
 <body class="about-page">
+    <!-- Header section -->
     <header>
         <a href="index.html">
           <img src="images/logo.jpg" alt="Logo" class="logo" />
@@ -189,11 +217,14 @@
         </nav>
     </header>
 
+  <!-- Main content -->
   <main>
+    <!-- Small section for the page title -->
     <section class="small-section">
         <h1 class="page-title">About Us</h1>
     </section>
 
+    <!-- Section explaining the benefits of Meal Prep Buddy -->
     <section class="section-content">
       <h2>Why Meal Prep Buddy?</h2>
       <ul class="styled-list">
@@ -204,6 +235,7 @@
       </ul>
     </section>
 
+    <!-- Section introducing the team -->
     <section class="our-team section-content">
       <h2>Meet the Experts</h2>
       <div class="team-members">
@@ -231,12 +263,15 @@
     </section>
   </main>
 
+  <!-- Footer section -->
   <footer>
     <p>&copy; 2025 Meal Prep Buddy. All Rights Reserved.</p>
   </footer>
 
+  <!-- Include external JavaScript -->
   <script src="header.js"></script>
   <script>
+    // Initialize the header on page load
     window.onload = function() {
       setHeader();
     }

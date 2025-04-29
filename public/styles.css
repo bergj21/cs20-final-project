@@ -1,461 +1,482 @@
+/* --- Root variables for consistent colors across the site --- */
 :root {
-  --turquoise-color: #90bea4;
-  --green-color: #3a7a5b;
-  --dark-green-color: #245a3f;
-  --soft-orange-color: #ffa726;
-  --off-white-color: #fafafa;
-  --charcoal-color: #333333;
-}
-
-h1,
-h2,
-h3 {
-  font-family: 'Rajdhani', sans-serif;
-  padding-bottom: 10px;
-  letter-spacing: 1px;
-  transition: all 0.3s ease-in-out;
-}
-
-/* Page title */
-h1 {
-  font-size: 3.5em;
-  font-weight: bold;
-  color: var(--green-color);
-  text-align: center;
-  text-shadow: 1px 1px 2px rgba(45, 106, 79, 0.2); /* soft green shadow */
-}
-
-/* Section heading */
-h2 {
-  font-size: 2.5em;
-  font-weight: bold;
-  border-bottom: 2px solid var(--turquoise-color);
-  margin-bottom: 10px;
-}
-
-/* Subheading */
-h3 {
-  font-size: 1.5em;
-  font-weight: 500;
-  color: var(--charcoal-color);
-}
-
-/* Medium screens (max-width: 1024px) */
-@media (max-width: 1024px) {
-    h1 {
-      font-size: 3em; /* Slightly smaller for medium screens */
-    }
+    --turquoise-color: #90bea4;
+    --green-color: #3a7a5b;
+    --dark-green-color: #245a3f;
+    --soft-orange-color: #ffa726;
+    --off-white-color: #fafafa;
+    --charcoal-color: #333333;
+  }
   
+  /* --- Headings general style (h1, h2, h3) --- */
+  h1,
+  h2,
+  h3 {
+    font-family: 'Rajdhani', sans-serif;
+    padding-bottom: 10px;
+    letter-spacing: 1px;
+    transition: all 0.3s ease-in-out;
+  }
+  
+  /* Page title (h1) */
+  h1 {
+    font-size: 3.5em;
+    font-weight: bold;
+    color: var(--green-color);
+    text-align: center;
+    text-shadow: 1px 1px 2px rgba(45, 106, 79, 0.2); /* soft green shadow */
+  }
+  
+  /* Section heading (h2) */
+  h2 {
+    font-size: 2.5em;
+    font-weight: bold;
+    border-bottom: 2px solid var(--turquoise-color);
+    margin-bottom: 10px;
+  }
+  
+  /* Subheading (h3) */
+  h3 {
+    font-size: 1.5em;
+    font-weight: 500;
+    color: var(--charcoal-color);
+  }
+  
+  /* --- Responsive font resizing for medium screens --- */
+  @media (max-width: 1024px) {
+    h1 {
+      font-size: 3em;
+    }
     h2 {
       font-size: 2.2em;
     }
-  
     h3 {
       font-size: 1.3em;
     }
   }
   
-/* Small screens (max-width: 768px) */
-@media (max-width: 768px) {
+  /* --- Responsive font resizing for small screens --- */
+  @media (max-width: 768px) {
     h1 {
-        font-size: 2.5em; /* Reduce size for smaller screens */
+      font-size: 2.5em;
     }
-
     h2 {
-        font-size: 2em;
+      font-size: 2em;
     }
-
     h3 {
-        font-size: 1.2em;
+      font-size: 1.2em;
     }
-}
+  }
   
-
-/* General html and body style */
-html,
-body {
-  height: 100%;
-  margin: 0;
-  display: flex;
-  flex-direction: column;
-}
-
-body {
-  padding-top: 120px;
-  display: flex;
-  flex-direction: column;
-  font-family: 'Roboto', sans-serif;
-  background-color: var(--off-white-color);
-}
-
-/* Ensures the main content expands and pushes the footer down */
-main {
-  flex-grow: 1;
-  width: 80%;
-  margin: 0 auto;
-}
-
-/* Footer style */
-footer {
-  display: flex;
-  text-align: center;
-  justify-content: center;
-  background-color: var(--turquoise-color);
-  color: white;
-  width: 100%;
-  padding: 10px 0;
-}
-
-/* Header style */
-header {
-  background-color: var(--turquoise-color);
-  width: 100%;
-  height: 100px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  text-align: center;
-  position: fixed;
-  top: 0;
-  margin: 0;
-  z-index: 10;
-}
-
-.logo {
-  position: absolute;
-  top: 0px;
-  left: 15px;
-  width: 95px;
-  height: auto;
-}
-
-.logo:hover {
-  transform: scale(1.1);
-  transition: transform 0.2s ease;
-}
-
-/* Standard menu style */
-.menu {
-  list-style: none;
-  margin: 0;
-  padding: 0;
-  display: flex;
-  justify-content: flex-end;
-  align-items: center;
-}
-
-.menu li {
-  margin: 15px 15px;
-  font-weight: bold;
-  font-family: 'Rajdhani', sans-serif;
-}
-
-.menu a {
-  text-decoration: none;
-  color: var(--off-white-color);
-  font-size: 22px;
-  display: block;
-}
-
-.menu a:hover {
-  transform: scale(1.1);
-  transition: transform 0.2s ease;
-}
-
-/* The hamburger menu style */
-.menu-toggle {
-  display: none;
-  font-size: 30px;
-  background: none;
-  border: none;
-  color: var(--off-white-color);
-  cursor: pointer;
-}
-
-.menu-toggle:hover {
-  background-color: var(--off-white-color);
-  color: var(--turquoise-color);
-}
-
-.profile-dropdown {
-  position: relative;
-  display: inline-block;
-}
-
-.profile-dropbtn {
-  background-color: var(--turquoise-color);
-  color: var(--off-white-color);
-  border: none;
-  font-size: 22px;
-  font-family: 'Rajdhani', sans-serif;
-  font-weight: bold;
-}
-
-.profile-dropbtn:hover {
-  transform: scale(1.1);
-  transition: transform 0.2s ease;
-}
-
-.profile-dropdown-content {
-  list-style: none;
-  display: none;
-  position: absolute;
-  right: -15;
-  background-color: var(--green-color);
-  padding: 0 5;
-  margin: 0;
-}
-
-.profile-dropdown-content a {
-  color: var(--off-white-color);
-  text-decoration: none;
-  text-align: center;
-}
-
-.profile-dropdown-content a:hover {
-  transform: scale(1.1);
-  transition: transform 0.2s ease;
-}
-
-.profile-dropdown:hover .profile-dropdown-content {
-  display: block;
-}
-
-/* When the screen width gets too narrow, hide the standard menu and use the 
-   hamburger menu, making the dropdown menu a vertical list*/
-@media (max-width: 1100px) {
-  .menu {
-    display: none;
+  /* --- Page structure: html and body --- */
+  html,
+  body {
+    height: 100%;
+    margin: 0;
+    display: flex;
     flex-direction: column;
+  }
+  
+  /* Body specific styles */
+  body {
+    padding-top: 120px;
+    font-family: 'Roboto', sans-serif;
+    background-color: var(--off-white-color);
+  }
+  
+  /* --- Main content styling --- */
+  main {
+    flex-grow: 1;
+    width: 80%;
+    margin: 0 auto;
+  }
+  
+  /* --- Footer styling --- */
+  footer {
+    display: flex;
+    text-align: center;
+    justify-content: center;
+    background-color: var(--turquoise-color);
+    color: white;
+    width: 100%;
+    padding: 10px 0;
+  }
+  
+  /* --- Header bar styling --- */
+  header {
+    background-color: var(--turquoise-color);
+    width: 100%;
+    height: 100px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    text-align: center;
+    position: fixed;
+    top: 0;
+    margin: 0;
+    z-index: 10;
+  }
+  
+  /* --- Logo image in header --- */
+  .logo {
     position: absolute;
-    top: 80px;
-    right: 0;
-    background: var(--turquoise-color);
-    width: 20%;
+    top: 0px;
+    left: 15px;
+    width: 95px;
+    height: auto;
+  }
+  
+  .logo:hover {
+    transform: scale(1.1);
+    transition: transform 0.2s ease;
+  }
+  
+  /* --- Main navigation menu --- */
+  .menu {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+  }
+  
+  /* Menu item styles */
+  .menu li {
+    margin: 15px;
+    font-weight: bold;
+    font-family: 'Rajdhani', sans-serif;
+  }
+  
+  /* Menu links */
+  .menu a {
+    text-decoration: none;
+    color: var(--off-white-color);
+    font-size: 22px;
+    display: block;
+  }
+  
+  /* Hover effect for menu links */
+  .menu a:hover {
+    transform: scale(1.1);
+    transition: transform 0.2s ease;
+  }
+  
+  /* --- Hamburger menu button for small screens --- */
+  .menu-toggle {
+    display: none;
+    font-size: 30px;
+    background: none;
+    border: none;
+    color: var(--off-white-color);
+    cursor: pointer;
+  }
+  
+  .menu-toggle:hover {
+    background-color: var(--off-white-color);
+    color: var(--turquoise-color);
+  }
+  
+  /* --- Profile dropdown menu --- */
+  .profile-dropdown {
+    position: relative;
+    display: inline-block;
+  }
+  
+  /* Dropdown button styling */
+  .profile-dropbtn {
+    background-color: var(--turquoise-color);
+    color: var(--off-white-color);
+    border: none;
+    font-size: 22px;
+    font-family: 'Rajdhani', sans-serif;
+    font-weight: bold;
+  }
+  
+  /* Dropdown hover effect */
+  .profile-dropbtn:hover {
+    transform: scale(1.1);
+    transition: transform 0.2s ease;
+  }
+  
+  /* Hidden dropdown content initially */
+  .profile-dropdown-content {
+    list-style: none;
+    display: none;
+    position: absolute;
+    right: -15px;
+    background-color: var(--green-color);
+    padding: 0 5px;
+    margin: 0;
+  }
+  
+  /* Links inside dropdown */
+  .profile-dropdown-content a {
+    color: var(--off-white-color);
+    text-decoration: none;
     text-align: center;
   }
-
-  .menu li {
-    margin: 10px 0;
+  
+  /* Hover effect for dropdown links */
+  .profile-dropdown-content a:hover {
+    transform: scale(1.1);
+    transition: transform 0.2s ease;
   }
-
-  .menu-toggle {
+  
+  /* Show dropdown content on hover */
+  .profile-dropdown:hover .profile-dropdown-content {
     display: block;
-    position: absolute;
-    top: 50%;
-    right: 15px;
-    transform: translateY(-50%);
   }
-
-  .menu.active {
+  
+  /* --- Responsive: Mobile Navigation --- */
+  @media (max-width: 1100px) {
+    .menu {
+      display: none;
+      flex-direction: column;
+      position: absolute;
+      top: 80px;
+      right: 0;
+      background: var(--turquoise-color);
+      width: 20%;
+      text-align: center;
+    }
+  
+    .menu li {
+      margin: 10px 0;
+    }
+  
+    .menu-toggle {
+      display: block;
+      position: absolute;
+      top: 50%;
+      right: 15px;
+      transform: translateY(-50%);
+    }
+  
+    .menu.active {
+      display: flex;
+    }
+  
+    .profile-dropdown {
+      width: 100%;
+    }
+  
+    .profile-dropdown-content {
+      right: -10px;
+      width: 100%;
+    }
+  }
+  
+  /* Fully collapse navigation on very narrow screens */
+  @media (max-width: 750px) {
+    .menu {
+      width: 100%;
+    }
+  
+    .profile-dropdown-content {
+      width: 100%;
+    }
+  }
+  
+  /* --- Preferences form styling --- */
+  .preferenceForm {
+    flex: 1 1 500px;
+    background-color: white;
+    padding: 30px;
+    border-radius: 15px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  }
+  
+  /* Heading inside preference form */
+  .preferenceForm h2 {
+    font-family: 'Rajdhani', sans-serif;
+    color: var(--charcoal-color);
+    border-bottom: 2px solid var(--turquoise-color);
+    padding-bottom: 5px;
+    margin-bottom: 20px;
+  }
+  
+  /* Group for min-max number fields */
+  .min-max-group {
     display: flex;
+    flex-direction: column;
+    margin-top: 15px;
   }
-
-  .profile-dropdown {
-    width: 100%;
+  
+  /* Label styling for min-max groups */
+  .min-max-group label {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    gap: 10px;
+    font-weight: bold;
+    font-family: 'Roboto', sans-serif;
+    color: var(--charcoal-color);
   }
-
-  .profile-dropdown-content {
-    right: -10;
-    width: 100%;
+  
+  /* Input fields inside min-max group */
+  .min-max-group input[type='number'] {
+    flex: 1;
+    margin-bottom: 0;
   }
-}
-
-/* When the screen is too thin let the dropdown menu cover the entire screen */
-@media (max-width: 750px) {
-  .menu {
-    width: 100%;
-  }
-
-  .profile-dropdown-content {
-    width: 100%;
-  }
-}
-
-/* Preferences form styling */
-.preferenceForm {
-  flex: 1 1 500px;
-  background-color: white;
-  padding: 30px;
-  border-radius: 15px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-}
-
-.preferenceForm h2 {
-  font-family: 'Rajdhani', sans-serif;
-  color: var(--charcoal-color);
-  border-bottom: 2px solid var(--turquoise-color);
-  padding-bottom: 5px;
-  margin-bottom: 20px;
-}
-
-.min-max-group {
-  display: flex;
-  flex-direction: column;
-  margin-top: 15px;
-}
-
-.min-max-group label {
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  align-items: center;
-  gap: 10px;
-  font-weight: bold;
-  font-family: 'Roboto', sans-serif;
-  color: var(--charcoal-color);
-}
-
-.min-max-group input[type='number'] {
-  flex: 1;
-  margin-bottom: 0;
-}
-
-@media (max-width: 670px) {
+  
+  /* Stack min-max fields vertically on small screens */
+  @media (max-width: 670px) {
     .min-max-group {
-      flex-direction: column; /* Stack elements vertically */
-      gap: 15px; /* Add spacing between the stacked elements */
+      flex-direction: column;
+      gap: 15px;
     }
   
     .min-max-group label {
-      justify-content: flex-start; /* Align labels to the start */
-      flex-direction: column; /* Stack label content vertically */
-      gap: 5px; /* Add spacing between label text and input */
+      flex-direction: column;
+      justify-content: flex-start;
+      gap: 5px;
     }
   
     .min-max-group input[type='number'] {
-      width: 100%; /* Ensure inputs take full width */
+      width: 100%;
     }
-}
-
-.form-group {
-  display: flex;
-  flex-direction: column;
-  margin-bottom: 15px;
-}
-
-.form-group label {
-  font-weight: bold;
-  font-family: 'Roboto', sans-serif;
-  color: var(--charcoal-color);
-  margin-bottom: 5px;
-}
-
-.form-group input,
-.form-group select {
-  padding: 8px 10px;
-  border: 1px solid #ccc;
-  border-radius: 8px;
-  font-family: 'Roboto', sans-serif;
-  font-size: 1em;
-}
-
-.submit-btn {
-  margin-top: 20px;
-  padding: 12px 20px;
-  background-color: var(--green-color);
-  color: white;
-  border: none;
-  border-radius: 10px;
-  font-size: 1.1em;
-  font-weight: bold;
-  cursor: pointer;
-  transition: background-color 0.3s ease;
-}
-
-.submit-btn:hover {
-  background-color: var(--dark-green-color);
-}
-
-.submit-wrapper {
-  display: flex;
-  justify-content: center;
-  margin-top: 20px;
-}
-
-/* Recipe card formatting */
-.recipe-card {
-  display: flex;
-  align-items: flex-start;
-  background-color: white;
-  border-radius: 15px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  width: 95%;
-  padding: 20px;
-  margin-bottom: 20px;
-  gap: 20px;
-  box-sizing: border-box;
-}
-
-.recipe-card img {
-  width: 20%;
-  height: auto;
-  border-radius: 10px;
+  }
+  
+  /* Form group common styling */
+  .form-group {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 15px;
+  }
+  
+  .form-group label {
+    font-weight: bold;
+    font-family: 'Roboto', sans-serif;
+    color: var(--charcoal-color);
+    margin-bottom: 5px;
+  }
+  
+  .form-group input,
+  .form-group select {
+    padding: 8px 10px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    font-family: 'Roboto', sans-serif;
+    font-size: 1em;
+  }
+  
+  /* Submit button style */
+  .submit-btn {
+    margin-top: 20px;
+    padding: 12px 20px;
+    background-color: var(--green-color);
+    color: white;
+    border: none;
+    border-radius: 10px;
+    font-size: 1.1em;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  
+  .submit-btn:hover {
+    background-color: var(--dark-green-color);
+  }
+  
+  /* Center submit button wrapper */
+  .submit-wrapper {
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+  }
+  
+  /* --- Recipe card display styling --- */
+  .recipe-card {
+    display: flex;
+    align-items: flex-start;
+    background-color: white;
+    border-radius: 15px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    width: 95%;
+    padding: 20px;
+    margin-bottom: 20px;
+    gap: 20px;
+    box-sizing: border-box;
+  }
+  
+  /* Recipe card image */
+  .recipe-card img {
+    width: 20%;
+    height: auto;
+    border-radius: 10px;
+    flex-shrink: 0;
+  }
+  
+  /* Recipe details section */
+  .recipe-card .details {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+  
+  /* Recipe title */
+  .recipe-card h3 {
+    font-size: 1.5em;
+    color: var(--charcoal-color);
+    margin: 0 0 10px 0;
+    word-break: break-word;
+  }
+  
+  /* Action buttons for recipes */
+  .recipe-card .action-buttons {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
   flex-shrink: 0;
-}
-
-.recipe-card .details {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-}
-
-.recipe-card h3 {
-  font-size: 1.5em;
-  color: var(--charcoal-color);
-  margin: 0 0 10px 0;
-  word-break: break-word;
-}
-
-.recipe-card .action-buttons {
-  display: flex;
-  flex-direction: column;
-  align-items: stretch;
-  flex-shrink: 0;
-  width: 150px;
-}
-
-.recipe-card .action-buttons button {
-  padding: 8px 15px;
-  background-color: var(--turquoise-color);
-  color: white;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-  margin-bottom: 8px;
-  transition: background-color 0.3s ease;
-}
-
-.recipe-card .action-buttons button:hover {
-  background-color: var(--dark-green-color);
-}
-
-@media (max-width: 800px) {
+    width: 150px;
+  }
+  
+  /* Individual action button */
+  .recipe-card .action-buttons button {
+    padding: 8px 15px;
+    background-color: var(--turquoise-color);
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-bottom: 8px;
+    transition: background-color 0.3s ease;
+  }
+  
+  .recipe-card .action-buttons button:hover {
+    background-color: var(--dark-green-color);
+  }
+  
+  /* --- Responsive recipe card for small screens --- */
+  @media (max-width: 800px) {
     .recipe-card {
-        flex-direction: column; /* Stack items vertically */
-        align-items: center; /* Center align items */
-        text-align: center; /* Center text */
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
     }
-
+  
     .recipe-card img {
-        width: 50%; /* Adjust image width for smaller screens */
-        margin-bottom: 15px; /* Add spacing below the image */
+      width: 50%;
+      margin-bottom: 15px;
     }
-
+  
     .recipe-card .details {
-        width: 100%; /* Ensure details take full width */
-        margin-bottom: 5px; /* Add spacing below the details */
+      width: 100%;
+      margin-bottom: 5px;
     }
-
+  
     .recipe-card .action-buttons {
-        width: 100%; /* Ensure buttons take full width */
-        flex-direction: row; /* Arrange buttons horizontally */
-        justify-content: center; /* Center align buttons */
-        gap: 10px; /* Add spacing between buttons */
+      width: 100%;
+      flex-direction: row;
+      justify-content: center;
+      gap: 10px;
     }
-
+  
     .recipe-card .action-buttons button {
-        flex: 1; /* Make buttons evenly spaced */
+      flex: 1;
     }
-}
+  }
+  

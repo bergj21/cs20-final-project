@@ -1,6 +1,6 @@
+// routes.js
 const express = require('express')
 const router = express.Router()
-// routes.js
 const { loginUser, signupUser, editUserProfile } = require('./authorize.js')
 
 const {

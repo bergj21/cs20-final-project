@@ -1,17 +1,23 @@
 <html lang="en">
   <head>
+    <!-- Basic page setup -->
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width,initial-scale=1" />
     <title>Sign Up • Meal Prep Buddy</title>
+
+    <!-- External styles and scripts -->
     <link rel="stylesheet" href="styles.css" />
     <script src="header.js"></script>
+
+    <!-- Inline page-specific styles -->
     <style>
-    /* Page background */
+      /* Background image for sign-up page */
       body {
         background: url('images/background-signup.jpg') no-repeat center center fixed;
         background-size: cover;
       }
 
+      /* Main sign-up form styling */
       .signup-form {
         max-width: 800px;
         margin: 2rem auto;
@@ -20,18 +26,26 @@
         border-radius: 10px;
         box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
       }
+
+      /* Heading inside form */
       .signup-form h2 {
         margin-bottom: 1rem;
         text-align: center;
       }
+
+      /* Form field group styling */
       .signup-form .form-group {
         margin-bottom: 1rem;
       }
+
+      /* Label styling */
       .signup-form label {
         display: block;
         margin-bottom: 0.25rem;
         font-weight: bold;
       }
+
+      /* Input fields styling */
       .signup-form input[type='text'],
       .signup-form input[type='email'],
       .signup-form input[type='password'],
@@ -42,6 +56,8 @@
         border: 1px solid #ccc;
         border-radius: 5px;
       }
+
+      /* Submit button styling */
       .signup-form button {
         width: 100%;
         padding: 0.75rem;
@@ -54,10 +70,13 @@
         cursor: pointer;
         transition: filter 0.2s;
       }
+
+      /* Submit button hover effect */
       .signup-form button:hover {
         filter: var(--dark-green-color);
       }
 
+      /* Preference template options styling */
       .template-options {
         display: flex;
         flex-direction: column;
@@ -80,10 +99,12 @@
         margin-right: 0.5rem;
       }
 
+      /* Subscription options layout */
       .subscription-options {
         display: flex;
         gap: 1rem;
       }
+
       .subscription-options label {
         flex: 1;
         padding: 1rem;
@@ -93,12 +114,15 @@
         text-align: center;
         cursor: pointer;
       }
+
       .subscription-options input {
         margin-right: 0.5rem;
       }
     </style>
   </head>
+
   <body>
+    <!-- Header with logo and nav menu -->
     <header>
       <a href="index.html">
         <img src="images/logo.jpg" alt="Logo" class="logo" />
@@ -109,19 +133,22 @@
       </nav>
     </header>
 
+    <!-- Main content: Sign-up form -->
     <main>
       <form class="signup-form" id="signupForm">
         <h2>Create Your Account & Preferences</h2>
 
-        <!-- Account info -->
+        <!-- Account information fields -->
         <div class="form-group">
           <label for="name">Name</label>
           <input type="text" id="name" required />
         </div>
+
         <div class="form-group">
           <label for="email">Email</label>
           <input type="email" id="email" required />
         </div>
+
         <div class="form-group">
           <label for="password">Password</label>
           <input type="password" id="password" required />
@@ -147,45 +174,43 @@
             <option value="Whole30">Whole30</option>
           </select>
         </div>
+
         <div class="form-group">
           <label for="intolerances">Intolerances (comma-separated)</label>
-          <input
-            type="text"
-            id="intolerances"
-            placeholder="e.g. gluten, dairy"
-          />
+          <input type="text" id="intolerances" placeholder="e.g. gluten, dairy" />
         </div>
+
         <div class="form-group">
           <label for="cuisine">Preferred Cuisines</label>
           <input type="text" id="cuisine" placeholder="e.g. Italian, Mexican" />
         </div>
+
         <div class="form-group">
           <label for="excludeIngredients">Exclude Ingredients</label>
-          <input
-            type="text"
-            id="excludeIngredients"
-            placeholder="e.g. nuts, shellfish"
-          />
+          <input type="text" id="excludeIngredients" placeholder="e.g. nuts, shellfish" />
         </div>
 
         <hr />
 
-        <!-- Nutrition ranges -->
+        <!-- Nutrition preferences -->
         <div class="form-group">
           <label>Calories (min / max)</label>
           <input type="number" id="minCalories" placeholder="Min" />
           <input type="number" id="maxCalories" placeholder="Max" />
         </div>
+
         <div class="form-group">
           <label>Carbs (g) (min / max)</label>
           <input type="number" id="minCarbs" placeholder="Min" />
           <input type="number" id="maxCarbs" placeholder="Max" />
         </div>
+
         <div class="form-group">
           <label>Fat (g) (min / max)</label>
           <input type="number" id="minFat" placeholder="Min" />
           <input type="number" id="maxFat" placeholder="Max" />
         </div>
+
         <div class="form-group">
           <label>Protein (g) (min / max)</label>
           <input type="number" id="minProtein" placeholder="Min" />
@@ -194,9 +219,8 @@
 
         <hr />
 
-        <!-- Preference Templates -->
-
-        <div id="templateContainer" s>
+        <!-- Preference templates selection -->
+        <div id="templateContainer">
           <label>Preference Templates</label>
           <div class="template-options">
             <label>
@@ -214,13 +238,12 @@
           </div>
         </div>
 
-        <!-- Subscription Plan -->
+        <!-- Subscription plan selection -->
         <div class="form-group">
           <label>Choose a Plan</label>
           <div class="subscription-options">
             <label>
-              <input type="radio" name="plan" value="Monthly" required /> Monthly —
-              $9.99/mo
+              <input type="radio" name="plan" value="Monthly" required /> Monthly — $9.99/mo
             </label>
             <label>
               <input type="radio" name="plan" value="Annual" /> Annual — $69.99/year
@@ -228,18 +251,18 @@
           </div>
         </div>
 
+        <!-- Submit button -->
         <button type="submit">Sign Up</button>
       </form>
     </main>
 
+    <!-- Page-specific scripts -->
     <script>
+      // Load preference template into form
       async function loadTemplate(templateName) {
         try {
-          // Fetch the preferences template JSON file
           const response = await fetch('/preference-templates.json')
-          if (!response.ok) {
-            throw new Error('Failed to load preferences template')
-          }
+          if (!response.ok) throw new Error('Failed to load preferences template')
 
           const templates = await response.json()
           const template = templates[templateName]
@@ -249,31 +272,26 @@
             return
           }
 
-          // Populate the form with the template data
+          // Fill form fields with template values
           document.getElementById('diet').value = template.diet || ''
-          document.getElementById('intolerances').value =
-            template.intolerances || ''
+          document.getElementById('intolerances').value = template.intolerances || ''
           document.getElementById('cuisine').value = template.cuisine || ''
-          document.getElementById('excludeIngredients').value =
-            template.excludeIngredients || ''
-          document.getElementById('minCalories').value =
-            template.minCalories || ''
-          document.getElementById('maxCalories').value =
-            template.maxCalories || ''
+          document.getElementById('excludeIngredients').value = template.excludeIngredients || ''
+          document.getElementById('minCalories').value = template.minCalories || ''
+          document.getElementById('maxCalories').value = template.maxCalories || ''
           document.getElementById('minCarbs').value = template.minCarbs || ''
           document.getElementById('maxCarbs').value = template.maxCarbs || ''
           document.getElementById('minFat').value = template.minFat || ''
           document.getElementById('maxFat').value = template.maxFat || ''
-          document.getElementById('minProtein').value =
-            template.minProtein || ''
-          document.getElementById('maxProtein').value =
-            template.maxProtein || ''
+          document.getElementById('minProtein').value = template.minProtein || ''
+          document.getElementById('maxProtein').value = template.maxProtein || ''
         } catch (err) {
           console.error('Error loading template:', err)
           alert('Failed to load template')
         }
       }
 
+      // Add listeners to template selection radios
       function initializeRadioButtons() {
         document.querySelectorAll('input[name="template"]').forEach((radio) => {
           radio.addEventListener('change', (event) => {
@@ -283,67 +301,59 @@
         })
       }
 
+      // On page load: setup header, templates, and form submit
       window.onload = () => {
         setHeader()
-
         initializeRadioButtons()
 
-        document
-          .getElementById('signupForm')
-          .addEventListener('submit', async (e) => {
-            e.preventDefault()
+        document.getElementById('signupForm').addEventListener('submit', async (e) => {
+          e.preventDefault()
 
-            // build payload dynamically
-            const payload = {
-              name: e.target.name.value,
-              email: e.target.email.value,
-              password: e.target.password.value,
-              preferences: {},
-              plan: e.target.plan.value,
-            }
+          // Build signup payload
+          const payload = {
+            name: e.target.name.value,
+            email: e.target.email.value,
+            password: e.target.password.value,
+            preferences: {},
+            plan: e.target.plan.value
+          }
 
-            // include string prefs only if non-empty
-            ;['diet', 'intolerances', 'cuisine', 'excludeIngredients'].forEach(
-              (key) => {
-                const raw = e.target.querySelector('#' + key).value.trim()
-                if (raw) payload.preferences[key] = raw
-              }
-            )
-
-            // include numeric prefs only if user entered something
-            ;[
-              'minCalories',
-              'maxCalories',
-              'minCarbs',
-              'maxCarbs',
-              'minFat',
-              'maxFat',
-              'minProtein',
-              'maxProtein',
-            ].forEach((key) => {
-              const raw = e.target.querySelector('#' + key).value
-              if (raw !== '') payload.preferences[key] = Number(raw)
-            })
-
-            const res = await fetch('/signup', {
-              method: 'POST',
-              headers: { 'Content-Type': 'application/json' },
-              body: JSON.stringify(payload),
-            })
-
-            if (res.ok) {
-              const { userId } = await res.json()
-              localStorage.setItem('userId', userId)
-              window.location.href = '/'
-            } else if (res.status === 409) {
-              alert('That email is already registered.')
-            } else {
-              alert('Signup failed. Please try again.')
-            }
+          ;['diet', 'intolerances', 'cuisine', 'excludeIngredients'].forEach((key) => {
+            const raw = e.target.querySelector('#' + key).value.trim()
+            if (raw) payload.preferences[key] = raw
           })
+
+          ;[
+            'minCalories', 'maxCalories',
+            'minCarbs', 'maxCarbs',
+            'minFat', 'maxFat',
+            'minProtein', 'maxProtein'
+          ].forEach((key) => {
+            const raw = e.target.querySelector('#' + key).value
+            if (raw !== '') payload.preferences[key] = Number(raw)
+          })
+
+          // Submit signup request
+          const res = await fetch('/signup', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(payload)
+          })
+
+          if (res.ok) {
+            const { userId } = await res.json()
+            localStorage.setItem('userId', userId)
+            window.location.href = '/'
+          } else if (res.status === 409) {
+            alert('That email is already registered')
+          } else {
+            alert('Signup failed. Please try again')
+          }
+        })
       }
     </script>
 
+    <!-- Footer -->
     <footer>
       <p>&copy; 2025 Meal Prep Buddy. All Rights Reserved.</p>
     </footer>

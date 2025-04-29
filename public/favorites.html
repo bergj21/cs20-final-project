@@ -1,68 +1,82 @@
 <html lang="en">
 <head>
+<!-- Metadata for the page -->
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="keywords" content="fitness, meal prep, healthy, groceries, food, activity, lifestyle">
     <title>Favorite Recipes</title>
+
+    <!-- Link to external stylesheet -->
     <link rel="stylesheet" href="styles.css" />
+
+    <!-- Include JavaScript for the header and API handling -->
     <script src="header.js"></script>
     <script src="apiHandler.js"></script>
-    <style>
+  <style>
     </style>
 </head>
 <body>
+    <!-- Header section -->
     <header>
         <a href="index.html">
             <img src="images/logo.jpg" alt="Logo" class="logo" />
         </a>
+        <!-- Navigation menu -->
         <nav>
             <button class="menu-toggle">☰</button>
             <ul class="menu"></ul>
         </nav>
     </header>
 
+    <!-- Main content -->
     <main>
+        <!-- Page title -->
         <h1>Favorite Recipes</h1>
+        <!-- Container for displaying favorite recipes -->
         <div class="recipes"></div>
     </main>
 
     <script>
-        // set up the page
+        // Set up the page when it loads
         window.onload = function() {
             setHeader();
             showFavorites(); // Call showFavorites to display favorite recipes
         }
 
-        async function showFavorites()
-        {
-            const recipesContainer = document.querySelector('.recipes');
-            recipesContainer.innerHTML = ''; // Clear previous content
+        // Function to fetch and display the user's favorite recipes
+        async function showFavorites() {
+            const recipesContainer = document.querySelector('.recipes'); // Select the container for recipes
+            recipesContainer.innerHTML = ''; // Clear any previous content
 
-            // fetch favorites
+            // Fetch the user's favorite recipes from the server
             try {
                 const response = await fetch(`/get-favorites?userId=${localStorage.getItem('userId')}`);
                 if (!response.ok) {
-                    alert("Could not load preferences.");
+                    alert("Could not load preferences."); // Alert if the request fails
                     return;
                 }
 
-                const favorites = await response.json();
+                const favorites = await response.json(); // Parse the response as JSON
 
+                // If no favorites are found, display a message
                 if (favorites.length === 0) {
                     recipesContainer.innerHTML = 
                             `<p style="text-align: center;">You currently have no favorite recipes. Navigate to the 
                              <a href="find_recipes.html">recipe page</a> to start saving recipes.</p>`;
                     return;
                 } else {
+                    // Generate recipe cards for the favorites and display them
                     generateRecipeCards(favorites, recipesContainer);
                 }
             } catch (err) {
+                // Handle errors during the fetch process
                 console.error("Failed to fetch user preferences:", err);
                 alert("Server error while loading preferences.");
             }
         }
     </script>
 
+    <!-- Footer section -->
     <footer>
         <p>&copy; 2025 Meal Prep Buddy. All Rights Reserved.</p>
     </footer>

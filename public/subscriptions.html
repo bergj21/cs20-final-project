@@ -1,16 +1,18 @@
 <html lang="en">
 <head>
+  <!-- Metadata and page setup -->
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta name="keywords" content="fitness, meal prep, healthy, groceries, food, activity, lifestyle">
   <title>Subscriptions</title>
   
-  <!-- Keep linked external CSS -->
+  <!-- External CSS and JavaScript -->
   <link rel="stylesheet" href="styles.css" />
   <script src="header.js"></script>
 
-
+  <!-- Inline styles specific to this page -->
   <style>
+    /* --- Container for pricing cards --- */
     .pricing-container {
       display: flex;
       gap: 30px;
@@ -20,7 +22,7 @@
       padding: 20px;
     }
 
-    /* Pricing card style */
+    /* --- Individual pricing card styling --- */
     .pricing-card {
       background-color: white;
       border-radius: 15px;
@@ -30,6 +32,7 @@
       box-sizing: border-box;
     }
 
+    /* Pricing card heading (plan name) */
     .pricing-card h2 {
       font-size: 2.5em;
       font-family: 'Rajdhani', sans-serif;
@@ -38,11 +41,13 @@
       margin-bottom: 10px;
     }
 
+    /* Price text inside cards */
     .price {
       font-size: 1.8em;
       color: var(--dark-green-color);
     }
 
+    /* List of plan features */
     .pricing-card ul {
       padding-left: 20px;
       margin-top: 15px;
@@ -52,47 +57,53 @@
       margin-bottom: 10px;
       color: var(--charcoal-color);
     }
-
     
-    /* Sign-up button style */
+    /* --- Sign-up button styling --- */
     .signup-button {
-        display: inline-block;
-        padding: 12px 24px;
-        background-color: var(--green-color);
-        color: var(--off-white-color);
-        font-size: 1.2em;
-        font-weight: bold;
-        font-family: 'Rajdhani', sans-serif;
-        border: none;
-        border-radius: 12px;
-        text-align: center;
-        text-decoration: none;
-        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-        transition: background-color 0.3s ease, transform 0.2s ease;
-        margin-top: 20px;
+      display: inline-block;
+      padding: 12px 24px;
+      background-color: var(--green-color);
+      color: var(--off-white-color);
+      font-size: 1.2em;
+      font-weight: bold;
+      font-family: 'Rajdhani', sans-serif;
+      border: none;
+      border-radius: 12px;
+      text-align: center;
+      text-decoration: none;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      transition: background-color 0.3s ease, transform 0.2s ease;
+      margin-top: 20px;
     }
 
+    /* Hover effect for sign-up button */
     .signup-button:hover {
-        background-color: var(--dark-green-color);
-        transform: translateY(-2px);
+      background-color: var(--dark-green-color);
+      transform: translateY(-2px);
     }
   </style>
 </head>
 
 <body>
-    <header>
-      <a href="index.html">
-        <img src="images/logo.jpg" alt="Logo" class="logo" />
-      </a>
-      <nav>
-        <button class="menu-toggle">☰</button>
-        <ul class="menu"></ul>
-      </nav>
-    </header>
-  
-    <main>
-      <h1 id="subscription-heading">Subscribe Today</h1>
-      <div class="pricing-container">
+  <!-- Page header with logo and navigation -->
+  <header>
+    <a href="index.html">
+      <img src="images/logo.jpg" alt="Logo" class="logo" />
+    </a>
+    <nav>
+      <button class="menu-toggle">☰</button>
+      <ul class="menu"></ul>
+    </nav>
+  </header>
+
+  <!-- Main content: Subscription options -->
+  <main>
+    <h1 id="subscription-heading">Subscribe Today</h1>
+
+    <!-- Container holding pricing cards -->
+    <div class="pricing-container">
+      
+      <!-- Monthly subscription card -->
       <section class="pricing-card">
         <h2>Monthly</h2>
         <p class="price">$9.99/month</p>
@@ -105,6 +116,7 @@
         <a href="signup.html" class="signup-button">Sign Up</a>
       </section>
   
+      <!-- Annual subscription card -->
       <section class="pricing-card">
         <h2>Annual</h2>
         <p class="price">$69.99/year</p>
@@ -116,23 +128,27 @@
         </ul>
         <a href="signup.html" class="signup-button">Sign Up</a>
       </section>
-      </div>
-    </main>
 
+    </div>
+  </main>
+
+  <!-- Script to dynamically adjust signup buttons if user already logged in -->
   <script>
     window.onload = function() {
-        setHeader();
+      setHeader();
 
-        const userId = localStorage.getItem('userId');
-        if (userId) {
-            const signUpButtons = document.querySelectorAll('.signup-button');
-            signUpButtons.forEach(button => {
-                button.style.display = 'none';
-            });
-        }
+      const userId = localStorage.getItem('userId');
+      if (userId) {
+        // Hide sign-up buttons if user is already signed in
+        const signUpButtons = document.querySelectorAll('.signup-button');
+        signUpButtons.forEach(button => {
+          button.style.display = 'none';
+        });
+      }
     }
   </script>
 
+  <!-- Footer -->
   <footer>
     <p>&copy; 2025 Meal Prep Buddy. All Rights Reserved.</p>
   </footer>
